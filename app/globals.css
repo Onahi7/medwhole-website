@@ -12,8 +12,8 @@
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.25 0.02 240);
 
-  /* Primary: Deep Navy Blue from MedWHOLE logo (#1e3a5f) */
-  --primary: oklch(0.32 0.04 240);
+  /* Primary: Deep Navy Blue from MedWHOLE logo (#345e7d) */
+  --primary: oklch(0.41 0.05 240);
   --primary-foreground: oklch(0.99 0 0);
 
   --secondary: oklch(0.96 0.01 240);
