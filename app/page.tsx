@@ -67,27 +67,23 @@ export default function HomePage() {
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
       <main className="flex-1">
-        <section className="relative bg-gradient-to-br from-primary via-primary/95 to-primary/90 text-primary-foreground overflow-hidden min-h-[90vh] flex items-center">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-20 left-10 w-72 h-72 bg-accent blur-3xl animate-float" />
-            <div
-              className="absolute bottom-20 right-10 w-96 h-96 bg-primary-foreground blur-3xl animate-float"
-              style={{ animationDelay: "1s" }}
-            />
-            <div
-              className="absolute top-1/2 left-1/2 w-64 h-64 bg-accent/50 blur-3xl animate-float"
-              style={{ animationDelay: "2s" }}
-            />
+        <section className="relative bg-gradient-to-br from-primary via-primary/95 to-accent/20 text-primary-foreground overflow-hidden min-h-[90vh] flex items-center">
+          {/* Background Image with Overlay */}
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=2070')] bg-cover bg-center" />
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/90 to-primary/85" />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent" />
           </div>
 
-          <div className="absolute inset-0 opacity-5">
+          {/* Gold Accent Glows */}
+          <div className="absolute inset-0 opacity-15">
             <div className="absolute top-20 left-10 w-72 h-72 bg-accent blur-3xl animate-float" />
             <div
-              className="absolute bottom-20 right-10 w-96 h-96 bg-primary-foreground blur-3xl animate-float"
+              className="absolute bottom-20 right-10 w-96 h-96 bg-accent/60 blur-3xl animate-float"
               style={{ animationDelay: "1s" }}
             />
             <div
-              className="absolute top-1/2 left-1/2 w-64 h-64 bg-accent/50 blur-3xl animate-float"
+              className="absolute top-1/2 left-1/2 w-64 h-64 bg-accent/40 blur-3xl animate-float"
               style={{ animationDelay: "2s" }}
             />
           </div>
