@@ -11,6 +11,8 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 
 export default function HealthServicesPage() {
+  // Custom health services color
+  const healthColor = "#ff9aae"
   const [stats, setStats] = useState({ patients: 0, communities: 0, programs: 0 })
   const [hoveredCard, setHoveredCard] = useState<number | null>(null)
 
@@ -91,12 +93,12 @@ export default function HealthServicesPage() {
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-primary/80" />
           </div>
           <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-20 left-10 w-72 h-72 bg-accent rounded-full blur-3xl animate-pulse" />
-            <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/50 rounded-full blur-3xl animate-pulse delay-1000" />
+            <div className="absolute top-20 left-10 w-72 h-72 rounded-full blur-3xl animate-pulse" style={{ backgroundColor: healthColor }} />
+            <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full blur-3xl animate-pulse delay-1000" style={{ backgroundColor: healthColor, opacity: 0.5 }} />
           </div>
           <div className="container mx-auto px-4 lg:px-8 relative z-10">
             <div className="max-w-3xl">
-              <div className="inline-block mb-4 px-4 py-2 bg-accent/20 rounded-full text-sm font-medium animate-fade-in">
+              <div className="inline-block mb-4 px-4 py-2 rounded-full text-sm font-medium animate-fade-in" style={{ backgroundColor: `${healthColor}33` }}>
                 Delivering Quality Healthcare Across Africa
               </div>
               <h1 className="text-4xl lg:text-6xl font-bold mb-6 animate-fade-in-up">MedWHOLE Health</h1>
@@ -105,7 +107,7 @@ export default function HealthServicesPage() {
                 programs, and strategic partnerships with health facilities.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-300">
-                <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+                <Button asChild size="lg" style={{ backgroundColor: healthColor, color: '#1a1a1a' }} className="hover:opacity-90 transition-opacity">
                   <Link href="/contact">Partner With Us</Link>
                 </Button>
                 <Button
@@ -292,31 +294,31 @@ export default function HealthServicesPage() {
                     </CardContent>
                   </Card>
 
-                  <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-accent">
+                  <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-[#fff3e0]">
                     <CardContent className="p-6">
-                      <div className="mb-4 inline-flex p-3 rounded-xl bg-accent/10 group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
-                        <Activity className="h-6 w-6 text-accent group-hover:text-accent-foreground transition-colors" />
+                      <div className="mb-4 inline-flex p-3 rounded-xl group-hover:scale-110 transition-all duration-300" style={{ backgroundColor: `${healthColor}1a` }}>
+                        <Activity className="h-6 w-6 transition-colors" style={{ color: healthColor }} />
                       </div>
-                      <h3 className="text-lg font-bold mb-3 group-hover:text-accent transition-colors">Integrated Services</h3>
+                      <h3 className="text-lg font-bold mb-3 transition-colors" style={{ color: 'inherit' }}>Integrated Services</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                         Our holistic approach addresses multiple health needs simultaneously, improving outcomes and
                         efficiency.
                       </p>
                       <ul className="space-y-2 text-sm text-muted-foreground">
                         <li className="flex items-center gap-2">
-                          <CheckCircle className="h-4 w-4 text-accent flex-shrink-0" strokeWidth={2.5} />
+                          <CheckCircle className="h-4 w-4 flex-shrink-0" strokeWidth={2.5} style={{ color: healthColor }} />
                           Preventive and curative care
                         </li>
                         <li className="flex items-center gap-2">
-                          <CheckCircle className="h-4 w-4 text-accent flex-shrink-0" strokeWidth={2.5} />
+                          <CheckCircle className="h-4 w-4 flex-shrink-0" strokeWidth={2.5} style={{ color: healthColor }} />
                           Health education and counseling
                         </li>
                         <li className="flex items-center gap-2">
-                          <CheckCircle className="h-4 w-4 text-accent flex-shrink-0" strokeWidth={2.5} />
+                          <CheckCircle className="h-4 w-4 flex-shrink-0" strokeWidth={2.5} style={{ color: healthColor }} />
                           Referral and follow-up systems
                         </li>
                         <li className="flex items-center gap-2">
-                          <CheckCircle className="h-4 w-4 text-accent flex-shrink-0" strokeWidth={2.5} />
+                          <CheckCircle className="h-4 w-4 flex-shrink-0" strokeWidth={2.5} style={{ color: healthColor }} />
                           Linkages to social services
                         </li>
                       </ul>
@@ -332,7 +334,7 @@ export default function HealthServicesPage() {
         <section className="py-16 lg:py-24 bg-muted/30">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="text-center mb-16">
-              <Badge className="mb-4 bg-accent/10 text-accent">Health Events</Badge>
+              <Badge className="mb-4" style={{ backgroundColor: `${healthColor}33`, color: '#1a1a1a' }}>Health Events</Badge>
               <h2 className="text-3xl lg:text-4xl font-bold mb-4">Recent Health Events</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                 Stay informed about our latest health service campaigns, community outreach, and medical initiatives
@@ -357,7 +359,7 @@ export default function HealthServicesPage() {
                     <Calendar className="h-4 w-4" />
                     <span>Recent</span>
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-accent transition-colors">
+                  <h3 className="text-xl font-semibold mb-3 transition-colors">
                     CPR Training for National Assembly & Policymakers
                   </h3>
                   <p className="text-muted-foreground mb-4 leading-relaxed">
@@ -373,9 +375,9 @@ export default function HealthServicesPage() {
 
               {/* Event 2 */}
               <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
-                <div className="aspect-video bg-gradient-to-br from-accent to-accent/80 relative overflow-hidden">
+                <div className="aspect-video relative overflow-hidden" style={{ background: `linear-gradient(to bottom right, ${healthColor}, ${healthColor}cc)` }}>
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <Heart className="h-16 w-16 text-accent-foreground/80" />
+                    <Heart className="h-16 w-16" style={{ color: '#1a1a1a80' }} />
                   </div>
                   <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground">Campaign</Badge>
                 </div>
@@ -384,7 +386,7 @@ export default function HealthServicesPage() {
                     <Calendar className="h-4 w-4" />
                     <span>October 5-12, 2025</span>
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-accent transition-colors">
+                  <h3 className="text-xl font-semibold mb-3 transition-colors">
                     World Heart Day Campaign
                   </h3>
                   <p className="text-muted-foreground mb-4 leading-relaxed">
@@ -411,7 +413,7 @@ export default function HealthServicesPage() {
                     <Calendar className="h-4 w-4" />
                     <span>September 18-25, 2025</span>
                   </div>
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-accent transition-colors">
+                  <h3 className="text-xl font-semibold mb-3 transition-colors">
                     Maternal & Child Health Week
                   </h3>
                   <p className="text-muted-foreground mb-4 leading-relaxed">
@@ -441,7 +443,7 @@ export default function HealthServicesPage() {
           <div className="container mx-auto px-4 lg:px-8">
             <div className="text-center mb-16">
               <div className="inline-block mb-4">
-                <span className="text-sm font-semibold text-accent uppercase tracking-wider bg-accent/10 px-4 py-2 rounded-full">
+                <span className="text-sm font-semibold uppercase tracking-wider px-4 py-2 rounded-full" style={{ backgroundColor: `${healthColor}33`, color: '#1a1a1a' }}>
                   Health Gallery
                 </span>
               </div>
@@ -452,7 +454,7 @@ export default function HealthServicesPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-accent/50">
+              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2" style={{ borderColor: 'transparent' }} onMouseEnter={(e) => e.currentTarget.style.borderColor = `${healthColor}80`} onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}>
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img
                     src="/mobile-health-clinic-africa-rural-community.jpg"
@@ -460,15 +462,15 @@ export default function HealthServicesPage() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <Badge className="absolute top-4 left-4 bg-accent text-accent-foreground">Mobile Clinic</Badge>
+                  <Badge className="absolute top-4 left-4" style={{ backgroundColor: healthColor, color: '#1a1a1a' }}>Mobile Clinic</Badge>
                 </div>
                 <CardContent className="p-6">
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-accent transition-colors">Mobile Health Care</h3>
+                  <h3 className="font-bold text-lg mb-2 transition-colors">Mobile Health Care</h3>
                   <p className="text-sm text-muted-foreground">Bringing healthcare directly to remote and underserved communities</p>
                 </CardContent>
               </Card>
 
-              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-accent/50">
+              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2" style={{ borderColor: 'transparent' }} onMouseEnter={(e) => e.currentTarget.style.borderColor = `${healthColor}80`} onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}>
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img
                     src="/african-mother-and-child-receiving-healthcare-mate.jpg"
@@ -479,12 +481,12 @@ export default function HealthServicesPage() {
                   <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground">Maternal Health</Badge>
                 </div>
                 <CardContent className="p-6">
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-accent transition-colors">Maternal & Child Health</h3>
+                  <h3 className="font-bold text-lg mb-2 transition-colors">Maternal & Child Health</h3>
                   <p className="text-sm text-muted-foreground">Quality prenatal care and child health care for mothers</p>
                 </CardContent>
               </Card>
 
-              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-accent/50">
+              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2" style={{ borderColor: 'transparent' }} onMouseEnter={(e) => e.currentTarget.style.borderColor = `${healthColor}80`} onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}>
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img
                     src="/african-community-health-workers-in-field.jpg"
@@ -495,12 +497,12 @@ export default function HealthServicesPage() {
                   <Badge className="absolute top-4 left-4 bg-chart-3 text-white">Community Care</Badge>
                 </div>
                 <CardContent className="p-6">
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-accent transition-colors">Community Health Workers</h3>
+                  <h3 className="font-bold text-lg mb-2 transition-colors">Community Health Workers</h3>
                   <p className="text-sm text-muted-foreground">Dedicated health workers serving rural and remote communities</p>
                 </CardContent>
               </Card>
 
-              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-accent/50">
+              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2" style={{ borderColor: 'transparent' }} onMouseEnter={(e) => e.currentTarget.style.borderColor = `${healthColor}80`} onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}>
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img
                     src="/african-healthcare-workers-providing-medical-care-.jpg"
@@ -508,15 +510,15 @@ export default function HealthServicesPage() {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <Badge className="absolute top-4 left-4 bg-accent text-accent-foreground">Clinical Care</Badge>
+                  <Badge className="absolute top-4 left-4" style={{ backgroundColor: healthColor, color: '#1a1a1a' }}>Clinical Care</Badge>
                 </div>
                 <CardContent className="p-6">
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-accent transition-colors">Direct Clinical Care</h3>
+                  <h3 className="font-bold text-lg mb-2 transition-colors">Direct Clinical Care</h3>
                   <p className="text-sm text-muted-foreground">Professional healthcare workers providing direct patient care</p>
                 </CardContent>
               </Card>
 
-              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-accent/50">
+              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2" style={{ borderColor: 'transparent' }} onMouseEnter={(e) => e.currentTarget.style.borderColor = `${healthColor}80`} onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}>
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img
                     src="/african-health-workers-vaccination-campaign.jpg"
@@ -527,12 +529,12 @@ export default function HealthServicesPage() {
                   <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground">Prevention</Badge>
                 </div>
                 <CardContent className="p-6">
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-accent transition-colors">Vaccination Programs</h3>
+                  <h3 className="font-bold text-lg mb-2 transition-colors">Vaccination Programs</h3>
                   <p className="text-sm text-muted-foreground">Community-wide vaccination campaigns and preventive care</p>
                 </CardContent>
               </Card>
 
-              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-accent/50">
+              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2" style={{ borderColor: 'transparent' }} onMouseEnter={(e) => e.currentTarget.style.borderColor = `${healthColor}80`} onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}>
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <img
                     src="/african-community-health-education-session.jpg"
@@ -543,14 +545,14 @@ export default function HealthServicesPage() {
                   <Badge className="absolute top-4 left-4 bg-chart-3 text-white">Education</Badge>
                 </div>
                 <CardContent className="p-6">
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-accent transition-colors">Health Education</h3>
+                  <h3 className="font-bold text-lg mb-2 transition-colors">Health Education</h3>
                   <p className="text-sm text-muted-foreground">Community health education and awareness programs</p>
                 </CardContent>
               </Card>
             </div>
 
             <div className="text-center">
-              <Button asChild size="lg" variant="outline" className="border-2 border-accent/20 hover:border-accent">
+              <Button asChild size="lg" variant="outline" className="border-2" style={{ borderColor: `${healthColor}33` }} onMouseEnter={(e) => e.currentTarget.style.borderColor = healthColor} onMouseLeave={(e) => e.currentTarget.style.borderColor = `${healthColor}33`}>
                 <Link href="/gallery?category=Health" className="flex items-center gap-2">
                   View Complete Health Gallery <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -614,7 +616,7 @@ export default function HealthServicesPage() {
           <div className="container mx-auto px-4 lg:px-8">
             <div className="text-center mb-16">
               <div className="inline-block mb-4">
-                <span className="text-sm font-semibold text-accent uppercase tracking-wider bg-accent/10 px-4 py-2 rounded-full">
+                <span className="text-sm font-semibold uppercase tracking-wider px-4 py-2 rounded-full" style={{ backgroundColor: `${healthColor}33`, color: '#1a1a1a' }}>
                   Health Programs
                 </span>
               </div>
@@ -625,12 +627,12 @@ export default function HealthServicesPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-accent/50">
+              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2" style={{ borderColor: 'transparent' }} onMouseEnter={(e) => e.currentTarget.style.borderColor = `${healthColor}80`} onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}>
                 <CardContent className="p-8">
-                  <div className="mb-6 inline-flex p-4 rounded-xl bg-accent/10 group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
-                    <Heart className="h-8 w-8 text-accent group-hover:text-accent-foreground transition-colors" />
+                  <div className="mb-6 inline-flex p-4 rounded-xl group-hover:scale-110 transition-all duration-300" style={{ backgroundColor: `${healthColor}1a` }}>
+                    <Heart className="h-8 w-8 transition-colors" style={{ color: healthColor }} />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 group-hover:text-accent transition-colors">
+                  <h3 className="text-2xl font-bold mb-4 transition-colors">
                     Maternal & Child Health Program
                   </h3>
                   <p className="text-muted-foreground leading-relaxed mb-4">
@@ -641,7 +643,7 @@ export default function HealthServicesPage() {
                     <span>Ongoing</span>
                     <Badge variant="outline" className="ml-2">Clinical</Badge>
                   </div>
-                  <Button asChild variant="outline" className="w-full group-hover:bg-accent group-hover:text-accent-foreground group-hover:border-accent transition-colors">
+                  <Button asChild variant="outline" className="w-full transition-colors" style={{ borderColor: `${healthColor}33` }} onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = healthColor; e.currentTarget.style.color = '#1a1a1a'; e.currentTarget.style.borderColor = healthColor; }} onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = 'transparent'; e.currentTarget.style.color = 'inherit'; e.currentTarget.style.borderColor = `${healthColor}33`; }}>
                     <Link href="/programs/maternal-child-health">
                       View Program <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
@@ -699,7 +701,7 @@ export default function HealthServicesPage() {
             </div>
 
             <div className="text-center mt-12">
-              <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+              <Button asChild size="lg" style={{ backgroundColor: healthColor, color: '#1a1a1a' }} className="hover:opacity-90 transition-opacity">
                 <Link href="/programs">
                   View All Health Programs <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
@@ -710,7 +712,7 @@ export default function HealthServicesPage() {
 
         <section className="py-16 lg:py-24 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-10 right-10 w-64 h-64 bg-accent rounded-full blur-3xl" />
+            <div className="absolute top-10 right-10 w-64 h-64 rounded-full blur-3xl" style={{ backgroundColor: healthColor }} />
           </div>
           <div className="container mx-auto px-4 lg:px-8 text-center relative z-10">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4">Partner With MedWHOLE Health</h2>
@@ -719,7 +721,7 @@ export default function HealthServicesPage() {
               access to quality healthcare.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground group">
+              <Button asChild size="lg" className="group" style={{ backgroundColor: healthColor, color: '#1a1a1a' }}>
                 <Link href="/contact">
                   Get in Touch
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
