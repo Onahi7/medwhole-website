@@ -23,8 +23,8 @@ export function SiteHeader() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2 group">
-            <div className="flex items-center">
-              <span className="text-xl font-bold bg-accent text-accent-foreground px-2 py-1 rounded">Med</span>
+            <div className="flex items-center font-logo">
+              <span className="text-xl font-bold bg-primary text-primary-foreground px-2 py-1 rounded">Med</span>
               <span className="text-xl font-bold text-primary">WHOLE</span>
             </div>
           </Link>
