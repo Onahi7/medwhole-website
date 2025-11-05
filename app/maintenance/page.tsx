@@ -111,11 +111,15 @@ export default function MaintenancePage() {
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <div className="bg-white/95 backdrop-blur-sm rounded-2xl p-6 shadow-2xl">
-            <img 
-              src="/logo-200x200 (1).png" 
-              alt="MedWHOLE Logo" 
-              className="w-48 h-auto object-contain"
-            />
+            <div className="flex items-center gap-3">
+              <div className="w-16 h-16 bg-azure rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-2xl font-logo">MW</span>
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-azure font-logo">MedWHOLE</h1>
+                <p className="text-sm text-grey-azure">Alliance for Health & Development</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -190,7 +194,7 @@ export default function MaintenancePage() {
             {/* Academy Button */}
             <div className="pt-6">
               <p className="text-sm text-muted-foreground mb-4">
-                Meanwhile, explore the educational arm of MedWHOLE
+                Meanwhile, explore our educational resources
               </p>
               <Button
                 asChild
