@@ -208,85 +208,73 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="py-24 lg:py-32 bg-muted/30">
-          <div className="container mx-auto px-4 lg:px-8">
+        {/* Impact Metrics Section - Moved before programs */}
+        <section className="py-24 lg:py-32 bg-gradient-to-br from-primary via-primary/95 to-accent/20 text-primary-foreground relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-10 left-10 w-64 h-64 bg-accent blur-3xl animate-float" />
+            <div
+              className="absolute bottom-10 right-10 w-80 h-80 bg-primary-foreground blur-3xl animate-float"
+              style={{ animationDelay: "1.5s" }}
+            />
+          </div>
+
+          <div className="container relative mx-auto px-4 lg:px-8">
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 mb-6 bg-primary/10 px-5 py-2 rounded-full">
-                <Sparkles className="h-4 w-4 text-primary" />
-                <span className="text-sm font-bold text-primary uppercase tracking-wider">What We Do</span>
-              </div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Our <span className="text-primary">Core Programs Area</span>
-              </h2>
-              <p className="text-xl lg:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
-                we focus on 5 core areas promoting whole health, whole persons, and whole communities.
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Our Impact Across Nigeria</h2>
+              <p className="text-xl lg:text-2xl text-primary-foreground/90 max-w-3xl mx-auto leading-relaxed">
+                Measurable results that transform communities and save lives.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary/30">
-                <CardContent className="p-8">
-                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                    <Heart className="h-8 w-8 text-primary group-hover:text-primary-foreground transition-colors" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4">Health Services</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Providing wholistic, accessible, and affordable healthcare rooted in faith-based values.
-                  </p>
-                </CardContent>
-              </Card>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+              <div className="text-center group">
+                <div className="inline-flex p-6 rounded-2xl bg-primary-foreground/10 backdrop-blur-sm mb-6 group-hover:bg-primary-foreground/20 group-hover:scale-110 transition-all duration-300">
+                  <Users className="h-14 w-14 text-primary-foreground" />
+                </div>
+                <h3 className="text-5xl lg:text-6xl font-bold mb-3">
+                  <AnimatedCounter end={50} suffix="+" />
+                </h3>
+                <p className="text-xl font-semibold mb-2">Professionals Trained</p>
+                <p className="text-sm text-primary-foreground/80">Across multiple health disciplines</p>
+              </div>
 
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-accent/30">
-                <CardContent className="p-8">
-                  <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
-                    <BookOpen className="h-8 w-8 text-accent group-hover:text-accent-foreground transition-colors" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4">Education</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Raising literate and morally sound children, shaping their communities in the future
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="text-center group">
+                <div className="inline-flex p-6 rounded-2xl bg-accent/20 backdrop-blur-sm mb-6 group-hover:bg-accent/30 group-hover:scale-110 transition-all duration-300">
+                  <Globe className="h-14 w-14 text-accent-foreground" />
+                </div>
+                <h3 className="text-5xl lg:text-6xl font-bold mb-3">
+                  <AnimatedCounter end={15} suffix="+" />
+                </h3>
+                <p className="text-xl font-semibold mb-2">Nigerian states</p>
+                <p className="text-sm text-primary-foreground/80">With active programs and partnerships</p>
+              </div>
 
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-chart-3/30">
-                <CardContent className="p-8">
-                  <div className="w-16 h-16 rounded-2xl bg-chart-3/10 flex items-center justify-center mb-6 group-hover:bg-chart-3 group-hover:scale-110 transition-all duration-300">
-                    <Users className="h-8 w-8 text-chart-3 group-hover:text-white transition-colors" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4">Nutrition</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Enhancing child development and learning capacity through nutrition interventions.
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="text-center group">
+                <div className="inline-flex p-6 rounded-2xl bg-primary-foreground/10 backdrop-blur-sm mb-6 group-hover:bg-primary-foreground/20 group-hover:scale-110 transition-all duration-300">
+                  <Award className="h-14 w-14 text-primary-foreground" />
+                </div>
+                <h3 className="text-5xl lg:text-6xl font-bold mb-3">
+                  <AnimatedCounter end={50} suffix="+" />
+                </h3>
+                <p className="text-xl font-semibold mb-2">Projects Completed</p>
+                <p className="text-sm text-primary-foreground/80">With measurable health outcomes</p>
+              </div>
 
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary/30">
-                <CardContent className="p-8">
-                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                    <GraduationCap className="h-8 w-8 text-primary group-hover:text-primary-foreground transition-colors" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4">Capacity Development</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Building a network of competent, faithful, and innovative health workers.
-                  </p>
-                </CardContent>
-              </Card>
-
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-accent/30">
-                <CardContent className="p-8">
-                  <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
-                    <Briefcase className="h-8 w-8 text-accent group-hover:text-accent-foreground transition-colors" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4">Public Health Consulting Services</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Offering evidence-based solutions to strengthen health systems and drive sustainable development.
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="text-center group">
+                <div className="inline-flex p-6 rounded-2xl bg-accent/20 backdrop-blur-sm mb-6 group-hover:bg-accent/30 group-hover:scale-110 transition-all duration-300">
+                  <Heart className="h-14 w-14 text-accent-foreground" />
+                </div>
+                <h3 className="text-5xl lg:text-6xl font-bold mb-3">
+                  <AnimatedCounter end={2000} suffix="+" />
+                </h3>
+                <p className="text-xl font-semibold mb-2">Lives Impacted</p>
+                <p className="text-sm text-primary-foreground/80">Through direct health interventions</p>
+              </div>
             </div>
           </div>
         </section>
 
+        {/* Three Pillars Section - Moved before Core Programs */}
         <section className="py-24 lg:py-32 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
 
@@ -497,6 +485,85 @@ export default function HomePage() {
           </div>
         </section>
 
+        <section className="py-24 lg:py-32 bg-muted/30">
+          <div className="container mx-auto px-4 lg:px-8">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 mb-6 bg-primary/10 px-5 py-2 rounded-full">
+                <Sparkles className="h-4 w-4 text-primary" />
+                <span className="text-sm font-bold text-primary uppercase tracking-wider">What We Do</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                Our <span className="text-primary">Core Programs Area</span>
+              </h2>
+              <p className="text-xl lg:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">
+                we focus on 5 core areas promoting whole health, whole persons, and whole communities.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary/30">
+                <CardContent className="p-8">
+                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
+                    <Heart className="h-8 w-8 text-primary group-hover:text-primary-foreground transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">Health Services</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Providing wholistic, accessible, and affordable healthcare rooted in faith-based values.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-accent/30">
+                <CardContent className="p-8">
+                  <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
+                    <BookOpen className="h-8 w-8 text-accent group-hover:text-accent-foreground transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">Education</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Raising literate and morally sound children, shaping their communities in the future
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-chart-3/30">
+                <CardContent className="p-8">
+                  <div className="w-16 h-16 rounded-2xl bg-chart-3/10 flex items-center justify-center mb-6 group-hover:bg-chart-3 group-hover:scale-110 transition-all duration-300">
+                    <Users className="h-8 w-8 text-chart-3 group-hover:text-white transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">Nutrition</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Enhancing child development and learning capacity through nutrition interventions.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary/30">
+                <CardContent className="p-8">
+                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
+                    <GraduationCap className="h-8 w-8 text-primary group-hover:text-primary-foreground transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">Capacity Development</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Building a network of competent, faithful, and innovative health workers.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-accent/30">
+                <CardContent className="p-8">
+                  <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
+                    <Briefcase className="h-8 w-8 text-accent group-hover:text-accent-foreground transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4">Public Health Consulting Services</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Offering evidence-based solutions to strengthen health systems and drive sustainable development.
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
         {/* News & Events Section */}
         <section className="py-24 lg:py-32 bg-muted/30">
           <div className="container mx-auto px-4 lg:px-8">
@@ -654,71 +721,6 @@ export default function HomePage() {
                   <h3 className="font-bold text-lg mb-2">For Donors</h3>
                   <p className="text-sm text-primary-foreground/80">Support sustainable health initiatives.</p>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-24 lg:py-32 bg-gradient-to-br from-primary via-primary/95 to-accent/20 text-primary-foreground relative overflow-hidden">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-10 left-10 w-64 h-64 bg-accent blur-3xl animate-float" />
-            <div
-              className="absolute bottom-10 right-10 w-80 h-80 bg-primary-foreground blur-3xl animate-float"
-              style={{ animationDelay: "1.5s" }}
-            />
-          </div>
-
-          <div className="container relative mx-auto px-4 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">Our Impact Across Nigeria</h2>
-              <p className="text-xl lg:text-2xl text-primary-foreground/90 max-w-3xl mx-auto leading-relaxed">
-                Measurable results that transform communities and save lives.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
-              <div className="text-center group">
-                <div className="inline-flex p-6 rounded-2xl bg-primary-foreground/10 backdrop-blur-sm mb-6 group-hover:bg-primary-foreground/20 group-hover:scale-110 transition-all duration-300">
-                  <Users className="h-14 w-14 text-primary-foreground" />
-                </div>
-                <h3 className="text-5xl lg:text-6xl font-bold mb-3">
-                  <AnimatedCounter end={50} suffix="+" />
-                </h3>
-                <p className="text-xl font-semibold mb-2">Professionals Trained</p>
-                <p className="text-sm text-primary-foreground/80">Across multiple health disciplines</p>
-              </div>
-
-              <div className="text-center group">
-                <div className="inline-flex p-6 rounded-2xl bg-accent/20 backdrop-blur-sm mb-6 group-hover:bg-accent/30 group-hover:scale-110 transition-all duration-300">
-                  <Globe className="h-14 w-14 text-accent-foreground" />
-                </div>
-                <h3 className="text-5xl lg:text-6xl font-bold mb-3">
-                  <AnimatedCounter end={15} suffix="+" />
-                </h3>
-                <p className="text-xl font-semibold mb-2">Nigerian states</p>
-                <p className="text-sm text-primary-foreground/80">With active programs and partnerships</p>
-              </div>
-
-              <div className="text-center group">
-                <div className="inline-flex p-6 rounded-2xl bg-primary-foreground/10 backdrop-blur-sm mb-6 group-hover:bg-primary-foreground/20 group-hover:scale-110 transition-all duration-300">
-                  <Award className="h-14 w-14 text-primary-foreground" />
-                </div>
-                <h3 className="text-5xl lg:text-6xl font-bold mb-3">
-                  <AnimatedCounter end={50} suffix="+" />
-                </h3>
-                <p className="text-xl font-semibold mb-2">Projects Completed</p>
-                <p className="text-sm text-primary-foreground/80">With measurable health outcomes</p>
-              </div>
-
-              <div className="text-center group">
-                <div className="inline-flex p-6 rounded-2xl bg-accent/20 backdrop-blur-sm mb-6 group-hover:bg-accent/30 group-hover:scale-110 transition-all duration-300">
-                  <Heart className="h-14 w-14 text-accent-foreground" />
-                </div>
-                <h3 className="text-5xl lg:text-6xl font-bold mb-3">
-                  <AnimatedCounter end={2000} suffix="+" />
-                </h3>
-                <p className="text-xl font-semibold mb-2">Lives Impacted</p>
-                <p className="text-sm text-primary-foreground/80">Through direct health interventions</p>
               </div>
             </div>
           </div>
