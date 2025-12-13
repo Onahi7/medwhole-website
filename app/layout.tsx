@@ -1,14 +1,21 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Montserrat } from "next/font/google"
+import { Hind, Questrial } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Suspense } from "react"
 
-const montserrat = Montserrat({
+const hind = Hind({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
-  variable: "--font-montserrat",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-hind",
+  display: "swap",
+})
+
+const questrial = Questrial({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-questrial",
   display: "swap",
 })
 
@@ -26,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`font-sans ${montserrat.variable} antialiased`}>
+      <body className={`font-sans ${hind.variable} ${questrial.variable} antialiased`}>
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
       </body>

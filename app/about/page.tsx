@@ -16,9 +16,9 @@ export default function AboutPage() {
           </div>
           <div className="container relative mx-auto px-4 lg:px-8">
             <div className="max-w-3xl animate-fade-in">
-              <h1 className="text-5xl lg:text-6xl font-bold mb-6 text-balance">About MedWHOLE Alliance</h1>
+              <h1 className="text-5xl lg:text-6xl font-bold mb-6 text-balance">We are MedWHOLE Alliance</h1>
               <p className="text-xl lg:text-2xl text-primary-foreground/95 leading-relaxed">
-                A network of competent, character-driven leaders and organizations united by a single purpose: to serve humanity with compassion, accountability, and excellence—catalyzing people-centered transformation.
+                A registered non-profit organization dedicated faith-driven organization dedicated to helping individuals live boundless and fulfilling lives through interventions that promote whole health, whole persons, and whole communities.
               </p>
             </div>
           </div>
@@ -57,14 +57,13 @@ export default function AboutPage() {
                   <div className="mb-6 inline-flex p-4 rounded-xl bg-chart-3/10 group-hover:bg-chart-3 group-hover:scale-110 transition-all duration-300">
                     <Heart className="h-10 w-10 text-chart-3 group-hover:text-white transition-colors" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 group-hover:text-chart-3 transition-colors">Our Values</h3>
+                  <h3 className="text-2xl font-bold mb-4 group-hover:text-chart-3 transition-colors">Our Core Values</h3>
                   <ul className="text-muted-foreground space-y-2 leading-relaxed">
-                    <li>• Prioritize People</li>
-                    <li>• Challenge the Status Quo</li>
-                    <li>• Catalyze Innovation</li>
-                    <li>• Leverage Technology</li>
-                    <li>• Optimize Partnerships</li>
-                    <li>• Deliver Visions</li>
+                    <li>• Integrity: Upholding the highest ethical standards in all our actions.</li>
+                    <li>• Collaboration: partnering with individuals and organizations to achieve shared goals.</li>
+                    <li>• Excellence: Striving for quality and measurable impact in everything we do.</li>
+                    <li>• Innovation: Developing and teaching creative ways of solving health problems.</li>
+                    <li>• Compassion: Serving with empathy and mutual respect.</li>
                   </ul>
                 </CardContent>
               </Card>
@@ -83,17 +82,11 @@ export default function AboutPage() {
                       Our Journey
                     </span>
                   </div>
-                  <h2 className="text-4xl lg:text-5xl font-bold mb-8">Our Story</h2>
+                  <h2 className="text-4xl lg:text-5xl font-bold mb-8">Our Story: From Vision to Impact</h2>
                 </div>
                 <div className="prose prose-lg max-w-none space-y-6">
                   <p className="text-lg text-muted-foreground leading-relaxed">
-                    MedWHOLE Alliance for Health and Development was founded with a bold belief: that lasting transformation begins with people. We recognized that wholeness—in health, character, and purpose—is the foundation for thriving individuals, families, and communities.
-                  </p>
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    What started as a vision to catalyze change has grown into a dynamic network of competent, character-driven leaders and organizations. Together, we support and multiply models of people-centered services that empower individuals to achieve wholeness and become agents of community transformation.
-                  </p>
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    Today, through our four core programs—Health Promotion & Healthcare, Youth Development, School Child Development, and Entrepreneurship Development—we create pathways to wholeness one person, one family, one community at a time.
+                    Founded in 2021, MedWHOLE began as a response to poor child literacy level. We operate across Nigeria with a growing footprint in the Federal Capital Territory (FCT). Its integrated model unites healthcare delivery, education, nutrition, capacity building, and public health consulting, all aimed at transforming individuals and communities toward wholeness.
                   </p>
                 </div>
               </div>
@@ -123,9 +116,9 @@ export default function AboutPage() {
                   Focus Areas
                 </span>
               </div>
-              <h2 className="text-4xl lg:text-5xl font-bold mb-6">What We Do</h2>
+              <h2 className="text-4xl lg:text-5xl font-bold mb-6">Our Integrated Approach</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Four core programs designed to make wholeness a reality
+                We believe that sustainable change is built on four interconnected pillars— health, education, nutrition, and leadership. Our integrated approach transforms individuals and communities toward wholeness. We cater for medical needs, educate the young, boost nutrition, and raise competent leaders all for community impact.
               </p>
             </div>
 
@@ -226,39 +219,38 @@ export default function AboutPage() {
                   Meet Our Team
                 </span>
               </div>
-              <h2 className="text-4xl lg:text-5xl font-bold mb-6">Leadership Team</h2>
+              <h2 className="text-4xl lg:text-5xl font-bold mb-6">Meet Our Leadership</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Our experienced team brings together expertise in public health, clinical care, research, and
-                development
+                Our team is composed of passionate and experienced professionals from diverse backgrounds, united by a common commitment to our mission.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                { id: 1, query: "african+male+doctor+professional+portrait" },
-                { id: 2, query: "african+female+public+health+professional+portrait" },
-                { id: 3, query: "african+male+health+researcher+professional+portrait" },
-              ].map((member) => (
-                <Card
-                  key={member.id}
-                  className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
-                >
-                  <CardContent className="p-8 text-center">
-                    <div className="relative w-32 h-32 rounded-full mx-auto mb-6 overflow-hidden group-hover:scale-110 transition-transform duration-300">
-                      <img
-                        src={`/.jpg?key=mtxs7&height=200&width=200&query=${member.query}`}
-                        alt={`Leadership Member ${member.id}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <h4 className="text-xl font-bold mb-2">Leadership Member {member.id}</h4>
-                    <p className="text-sm text-accent font-semibold mb-3">Position Title</p>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
-                      Brief bio and expertise description to be added.
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <Card className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary/50">
+                <CardContent className="p-8 text-center">
+                  <div className="mb-6 inline-flex p-6 rounded-full bg-primary/10 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
+                    <Users className="h-16 w-16 text-primary group-hover:text-primary-foreground transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">Prof. Chima Onoka</h3>
+                  <p className="text-lg text-accent font-semibold mb-4">Founder & CEO</p>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Leading MedWHOLE Alliance's vision of transforming communities through whole health, whole persons, and whole communities.
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-accent/50">
+                <CardContent className="p-8 text-center">
+                  <div className="mb-6 inline-flex p-6 rounded-full bg-accent/10 group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
+                    <Users className="h-16 w-16 text-accent group-hover:text-accent-foreground transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-bold mb-2 group-hover:text-accent transition-colors">Dr. Ferdinand Ogbaji</h3>
+                  <p className="text-lg text-primary font-semibold mb-4">Director of Programmes</p>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Overseeing program implementation and ensuring measurable impact across all MedWHOLE initiatives.
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
@@ -272,9 +264,9 @@ export default function AboutPage() {
                   Collaboration
                 </span>
               </div>
-              <h2 className="text-4xl lg:text-5xl font-bold mb-6">Our Partners</h2>
+              <h2 className="text-4xl lg:text-5xl font-bold mb-6">Our Valued Partners</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                We collaborate with leading organizations to amplify our impact
+                We collaborate with a local organizations, international NGOs, and government agencies. You are part of our success story, thank you for sharing our vision!
               </p>
             </div>
 

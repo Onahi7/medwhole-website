@@ -8,83 +8,9 @@ import Link from "next/link"
 import { FileText, Download, BookOpen, Video, Search, Filter, ExternalLink } from "lucide-react"
 
 export default function ResourcesPage() {
-  const resources = [
-    {
-      title: "Community Health Assessment Toolkit",
-      type: "Toolkit",
-      category: "Community Health",
-      description: "Comprehensive guide for conducting community health needs assessments with templates and tools.",
-      format: "PDF",
-      size: "2.5 MB",
-      downloads: 1240,
-    },
-    {
-      title: "Maternal Health Indicators Report 2024",
-      type: "Report",
-      category: "Research",
-      description: "Annual report on maternal health outcomes and trends across African regions.",
-      format: "PDF",
-      size: "4.8 MB",
-      downloads: 856,
-    },
-    {
-      title: "Grant Writing Masterclass",
-      type: "Video Course",
-      category: "Capacity Building",
-      description: "Step-by-step video series on writing successful grant proposals for health programs.",
-      format: "Video",
-      duration: "3.5 hours",
-      downloads: 2103,
-    },
-    {
-      title: "Disease Surveillance Guidelines",
-      type: "Guidelines",
-      category: "Epidemiology",
-      description: "Best practices for implementing disease surveillance systems in resource-limited settings.",
-      format: "PDF",
-      size: "1.8 MB",
-      downloads: 1567,
-    },
-    {
-      title: "Health Systems Strengthening Framework",
-      type: "Framework",
-      category: "Health Systems",
-      description: "Strategic framework for assessing and strengthening health systems at district level.",
-      format: "PDF",
-      size: "3.2 MB",
-      downloads: 934,
-    },
-    {
-      title: "Nutrition Program Implementation Guide",
-      type: "Guide",
-      category: "Nutrition",
-      description: "Practical guide for designing and implementing community nutrition programs.",
-      format: "PDF",
-      size: "2.1 MB",
-      downloads: 1456,
-    },
-  ]
-
-  const publications = [
-    {
-      title: "Impact of Community Health Workers on Maternal Mortality",
-      journal: "African Journal of Public Health",
-      year: "2024",
-      authors: "MedWHOLE Research Team",
-    },
-    {
-      title: "Strengthening Primary Healthcare in Rural Settings",
-      journal: "Global Health Action",
-      year: "2023",
-      authors: "MedWHOLE Consult",
-    },
-    {
-      title: "Innovative Approaches to Health Education",
-      journal: "Health Education Research",
-      year: "2023",
-      authors: "MedWHOLE Academy",
-    },
-  ]
+  // Resources should be fetched from the database via admin panel
+  const resources: any[] = []
+  const publications: any[] = []
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -127,45 +53,65 @@ export default function ResourcesPage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {resources.map((resource, index) => (
-                <Card
-                  key={index}
-                  className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50"
-                >
-                  <CardHeader>
-                    <div className="flex items-start justify-between mb-2">
-                      <Badge variant="secondary" className="bg-primary/10 text-primary">
-                        {resource.type}
-                      </Badge>
-                      <div className="p-2 rounded-lg bg-accent/10">
-                        {resource.type === "Video Course" ? (
-                          <Video className="h-5 w-5 text-accent" />
-                        ) : (
-                          <FileText className="h-5 w-5 text-accent" />
-                        )}
+              {resources.length > 0 ? (
+                resources.map((resource, index) => (
+                  <Card
+                    key={index}
+                    className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50"
+                  >
+                    <CardHeader>
+                      <div className="flex items-start justify-between mb-2">
+                        <Badge variant="secondary" className="bg-primary/10 text-primary">
+                          {resource.type}
+                        </Badge>
+                        <div className="p-2 rounded-lg bg-accent/10">
+                          {resource.type === "Video Course" ? (
+                            <Video className="h-5 w-5 text-accent" />
+                          ) : (
+                            <FileText className="h-5 w-5 text-accent" />
+                          )}
+                        </div>
                       </div>
-                    </div>
-                    <CardTitle className="text-xl group-hover:text-primary transition-colors line-clamp-2">
-                      {resource.title}
-                    </CardTitle>
-                    <CardDescription className="line-clamp-2">{resource.description}</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between text-sm text-muted-foreground">
-                      <span>{resource.format}</span>
-                      <span>{resource.size || resource.duration}</span>
-                    </div>
-                    <div className="text-sm text-muted-foreground">{resource.downloads.toLocaleString()} downloads</div>
-                    <Button
-                      className="w-full group-hover:bg-primary transition-colors bg-transparent"
-                      variant="outline"
-                    >
-                      <Download className="mr-2 h-4 w-4" />
-                      Download
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
+                      <CardTitle className="text-xl group-hover:text-primary transition-colors line-clamp-2">
+                        {resource.title}
+                      </CardTitle>
+                      <CardDescription className="line-clamp-2">{resource.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="flex items-center justify-between text-sm text-muted-foreground">
+                        <span>{resource.format}</span>
+                        <span>{resource.size || resource.duration}</span>
+                      </div>
+                      <div className="text-sm text-muted-foreground">{resource.downloads.toLocaleString()} downloads</div>
+                      <Button
+                        className="w-full group-hover:bg-primary transition-colors bg-transparent"
+                        variant="outline"
+                      >
+                        <Download className="mr-2 h-4 w-4" />
+                        Download
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <div className="col-span-full">
+                  <Card className="border-2 border-dashed">
+                    <CardContent className="p-12 text-center">
+                      <div className="max-w-md mx-auto">
+                        <div className="mb-4 inline-flex p-4 rounded-full bg-muted">
+                          <FileText className="h-8 w-8 text-muted-foreground" />
+                        </div>
+                        <h3 className="text-xl font-bold mb-2">No Resources Yet</h3>
+                        <p className="text-muted-foreground">
+                          Resources and downloads will be available here soon.
+                          <br />
+                          <span className="text-sm">Resources are managed from the admin panel.</span>
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -176,32 +122,50 @@ export default function ResourcesPage() {
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold mb-8 text-center">Recent Publications</h2>
               <div className="space-y-4">
-                {publications.map((pub, index) => (
-                  <Card key={index} className="hover:shadow-lg transition-shadow">
-                    <CardContent className="p-6">
-                      <div className="flex items-start justify-between gap-4">
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-lg mb-2 hover:text-primary transition-colors">
-                            {pub.title}
-                          </h3>
-                          <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <BookOpen className="h-4 w-4" />
-                              {pub.journal}
-                            </span>
-                            <span>•</span>
-                            <span>{pub.year}</span>
-                            <span>•</span>
-                            <span>{pub.authors}</span>
+                {publications.length > 0 ? (
+                  publications.map((pub, index) => (
+                    <Card key={index} className="hover:shadow-lg transition-shadow">
+                      <CardContent className="p-6">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-lg mb-2 hover:text-primary transition-colors">
+                              {pub.title}
+                            </h3>
+                            <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <BookOpen className="h-4 w-4" />
+                                {pub.journal}
+                              </span>
+                              <span>•</span>
+                              <span>{pub.year}</span>
+                              <span>•</span>
+                              <span>{pub.authors}</span>
+                            </div>
                           </div>
+                          <Button variant="ghost" size="sm" className="flex-shrink-0">
+                            <ExternalLink className="h-4 w-4" />
+                          </Button>
                         </div>
-                        <Button variant="ghost" size="sm" className="flex-shrink-0">
-                          <ExternalLink className="h-4 w-4" />
-                        </Button>
+                      </CardContent>
+                    </Card>
+                  ))
+                ) : (
+                  <Card className="border-2 border-dashed">
+                    <CardContent className="p-12 text-center">
+                      <div className="max-w-md mx-auto">
+                        <div className="mb-4 inline-flex p-4 rounded-full bg-muted">
+                          <BookOpen className="h-8 w-8 text-muted-foreground" />
+                        </div>
+                        <h3 className="text-xl font-bold mb-2">No Publications Yet</h3>
+                        <p className="text-muted-foreground">
+                          Research publications will be listed here soon.
+                          <br />
+                          <span className="text-sm">Publications are managed from the admin panel.</span>
+                        </p>
                       </div>
                     </CardContent>
                   </Card>
-                ))}
+                )}
               </div>
               <div className="text-center mt-8">
                 <Button variant="outline" size="lg">

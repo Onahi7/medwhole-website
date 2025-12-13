@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@theme {
+  --font-sans: var(--font-hind), ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-content: var(--font-hind), ui-sans-serif, system-ui;
+  --font-logo: var(--font-questrial), ui-sans-serif, system-ui;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -56,11 +62,9 @@
   --sidebar-border: oklch(0.92 0.005 240);
   --sidebar-ring: var(--primary);
 
-  /* Typography font stacks (non-embedded) */
-  /* Content: Frutiger (preferred) with fallbacks incl. Montserrat loaded via next/font */
-  --font-content: Frutiger, var(--font-montserrat), "Helvetica Neue", Arial, system-ui, sans-serif;
-  /* Logo: Glacial Indifference (preferred) with sensible fallbacks */
-  --font-logo: "Glacial Indifference", var(--font-montserrat), "Helvetica Neue", Arial, sans-serif;
+  /* Typography font stacks */
+  --font-content: var(--font-hind), "Frutiger", "Helvetica Neue", Arial, sans-serif;
+  --font-logo: var(--font-questrial), "Glacial Indifference", sans-serif;
 }
 
 .dark {

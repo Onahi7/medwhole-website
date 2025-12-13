@@ -24,141 +24,15 @@ export default function GalleryPage() {
 
   const categories = ["All", "Academy", "Health", "Consult", "Events", "Team"]
 
-  const galleryImages = [
-    // Academy (Training & Education)
-    {
-      src: "/african-health-professionals-graduation-ceremony.jpg",
-      title: "Leadership Training Graduation",
-      category: "Academy",
-      description: "Celebrating the graduation of 500+ health professionals from our leadership program",
-    },
-    {
-      src: "/african-students-in-epidemiology-training-classroo.jpg",
-      title: "Epidemiology Training Session",
-      category: "Academy",
-      description: "Interactive classroom learning in epidemiology and biostatistics",
-    },
-    {
-      src: "/workshop-training-session-african-professionals.jpg",
-      title: "Grant Writing Workshop",
-      category: "Academy",
-      description: "Participants engaged in our grant writing workshop series",
-    },
-    {
-      src: "/african-healthcare-workers-training-session.jpg",
-      title: "Clinical Skills Training",
-      category: "Academy",
-      description: "Healthcare workers learning advanced clinical skills",
-    },
-    {
-      src: "/african-health-professionals-doing-field-research-.jpg",
-      title: "Field Research Training",
-      category: "Academy",
-      description: "Hands-on research methodology training in the field",
-    },
-    {
-      src: "/african-professionals-data-analysis-computer-lab.jpg",
-      title: "Data Analysis Workshop",
-      category: "Academy",
-      description: "Advanced statistical analysis and research methods training",
-    },
-    
-    // Health
-    {
-      src: "/african-community-health-workers-in-field.jpg",
-      title: "Community Health Workers",
-      category: "Health",
-      description: "Our dedicated community health workers serving rural communities",
-    },
-    {
-      src: "/mobile-health-clinic-africa-rural-community.jpg",
-      title: "Mobile Health Clinic",
-      category: "Health",
-      description: "Bringing healthcare to remote communities through our mobile clinics",
-    },
-    {
-      src: "/african-mother-and-child-receiving-healthcare-mate.jpg",
-      title: "Maternal Health Care",
-      category: "Health",
-      description: "Providing quality maternal and child health care",
-    },
-    {
-      src: "/african-healthcare-workers-providing-medical-care-.jpg",
-      title: "Clinical Care Delivery",
-      category: "Health",
-      description: "Healthcare workers providing direct clinical care to patients",
-    },
-    {
-      src: "/african-health-workers-vaccination-campaign.jpg",
-      title: "Vaccination Campaign",
-      category: "Health",
-      description: "Community vaccination campaign reaching thousands",
-    },
-    {
-      src: "/african-community-health-education-session.jpg",
-      title: "Community Health Education",
-      category: "Health",
-      description: "Health education session in a rural community",
-    },
-    {
-      src: "/african-women-health-workshop.jpg",
-      title: "Women's Health Workshop",
-      category: "Health",
-      description: "Empowering women through health education and services",
-    },
-    
-    // Consult
-    {
-      src: "/african-health-professionals-in-strategic-meeting-.jpg",
-      title: "Strategic Planning Session",
-      category: "Consult",
-      description: "Health professionals engaged in strategic planning and consult",
-    },
-    {
-      src: "/african-medical-team-consultation.jpg",
-      title: "Technical Consultation",
-      category: "Consult",
-      description: "Our multidisciplinary team providing technical assistance",
-    },
-    {
-      src: "/african-health-conference-presentation.jpg",
-      title: "Conference Presentation",
-      category: "Consult",
-      description: "Presenting research findings and technical expertise at conferences",
-    },
-    {
-      src: "/african-professionals-reviewing-health-data.jpg",
-      title: "M&E Data Review",
-      category: "Consult",
-      description: "Monitoring and evaluation data analysis and review session",
-    },
-    {
-      src: "/african-health-policy-meeting.jpg",
-      title: "Policy Development Workshop",
-      category: "Consult",
-      description: "Supporting policy development and health systems strengthening",
-    },
-    
-    // Events & Team
-    {
-      src: "/partnership-signing-ceremony-african-health-offici.jpg",
-      title: "WHO Partnership Signing",
-      category: "Events",
-      description: "Signing ceremony for our partnership with WHO Africa",
-    },
-    {
-      src: "/african-graduates-celebrating-graduation-ceremony.jpg",
-      title: "Academy Graduation Ceremony",
-      category: "Events",
-      description: "Celebrating academic achievements and leadership development",
-    },
-    {
-      src: "/african-community-health-workers-team-collaboratio.jpg",
-      title: "Team Collaboration",
-      category: "Team",
-      description: "Our diverse team working together on community health initiatives",
-    },
-  ]
+  const galleryImages: any[] = []
+  // Gallery images should be fetched from the database via admin panel
+  // Example structure:
+  // {
+  //   src: string,
+  //   title: string,
+  //   category: "Academy" | "Health" | "Consult" | "Events" | "Team",
+  //   description: string
+  // }
 
   const filteredImages =
     selectedCategory === "All" ? galleryImages : galleryImages.filter((img) => img.category === selectedCategory)
@@ -227,30 +101,52 @@ export default function GalleryPage() {
         <section className="py-16 lg:py-24">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredImages.map((image, index) => (
-                <Card
-                  key={index}
-                  className="group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50"
-                  onClick={() => openLightbox(index)}
-                >
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <img
-                      src={image.src || "/placeholder.svg"}
-                      alt={image.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <Badge className="absolute top-4 left-4 bg-accent text-accent-foreground">{image.category}</Badge>
-                  </div>
-                  <CardContent className="p-6">
-                    <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">{image.title}</h3>
-                    <p className="text-sm text-muted-foreground line-clamp-2">{image.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
+              {filteredImages.length > 0 ? (
+                filteredImages.map((image, index) => (
+                  <Card
+                    key={index}
+                    className="group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50"
+                    onClick={() => openLightbox(index)}
+                  >
+                    <div className="relative aspect-[4/3] overflow-hidden">
+                      <img
+                        src={image.src || "/placeholder.svg"}
+                        alt={image.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <Badge className="absolute top-4 left-4 bg-accent text-accent-foreground">{image.category}</Badge>
+                    </div>
+                    <CardContent className="p-6">
+                      <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">{image.title}</h3>
+                      <p className="text-sm text-muted-foreground line-clamp-2">{image.description}</p>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <div className="col-span-full">
+                  <Card className="border-2 border-dashed">
+                    <CardContent className="p-12 text-center">
+                      <div className="max-w-md mx-auto">
+                        <div className="mb-4 inline-flex p-4 rounded-full bg-muted">
+                          <svg className="h-8 w-8 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        <h3 className="text-xl font-bold mb-2">No Gallery Images Yet</h3>
+                        <p className="text-muted-foreground">
+                          Gallery images will be added here soon.
+                          <br />
+                          <span className="text-sm">Images are managed from the admin panel.</span>
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
             </div>
 
-            {filteredImages.length === 0 && (
+            {filteredImages.length === 0 && selectedCategory !== "All" && galleryImages.length > 0 && (
               <div className="text-center py-12">
                 <p className="text-lg text-muted-foreground">No images found in this category.</p>
               </div>

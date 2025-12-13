@@ -7,93 +7,44 @@ import Link from "next/link"
 import { Briefcase, MapPin, Clock, Users, Heart, TrendingUp, Award, Globe, ArrowRight } from "lucide-react"
 
 export default function CareersPage() {
-  const openPositions = [
-    {
-      slug: "senior-public-health-advisor",
-      title: "Senior Public Health Advisor",
-      department: "Consulting",
-      location: "Nairobi, Kenya",
-      type: "Full-time",
-      level: "Senior",
-      description: "Lead technical assistance projects for health systems strengthening across East Africa.",
-    },
-    {
-      slug: "training-coordinator",
-      title: "Training Coordinator",
-      department: "Academy",
-      location: "Accra, Ghana",
-      type: "Full-time",
-      level: "Mid-level",
-      description: "Coordinate training programs, manage logistics, and support curriculum development.",
-    },
-    {
-      slug: "community-health-officer",
-      title: "Community Health Officer",
-      department: "Health Services",
-      location: "Lagos, Nigeria",
-      type: "Full-time",
-      level: "Entry-level",
-      description: "Implement community health programs and coordinate outreach activities.",
-    },
-    {
-      slug: "monitoring-evaluation-specialist",
-      title: "Monitoring & Evaluation Specialist",
-      department: "Consulting",
-      location: "Remote",
-      type: "Contract",
-      level: "Senior",
-      description: "Design and implement M&E frameworks for health programs across multiple countries.",
-    },
-    {
-      slug: "research-assistant",
-      title: "Research Assistant",
-      department: "Academy",
-      location: "Kampala, Uganda",
-      type: "Full-time",
-      level: "Entry-level",
-      description: "Support research projects, data collection, and analysis for public health studies.",
-    },
-    {
-      slug: "clinical-nurse-maternal-health",
-      title: "Clinical Nurse - Maternal Health",
-      department: "Health Services",
-      location: "Dar es Salaam, Tanzania",
-      type: "Full-time",
-      level: "Mid-level",
-      description: "Provide maternal and child health services in community clinics and mobile units.",
-    },
-  ]
+  const openPositions: any[] = []
+  // Job postings should be fetched from the database via admin panel
+  // Example structure:
+  // {
+  //   slug: string,
+  //   title: string,
+  //   department: string,
+  //   location: string,
+  //   type: string,
+  //   level: string,
+  //   description: string
+  // }
 
   const benefits = [
     {
       icon: Heart,
-      title: "Health & Wellness",
-      description: "Comprehensive health insurance and wellness programs for you and your family",
+      title: "Meaningful impact",
+      description: "Contribute directly to programs that improve health, education, and community well-being.",
     },
     {
       icon: TrendingUp,
       title: "Professional Growth",
-      description: "Continuous learning opportunities, mentorship, and career advancement paths",
+      description: "Continuous learning opportunities, mentorship, and career advancement paths across public health, policy, and technical programs.",
     },
     {
       icon: Globe,
-      title: "Global Impact",
-      description: "Work on meaningful projects that transform health outcomes across Africa",
+      title: "Collaborative Environment",
+      description: "Join a dynamic, mission-driven team that values innovation, excellence, and faith-based principles.",
     },
     {
       icon: Users,
-      title: "Collaborative Culture",
-      description: "Join a diverse, inclusive team of passionate public health professionals",
+      title: "Competitive Package",
+      description: "Attractive salary, performance bonuses, and recognition programs.",
     },
     {
       icon: Award,
-      title: "Competitive Package",
-      description: "Attractive salary, performance bonuses, and recognition programs",
-    },
-    {
-      icon: Clock,
       title: "Work-Life Balance",
-      description: "Flexible working arrangements and generous leave policies",
+      description: "Flexible working arrangements and supportive environment.",
     },
   ]
 
@@ -205,46 +156,64 @@ export default function CareersPage() {
             </div>
 
             <div className="max-w-5xl mx-auto space-y-6">
-              {openPositions.map((position, index) => (
-                <Card
-                  key={index}
-                  className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50"
-                >
-                  <CardContent className="p-6 lg:p-8">
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                      <div className="flex-1">
-                        <div className="flex flex-wrap items-center gap-2 mb-3">
-                          <Badge variant="secondary" className="bg-primary/10 text-primary">
-                            {position.department}
-                          </Badge>
-                          <Badge variant="outline">{position.type}</Badge>
-                          <Badge variant="outline">{position.level}</Badge>
+              {openPositions.length > 0 ? (
+                openPositions.map((position, index) => (
+                  <Card
+                    key={index}
+                    className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50"
+                  >
+                    <CardContent className="p-6 lg:p-8">
+                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex flex-wrap items-center gap-2 mb-3">
+                            <Badge variant="secondary" className="bg-primary/10 text-primary">
+                              {position.department}
+                            </Badge>
+                            <Badge variant="outline">{position.type}</Badge>
+                            <Badge variant="outline">{position.level}</Badge>
+                          </div>
+                          <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
+                            {position.title}
+                          </h3>
+                          <p className="text-muted-foreground mb-4 leading-relaxed">{position.description}</p>
+                          <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <MapPin className="h-4 w-4" />
+                              {position.location}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Briefcase className="h-4 w-4" />
+                              {position.type}
+                            </span>
+                          </div>
                         </div>
-                        <h3 className="text-2xl font-bold mb-2 group-hover:text-primary transition-colors">
-                          {position.title}
-                        </h3>
-                        <p className="text-muted-foreground mb-4 leading-relaxed">{position.description}</p>
-                        <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                          <span className="flex items-center gap-1">
-                            <MapPin className="h-4 w-4" />
-                            {position.location}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Briefcase className="h-4 w-4" />
-                            {position.type}
-                          </span>
-                        </div>
+                        <Button asChild className="lg:flex-shrink-0 group-hover:bg-primary transition-colors">
+                          <Link href={`/careers/${position.slug}`}>
+                            View Details
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </Link>
+                        </Button>
                       </div>
-                      <Button asChild className="lg:flex-shrink-0 group-hover:bg-primary transition-colors">
-                        <Link href={`/careers/${position.slug}`}>
-                          View Details
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Link>
-                      </Button>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <Card className="border-2 border-dashed">
+                  <CardContent className="p-12 text-center">
+                    <div className="max-w-md mx-auto">
+                      <div className="mb-4 inline-flex p-4 rounded-full bg-muted">
+                        <Briefcase className="h-8 w-8 text-muted-foreground" />
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">No Open Positions</h3>
+                      <p className="text-muted-foreground">
+                        We don't have any open positions at the moment. Check back soon or submit your CV below.
+                        <br />
+                        <span className="text-sm">Job postings are managed from the admin panel.</span>
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
-              ))}
+              )}
             </div>
           </div>
         </section>

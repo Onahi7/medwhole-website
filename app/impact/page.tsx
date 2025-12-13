@@ -1,3 +1,5 @@
+"use client"
+
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent } from "@/components/ui/card"
@@ -9,70 +11,42 @@ import { Quote, MapPin, Calendar } from "lucide-react"
 export default function ImpactPage() {
   const testimonials = [
     {
-      name: "Dr. Amina Hassan",
-      role: "District Health Officer",
-      location: "Kenya",
+      name: "Hephzibah",
+      role: "JAMB Candidate",
+      location: "Nigeria",
       quote:
-        "The leadership training from MedWHOLE Academy transformed how I manage my team. We've seen a 40% improvement in service delivery metrics since implementing what I learned.",
-      program: "Public Health Leadership Certificate",
+        "I was a senior secondary student who struggled academically with no resources for JAMB preparation. After joining MedWHOLE's WAEC/JAMB tutorial, I scored 298 in JAMB and I'm currently pursuing a career in medicine.",
+      program: "Exam Coaching (WAEC & JAMB)",
     },
     {
-      name: "James Osei",
-      role: "Community Health Worker",
-      location: "Ghana",
+      name: "Three Fatherless Children",
+      role: "Scholarship Recipients",
+      location: "Nigeria",
       quote:
-        "Through MedWHOLE's community health program, I've been able to reach over 500 families with essential health care. The training and support have been invaluable.",
-      program: "Community Health Training",
+        "Before MedWHOLE, we were living in classrooms with no home or hope for education. MedWHOLE rented secured, safe housing and placed all three of us on full scholarship. Now all 3 of us are safe, enrolled in school, and thriving under mentorship and discipleship.",
+      program: "Back-to-School Scholarship Program",
     },
     {
-      name: "Dr. Fatima Diallo",
-      role: "Research Coordinator",
-      location: "Senegal",
+      name: "Alice",
+      role: "Nutrition Support Recipient",
+      location: "Nigeria",
       quote:
-        "MedWHOLE Consult helped us secure our first major research grant. Their expertise in grant writing and proposal development was exceptional.",
-      program: "Grant Writing Support",
+        "I was severely malnourished and lethargic, barely able to move around. MedWHOLE enrolled me in the nutrition support program where I received daily meals and supplements. Now I'm healthy, active, and thriving in school.",
+      program: "Health & Nutrition Support",
     },
   ]
 
-  const successStories = [
-    {
-      title: "Reducing Maternal Mortality in Rural Uganda",
-      location: "Gulu District, Uganda",
-      date: "2023",
-      image: "/african-mother-and-child-receiving-healthcare-mate.jpg",
-      description:
-        "Through our maternal health program, we trained 50 midwives and established 10 birthing centers, resulting in a 45% reduction in maternal mortality over 18 months.",
-      impact: [
-        "50 midwives trained",
-        "10 birthing centers established",
-        "45% reduction in maternal mortality",
-        "2,000+ safe deliveries",
-      ],
-    },
-    {
-      title: "Strengthening Disease Surveillance Systems",
-      location: "Lagos State, Nigeria",
-      date: "2023",
-      image: "/african-healthcare-workers-providing-medical-care-.jpg",
-      description:
-        "Our consult team worked with the state health ministry to implement a comprehensive disease surveillance system, improving outbreak detection and response times.",
-      impact: [
-        "Real-time disease monitoring",
-        "50% faster outbreak response",
-        "200+ health workers trained",
-        "5 million population covered",
-      ],
-    },
-    {
-      title: "Building Public Health Leadership Capacity",
-      location: "Multi-country Program",
-      date: "2022-2024",
-      image: "/african-children-learning-classroom-education-comm.jpg",
-      description:
-        "Over 500 public health professionals from 12 African countries completed our leadership program, now leading health initiatives in their communities.",
-      impact: ["500+ graduates", "12 countries", "85% promotion rate", "30+ new health programs launched"],
-    },
-  ]
+  const successStories: any[] = []
+  // Success stories should be fetched from the database via admin panel
+  // Example structure:
+  // {
+  //   title: string,
+  //   location: string,
+  //   date: string,
+  //   image: string,
+  //   description: string,
+  //   impact: string[]
+  // }
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -84,9 +58,9 @@ export default function ImpactPage() {
           <div className="container mx-auto px-4 lg:px-8 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
               <Badge className="mb-4 bg-accent text-accent-foreground">Our Impact</Badge>
-              <h1 className="text-4xl lg:text-6xl font-bold mb-6 text-balance">Transforming Lives Across Africa</h1>
+              <h1 className="text-4xl lg:text-6xl font-bold mb-6 text-balance">Transforming Lives Across Nigeria</h1>
               <p className="text-lg lg:text-xl text-primary-foreground/90 leading-relaxed">
-                Real stories of impact from communities, health workers, and organizations we've partnered with
+                Real stories of impact from communities, children, families, and organizations we've partnered with.
               </p>
             </div>
           </div>
@@ -97,20 +71,20 @@ export default function ImpactPage() {
           <div className="container mx-auto px-4 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               <div className="text-center">
+                <div className="text-4xl lg:text-5xl font-bold text-primary mb-2">50+</div>
+                <div className="text-sm text-muted-foreground">Professionals Trained</div>
+              </div>
+              <div className="text-center">
                 <div className="text-4xl lg:text-5xl font-bold text-primary mb-2">15+</div>
-                <div className="text-muted-foreground">Countries Served</div>
+                <div className="text-sm text-muted-foreground">Nigerian States</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl lg:text-5xl font-bold text-primary mb-2">5,000+</div>
-                <div className="text-muted-foreground">Professionals Trained</div>
+                <div className="text-4xl lg:text-5xl font-bold text-primary mb-2">50+</div>
+                <div className="text-sm text-muted-foreground">Projects Completed</div>
               </div>
               <div className="text-center">
-                <div className="text-4xl lg:text-5xl font-bold text-primary mb-2">100K+</div>
-                <div className="text-muted-foreground">Lives Impacted</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl lg:text-5xl font-bold text-primary mb-2">200+</div>
-                <div className="text-muted-foreground">Partner Organizations</div>
+                <div className="text-4xl lg:text-5xl font-bold text-primary mb-2">2,000+</div>
+                <div className="text-sm text-muted-foreground">Lives Impacted</div>
               </div>
             </div>
           </div>
@@ -127,44 +101,62 @@ export default function ImpactPage() {
             </div>
 
             <div className="space-y-12 max-w-6xl mx-auto">
-              {successStories.map((story, index) => (
-                <Card key={index} className="overflow-hidden border-2 hover:border-primary/50 transition-colors">
-                  <div
-                    className={`grid grid-cols-1 lg:grid-cols-2 gap-0 ${index % 2 === 1 ? "lg:grid-flow-dense" : ""}`}
-                  >
-                    <div className={`relative h-64 lg:h-auto ${index % 2 === 1 ? "lg:col-start-2" : ""}`}>
-                      <img
-                        src={story.image || "/placeholder.svg"}
-                        alt={story.title}
-                        className="absolute inset-0 w-full h-full object-cover"
-                      />
+              {successStories.length > 0 ? (
+                successStories.map((story, index) => (
+                  <Card key={index} className="overflow-hidden border-2 hover:border-primary/50 transition-colors">
+                    <div
+                      className={`grid grid-cols-1 lg:grid-cols-2 gap-0 ${index % 2 === 1 ? "lg:grid-flow-dense" : ""}`}
+                    >
+                      <div className={`relative h-64 lg:h-auto ${index % 2 === 1 ? "lg:col-start-2" : ""}`}>
+                        <img
+                          src={story.image || "/placeholder.svg"}
+                          alt={story.title}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      </div>
+                      <CardContent className="p-8 lg:p-12 flex flex-col justify-center">
+                        <div className="flex items-center gap-3 mb-4 text-sm text-muted-foreground">
+                          <span className="flex items-center gap-1">
+                            <MapPin className="h-4 w-4" />
+                            {story.location}
+                          </span>
+                          <span>•</span>
+                          <span className="flex items-center gap-1">
+                            <Calendar className="h-4 w-4" />
+                            {story.date}
+                          </span>
+                        </div>
+                        <h3 className="text-2xl lg:text-3xl font-bold mb-4">{story.title}</h3>
+                        <p className="text-lg text-muted-foreground mb-6 leading-relaxed">{story.description}</p>
+                        <div className="grid grid-cols-2 gap-4">
+                          {story.impact.map((item: string, idx: number) => (
+                            <div key={idx} className="flex items-start gap-2">
+                              <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
+                              <span className="text-sm">{item}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </CardContent>
                     </div>
-                    <CardContent className="p-8 lg:p-12 flex flex-col justify-center">
-                      <div className="flex items-center gap-3 mb-4 text-sm text-muted-foreground">
-                        <span className="flex items-center gap-1">
-                          <MapPin className="h-4 w-4" />
-                          {story.location}
-                        </span>
-                        <span>•</span>
-                        <span className="flex items-center gap-1">
-                          <Calendar className="h-4 w-4" />
-                          {story.date}
-                        </span>
+                  </Card>
+                ))
+              ) : (
+                <Card className="border-2 border-dashed">
+                  <CardContent className="p-12 text-center">
+                    <div className="max-w-md mx-auto">
+                      <div className="mb-4 inline-flex p-4 rounded-full bg-muted">
+                        <MapPin className="h-8 w-8 text-muted-foreground" />
                       </div>
-                      <h3 className="text-2xl lg:text-3xl font-bold mb-4">{story.title}</h3>
-                      <p className="text-lg text-muted-foreground mb-6 leading-relaxed">{story.description}</p>
-                      <div className="grid grid-cols-2 gap-4">
-                        {story.impact.map((item, idx) => (
-                          <div key={idx} className="flex items-start gap-2">
-                            <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0"></div>
-                            <span className="text-sm">{item}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </div>
+                      <h3 className="text-xl font-bold mb-2">Impact Stories Coming Soon</h3>
+                      <p className="text-muted-foreground">
+                        Success stories and impact reports will be added here.
+                        <br />
+                        <span className="text-sm">Manage impact stories from the admin panel.</span>
+                      </p>
+                    </div>
+                  </CardContent>
                 </Card>
-              ))}
+              )}
             </div>
           </div>
         </section>

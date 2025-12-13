@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useState } from "react"
 import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
@@ -21,12 +22,16 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
+        <div className="flex h-20 items-center justify-between">
           <Link href="/" className="flex items-center space-x-2 group">
-            <div className="flex items-center font-logo">
-              <span className="text-xl font-bold bg-primary text-primary-foreground px-2 py-1 rounded">Med</span>
-              <span className="text-xl font-bold text-primary">WHOLE</span>
-            </div>
+            <Image 
+              src="/logo-200x200 (1).png"
+              alt="MedWHOLE Alliance Logo"
+              width={280}
+              height={95}
+              className="h-20 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}

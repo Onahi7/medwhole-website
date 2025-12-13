@@ -1,9 +1,12 @@
+"use client"
+
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
+import { useEffect, useState } from "react"
 import {
   BookOpen,
   Users,
@@ -17,7 +20,65 @@ import {
   Clock,
 } from "lucide-react"
 
+interface Event {
+  id: string
+  slug: string
+  title: string
+  description: string | null
+  date: string
+  location: string | null
+  category: string | null
+  imageUrl: string | null
+  registrationUrl: string | null
+}
+
+interface GalleryImage {
+  id: string
+  title: string
+  description: string | null
+  imageUrl: string
+  category: string
+  date: string | null
+}
+
 export default function AcademyPage() {
+  const [events, setEvents] = useState<Event[]>([])
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>([])
+  const [isLoadingEvents, setIsLoadingEvents] = useState(true)
+  const [isLoadingGallery, setIsLoadingGallery] = useState(true)
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        // Fetch events
+        const eventsResponse = await fetch("/api/events?category=Academy&limit=3")
+        if (eventsResponse.ok) {
+          const eventsData = await eventsResponse.json()
+          setEvents(eventsData)
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error)
+      } finally {
+        setIsLoadingEvents(false)
+      }
+
+      try {
+        // Fetch gallery images
+        const galleryResponse = await fetch("/api/gallery?category=Academy&limit=6")
+        if (galleryResponse.ok) {
+          const galleryData = await galleryResponse.json()
+          setGalleryImages(galleryData)
+        }
+      } catch (error) {
+        console.error("Error fetching gallery:", error)
+      } finally {
+        setIsLoadingGallery(false)
+      }
+    }
+
+    fetchData()
+  }, [])
+
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
@@ -36,8 +97,7 @@ export default function AcademyPage() {
               </div>
               <h1 className="text-5xl lg:text-6xl font-bold mb-6 text-balance">MedWHOLE Academy</h1>
               <p className="text-xl lg:text-2xl text-primary-foreground/95 leading-relaxed mb-8">
-                Building the next generation of public health leaders through comprehensive training, research
-                education, mentorship, and professional development programs.
+                Empowering children aged 2-18 to lead boundless lives through quality education, character development, and wholistic support.
               </p>
               <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
                 <Link href="/contact">
@@ -54,12 +114,12 @@ export default function AcademyPage() {
             <div className="text-center mb-16">
               <div className="inline-block mb-4">
                 <span className="text-sm font-semibold text-primary uppercase tracking-wider bg-primary/10 px-4 py-2 rounded-full">
-                  Programs
+                  Our Impact
                 </span>
               </div>
-              <h2 className="text-4xl lg:text-5xl font-bold mb-6">What We Offer</h2>
+              <h2 className="text-4xl lg:text-5xl font-bold mb-6">Why Choose MedWHOLE Academy?</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Comprehensive educational programs designed to build capacity and advance careers in public health
+                Our programs equip children to lead boundless lives and transform their communities.
               </p>
             </div>
 
@@ -70,11 +130,10 @@ export default function AcademyPage() {
                     <BookOpen className="h-8 w-8 text-primary group-hover:text-primary-foreground transition-colors" />
                   </div>
                   <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">
-                    Training Programs
+                    Free Education
                   </h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Structured courses in epidemiology, biostatistics, health policy, disease surveillance, and program
-                    management.
+                    Free summer and term-time schools for over 290 children aged 2-18, removing financial barriers to quality education.
                   </p>
                 </CardContent>
               </Card>
@@ -85,11 +144,10 @@ export default function AcademyPage() {
                     <FileText className="h-8 w-8 text-accent group-hover:text-accent-foreground transition-colors" />
                   </div>
                   <h3 className="text-2xl font-bold mb-4 group-hover:text-accent transition-colors">
-                    Research Training
+                    Scholarship Support
                   </h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Hands-on research methodology, data analysis, scientific writing, and publication support for
-                    emerging researchers.
+                    Scholarships and educational support for indigent but deserving students, ensuring every child has opportunity.
                   </p>
                 </CardContent>
               </Card>
@@ -100,11 +158,10 @@ export default function AcademyPage() {
                     <Users className="h-8 w-8 text-chart-3 group-hover:text-white transition-colors" />
                   </div>
                   <h3 className="text-2xl font-bold mb-4 group-hover:text-chart-3 transition-colors">
-                    Mentorship Programs
+                    Character Development
                   </h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    One-on-one guidance from experienced public health professionals to support career development and
-                    growth.
+                    Value-based and moral instruction through Good News Clubs every Saturday, building godly character.
                   </p>
                 </CardContent>
               </Card>
@@ -115,11 +172,10 @@ export default function AcademyPage() {
                     <Award className="h-8 w-8 text-primary group-hover:text-primary-foreground transition-colors" />
                   </div>
                   <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">
-                    Certification Courses
+                    Holistic Curriculum
                   </h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Professional certificates in specialized areas including M&E, grant writing, and health systems
-                    management.
+                    Curriculum enrichment integrating academics, arts, sports, and entrepreneurship for well-rounded development.
                   </p>
                 </CardContent>
               </Card>
@@ -130,10 +186,10 @@ export default function AcademyPage() {
                     <Calendar className="h-8 w-8 text-accent group-hover:text-accent-foreground transition-colors" />
                   </div>
                   <h3 className="text-2xl font-bold mb-4 group-hover:text-accent transition-colors">
-                    Workshops & Seminars
+                    Health & Nutrition
                   </h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Regular events featuring expert speakers on current public health topics, trends, and innovations.
+                    Health checkups, nutrition support, and hygiene education ensuring children are healthy and ready to learn.
                   </p>
                 </CardContent>
               </Card>
@@ -144,10 +200,10 @@ export default function AcademyPage() {
                     <TrendingUp className="h-8 w-8 text-chart-3 group-hover:text-white transition-colors" />
                   </div>
                   <h3 className="text-2xl font-bold mb-4 group-hover:text-chart-3 transition-colors">
-                    Professional Development
+                    Teacher Excellence
                   </h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Leadership training, communication skills, project management, and career advancement support.
+                    Recruitment and mentorship of quality teachers to ensure excellent learning outcomes for all students.
                   </p>
                 </CardContent>
               </Card>
@@ -305,109 +361,52 @@ export default function AcademyPage() {
                   Academy Gallery
                 </span>
               </div>
-              <h2 className="text-4xl lg:text-5xl font-bold mb-6">Training Excellence in Action</h2>
+              <h2 className="text-4xl lg:text-5xl font-bold mb-6">Transforming Lives Through Education</h2>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Real-world training experiences that prepare professionals for impactful careers in public health
+                See our students thrive through quality education, character development, and wholistic support
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src="/african-students-in-epidemiology-training-classroo.jpg"
-                    alt="Epidemiology training session"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground">Classroom Training</Badge>
-                </div>
-                <CardContent className="p-6">
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">Interactive Classroom Learning</h3>
-                  <p className="text-sm text-muted-foreground">Hands-on epidemiology and biostatistics training with expert instructors</p>
-                </CardContent>
-              </Card>
-
-              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src="/african-health-professionals-doing-field-research-.jpg"
-                    alt="Field research training"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <Badge className="absolute top-4 left-4 bg-accent text-accent-foreground">Field Research</Badge>
-                </div>
-                <CardContent className="p-6">
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">Field Research Experience</h3>
-                  <p className="text-sm text-muted-foreground">Practical application of research methods in real community settings</p>
-                </CardContent>
-              </Card>
-
-              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src="/african-professionals-data-analysis-computer-lab.jpg"
-                    alt="Data analysis training"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <Badge className="absolute top-4 left-4 bg-chart-3 text-white">Data Analysis</Badge>
-                </div>
-                <CardContent className="p-6">
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">Advanced Data Analysis</h3>
-                  <p className="text-sm text-muted-foreground">Statistical analysis and research methodology using modern tools</p>
-                </CardContent>
-              </Card>
-
-              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src="/workshop-training-session-african-professionals.jpg"
-                    alt="Workshop session"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <Badge className="absolute top-4 left-4 bg-accent text-accent-foreground">Workshop</Badge>
-                </div>
-                <CardContent className="p-6">
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">Professional Workshops</h3>
-                  <p className="text-sm text-muted-foreground">Grant writing and professional development workshops</p>
-                </CardContent>
-              </Card>
-
-              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src="/african-healthcare-workers-training-session.jpg"
-                    alt="Clinical training"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground">Clinical Skills</Badge>
-                </div>
-                <CardContent className="p-6">
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">Clinical Skills Training</h3>
-                  <p className="text-sm text-muted-foreground">Advanced clinical skills development for healthcare workers</p>
-                </CardContent>
-              </Card>
-
-              <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50">
-                <div className="relative aspect-[4/3] overflow-hidden">
-                  <img
-                    src="/african-graduates-celebrating-graduation-ceremony.jpg"
-                    alt="Graduation ceremony"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <Badge className="absolute top-4 left-4 bg-accent text-accent-foreground">Graduation</Badge>
-                </div>
-                <CardContent className="p-6">
-                  <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">Celebrating Success</h3>
-                  <p className="text-sm text-muted-foreground">Empowering the next generation of public health leaders</p>
-                </CardContent>
-              </Card>
-            </div>
+            {isLoadingGallery ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <Card key={i} className="overflow-hidden">
+                    <div className="aspect-[4/3] bg-muted animate-pulse" />
+                    <CardContent className="p-6">
+                      <div className="h-5 bg-muted rounded mb-2 animate-pulse" />
+                      <div className="h-4 bg-muted rounded animate-pulse" />
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : galleryImages.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                {galleryImages.map((image) => (
+                  <Card key={image.id} className="group overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50">
+                    <div className="relative aspect-[4/3] overflow-hidden">
+                      <img
+                        src={image.imageUrl}
+                        alt={image.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                    <CardContent className="p-6">
+                      <h3 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors line-clamp-1">
+                        {image.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground line-clamp-2">
+                        {image.description || "Transforming lives through education"}
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12 mb-12">
+                <p className="text-muted-foreground text-lg">No gallery images available at the moment.</p>
+              </div>
+            )}
 
             <div className="text-center">
               <Button asChild size="lg" variant="outline" className="border-2 border-primary/20 hover:border-primary">
@@ -419,104 +418,7 @@ export default function AcademyPage() {
           </div>
         </section>
 
-        {/* Academy Programs Section */}
-        <section className="py-20 lg:py-32">
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className="text-center mb-16">
-              <div className="inline-block mb-4">
-                <span className="text-sm font-semibold text-primary uppercase tracking-wider bg-primary/10 px-4 py-2 rounded-full">
-                  Training Programs
-                </span>
-              </div>
-              <h2 className="text-4xl lg:text-5xl font-bold mb-6">Academy Programs</h2>
-              <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Comprehensive training programs designed to build capacity and advance careers in public health
-              </p>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary/50">
-                <CardContent className="p-8">
-                  <div className="mb-6 inline-flex p-4 rounded-xl bg-primary/10 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
-                    <GraduationCap className="h-8 w-8 text-primary group-hover:text-primary-foreground transition-colors" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">
-                    Public Health Leadership Certificate
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed mb-4">
-                    6-month hybrid program developing essential leadership skills for public health professionals managing teams and programs.
-                  </p>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                    <Clock className="h-4 w-4" />
-                    <span>6 months</span>
-                    <Badge variant="outline" className="ml-2">Intermediate</Badge>
-                  </div>
-                  <Button asChild variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors">
-                    <Link href="/programs/public-health-leadership">
-                      View Program <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-accent/50">
-                <CardContent className="p-8">
-                  <div className="mb-6 inline-flex p-4 rounded-xl bg-accent/10 group-hover:bg-accent group-hover:scale-110 transition-all duration-300">
-                    <BookOpen className="h-8 w-8 text-accent group-hover:text-accent-foreground transition-colors" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4 group-hover:text-accent transition-colors">
-                    Epidemiology & Disease Surveillance
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed mb-4">
-                    4-month online program mastering epidemiological methods and disease surveillance systems for outbreak investigation.
-                  </p>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                    <Clock className="h-4 w-4" />
-                    <span>4 months</span>
-                    <Badge variant="outline" className="ml-2">Advanced</Badge>
-                  </div>
-                  <Button asChild variant="outline" className="w-full group-hover:bg-accent group-hover:text-accent-foreground group-hover:border-accent transition-colors">
-                    <Link href="/programs/epidemiology-disease-surveillance">
-                      View Program <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-chart-3/50">
-                <CardContent className="p-8">
-                  <div className="mb-6 inline-flex p-4 rounded-xl bg-chart-3/10 group-hover:bg-chart-3 group-hover:scale-110 transition-all duration-300">
-                    <Award className="h-8 w-8 text-chart-3 group-hover:text-white transition-colors" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-4 group-hover:text-chart-3 transition-colors">
-                    Research Methods & Grant Writing
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed mb-4">
-                    3-month online program covering essential research skills and grant proposal writing for securing funding.
-                  </p>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-                    <Clock className="h-4 w-4" />
-                    <span>3 months</span>
-                    <Badge variant="outline" className="ml-2">Beginner</Badge>
-                  </div>
-                  <Button asChild variant="outline" className="w-full group-hover:bg-chart-3 group-hover:text-white group-hover:border-chart-3 transition-colors">
-                    <Link href="/programs/research-methods-grant-writing">
-                      View Program <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="text-center mt-12">
-              <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                <Link href="/programs">
-                  View All Academy Programs <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
 
         {/* Recent Events */}
         <section className="py-16 lg:py-24 bg-muted/30">
@@ -529,88 +431,76 @@ export default function AcademyPage() {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Event 1 */}
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
-                <div className="aspect-video bg-gradient-to-br from-primary to-primary/80 relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <GraduationCap className="h-16 w-16 text-primary-foreground/80" />
-                  </div>
-                  <Badge className="absolute top-4 left-4 bg-accent text-accent-foreground">Workshop</Badge>
-                </div>
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                    <Calendar className="h-4 w-4" />
-                    <span>October 15-17, 2025</span>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
-                    Public Health Leadership Summit 2025
-                  </h3>
-                  <p className="text-muted-foreground mb-4 leading-relaxed">
-                    Three-day intensive workshop on leadership development for public health professionals across Africa.
-                  </p>
-                  <Button asChild className="w-full">
-                    <Link href="/academy/events/public-health-leadership-summit-2025">
-                      Read More <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Event 2 */}
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
-                <div className="aspect-video bg-gradient-to-br from-accent to-accent/80 relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <BookOpen className="h-16 w-16 text-accent-foreground/80" />
-                  </div>
-                  <Badge className="absolute top-4 left-4 bg-primary text-primary-foreground">Training</Badge>
-                </div>
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                    <Calendar className="h-4 w-4" />
-                    <span>September 22-25, 2025</span>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
-                    Epidemiology Masterclass Series
-                  </h3>
-                  <p className="text-muted-foreground mb-4 leading-relaxed">
-                    Advanced training in disease surveillance, outbreak investigation, and epidemiological analysis methods.
-                  </p>
-                  <Button asChild className="w-full">
-                    <Link href="/academy/events/epidemiology-masterclass-series">
-                      Read More <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Event 3 */}
-              <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
-                <div className="aspect-video bg-gradient-to-br from-chart-3 to-chart-3/80 relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Users className="h-16 w-16 text-white/80" />
-                  </div>
-                  <Badge className="absolute top-4 left-4 bg-accent text-accent-foreground">Conference</Badge>
-                </div>
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
-                    <Calendar className="h-4 w-4" />
-                    <span>August 10-12, 2025</span>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors">
-                    Research Methods & Grant Writing Workshop
-                  </h3>
-                  <p className="text-muted-foreground mb-4 leading-relaxed">
-                    Intensive workshop on research design, methodology, and successful grant proposal writing techniques.
-                  </p>
-                  <Button asChild className="w-full">
-                    <Link href="/academy/events/research-methods-grant-writing-workshop">
-                      Read More <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
+            {isLoadingEvents ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[1, 2, 3].map((i) => (
+                  <Card key={i} className="overflow-hidden">
+                    <div className="aspect-video bg-muted animate-pulse" />
+                    <CardContent className="p-6">
+                      <div className="h-4 bg-muted rounded mb-3 animate-pulse" />
+                      <div className="h-6 bg-muted rounded mb-3 animate-pulse" />
+                      <div className="h-20 bg-muted rounded mb-4 animate-pulse" />
+                      <div className="h-10 bg-muted rounded animate-pulse" />
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            ) : events.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {events.map((event, index) => {
+                  const iconColors = [
+                    { bg: "from-primary to-primary/80", icon: "primary-foreground", badge: "accent" },
+                    { bg: "from-accent to-accent/80", icon: "accent-foreground", badge: "primary" },
+                    { bg: "from-chart-3 to-chart-3/80", icon: "white", badge: "accent" },
+                  ]
+                  const colors = iconColors[index % 3]
+                  
+                  return (
+                    <Card key={event.id} className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+                      <div className={`aspect-video bg-gradient-to-br ${colors.bg} relative overflow-hidden`}>
+                        {event.imageUrl ? (
+                          <img 
+                            src={event.imageUrl} 
+                            alt={event.title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <GraduationCap className={`h-16 w-16 text-${colors.icon}/80`} />
+                          </div>
+                        )}
+                        {event.category && (
+                          <Badge className={`absolute top-4 left-4 bg-${colors.badge} text-${colors.badge}-foreground`}>
+                            {event.category}
+                          </Badge>
+                        )}
+                      </div>
+                      <CardContent className="p-6">
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
+                          <Calendar className="h-4 w-4" />
+                          <span>{event.date}</span>
+                        </div>
+                        <h3 className="text-xl font-semibold mb-3 group-hover:text-primary transition-colors line-clamp-2">
+                          {event.title}
+                        </h3>
+                        <p className="text-muted-foreground mb-4 leading-relaxed line-clamp-3">
+                          {event.description || "Join us for this exciting event."}
+                        </p>
+                        <Button asChild className="w-full">
+                          <Link href={`/academy/events/${event.slug}`}>
+                            Read More <ArrowRight className="ml-2 h-4 w-4" />
+                          </Link>
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  )
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground text-lg">No academy events available at the moment.</p>
+              </div>
+            )}
 
             <div className="text-center mt-12">
               <Button asChild variant="outline" size="lg">
@@ -629,15 +519,14 @@ export default function AcademyPage() {
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-foreground rounded-full blur-3xl" />
           </div>
           <div className="container relative mx-auto px-4 lg:px-8 text-center">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-balance">Ready to Advance Your Career?</h2>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-balance">Give Your Child a Brighter Future</h2>
             <p className="text-xl mb-10 text-primary-foreground/95 max-w-2xl mx-auto leading-relaxed">
-              Join MedWHOLE Academy and become part of a community of public health leaders making a difference across
-              Africa.
+              Enroll your child in MedWHOLE Academy and watch them thrive through quality education, character development, and wholistic support.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
                 <Link href="/contact">
-                  Apply Now <ArrowRight className="ml-2 h-5 w-5" />
+                  Enroll Your Child <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button
@@ -646,7 +535,7 @@ export default function AcademyPage() {
                 variant="outline"
                 className="bg-transparent border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
               >
-                <Link href="/contact">Request Information</Link>
+                <Link href="/contact">Learn More</Link>
               </Button>
             </div>
           </div>
