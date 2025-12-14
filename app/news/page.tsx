@@ -1,5 +1,3 @@
-"use client"
-
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -7,46 +5,18 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { Calendar, Clock, ArrowRight, User } from "lucide-react"
-import { useState, useEffect } from "react"
+import { getNews, getEvents } from "@/lib/sanity-queries"
+import { urlFor } from "@/lib/sanity"
 
-interface Event {
-  id: number
-  title: string
-  description: string | null
-  category: string | null
-  date: Date
-  location: string | null
-  slug: string
-  isActive: boolean
-  createdAt: Date
-  updatedAt: Date
-}
+export const revalidate = 60 // Revalidate every 60 seconds
 
-export default function NewsPage() {
-  const [events, setEvents] = useState<Event[]>([])
-  const [loadingEvents, setLoadingEvents] = useState(true)
-  // News articles should be fetched from the database via admin panel
-  const featuredNews = null
-  const newsArticles: any[] = []
-
-  useEffect(() => {
-    async function fetchEvents() {
-      try {
-        setLoadingEvents(true)
-        const response = await fetch("/api/events?limit=10")
-        if (response.ok) {
-          const data = await response.json()
-          setEvents(data)
-        }
-      } catch (error) {
-        console.error("Error fetching events:", error)
-      } finally {
-        setLoadingEvents(false)
-      }
-    }
-
-    fetchEvents()
-  }, [])
+export default async function NewsPage() {
+  // Fetch news and events from Sanity
+  const newsArticles = await getNews(undefined, 12)
+  const events = await getEvents(undefined, 10)
+  
+  // Get featured news (first one marked as featured)
+  const featuredNews = newsArticles.find((article: any) => article.featured) || newsArticles[0]
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -73,35 +43,43 @@ export default function NewsPage() {
               <Card className="overflow-hidden border-2 hover:border-primary/50 transition-colors">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                   <div className="relative h-64 lg:h-auto">
-                    <img
-                      src={featuredNews.image || "/placeholder.svg"}
-                      alt={featuredNews.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
+                    {featuredNews.featuredImage ? (
+                      <img
+                        src={urlFor(featuredNews.featuredImage).width(800).height(600).url()}
+                        alt={featuredNews.title}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent"></div>
+                    )}
                     <Badge className="absolute top-4 left-4 bg-accent text-accent-foreground">Featured</Badge>
                   </div>
                   <CardContent className="p-8 lg:p-12 flex flex-col justify-center">
-                    <Badge variant="secondary" className="w-fit mb-4 bg-primary/10 text-primary">
-                      {featuredNews.category}
-                    </Badge>
+                    {featuredNews.category && (
+                      <Badge variant="secondary" className="w-fit mb-4 bg-primary/10 text-primary">
+                        {featuredNews.category}
+                      </Badge>
+                    )}
                     <h2 className="text-3xl lg:text-4xl font-bold mb-4 text-balance">{featuredNews.title}</h2>
                     <p className="text-lg text-muted-foreground mb-6 leading-relaxed">{featuredNews.excerpt}</p>
                     <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-6">
                       <span className="flex items-center gap-1">
                         <Calendar className="h-4 w-4" />
-                        {featuredNews.date}
+                        {new Date(featuredNews.publishedAt).toLocaleDateString('en-US', {
+                          month: 'long',
+                          day: 'numeric',
+                          year: 'numeric'
+                        })}
                       </span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-4 w-4" />
-                        {featuredNews.readTime}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <User className="h-4 w-4" />
-                        {featuredNews.author}
-                      </span>
+                      {featuredNews.author && (
+                        <span className="flex items-center gap-1">
+                          <User className="h-4 w-4" />
+                          {featuredNews.author}
+                        </span>
+                      )}
                     </div>
                     <Button asChild>
-                      <Link href={`/news/${featuredNews.slug}`}>
+                      <Link href={`/news/${featuredNews.slug.current}`}>
                         Read Full Story
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
@@ -119,15 +97,26 @@ export default function NewsPage() {
             <h2 className="text-3xl font-bold mb-12">Recent News</h2>
             {newsArticles.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {newsArticles.map((article, index) => (
+                {newsArticles.slice(0, 9).map((article: any) => (
                   <Card
-                    key={index}
-                    className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50 flex flex-col"
+                    key={article._id}
+                    className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50 flex flex-col overflow-hidden"
                   >
+                    {article.featuredImage && (
+                      <div className="relative h-48 overflow-hidden">
+                        <img
+                          src={urlFor(article.featuredImage).width(600).height(400).url()}
+                          alt={article.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                      </div>
+                    )}
                     <CardHeader>
-                      <Badge variant="secondary" className="w-fit mb-2 bg-primary/10 text-primary">
-                        {article.category}
-                      </Badge>
+                      {article.category && (
+                        <Badge variant="secondary" className="w-fit mb-2 bg-primary/10 text-primary">
+                          {article.category}
+                        </Badge>
+                      )}
                       <CardTitle className="text-xl group-hover:text-primary transition-colors line-clamp-2">
                         {article.title}
                       </CardTitle>
@@ -137,11 +126,11 @@ export default function NewsPage() {
                       <div className="flex flex-wrap gap-3 text-sm text-muted-foreground">
                         <span className="flex items-center gap-1">
                           <Calendar className="h-3.5 w-3.5" />
-                          {article.date}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3.5 w-3.5" />
-                          {article.readTime}
+                          {new Date(article.publishedAt).toLocaleDateString('en-US', {
+                            month: 'short',
+                            day: 'numeric',
+                            year: 'numeric'
+                          })}
                         </span>
                       </div>
                       <Button
@@ -149,7 +138,7 @@ export default function NewsPage() {
                         variant="ghost"
                         className="w-full justify-between group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
                       >
-                        <Link href={`/news/${article.slug}`}>
+                        <Link href={`/news/${article.slug.current}`}>
                           Read More
                           <ArrowRight className="h-4 w-4" />
                         </Link>
@@ -169,7 +158,7 @@ export default function NewsPage() {
                     <p className="text-muted-foreground">
                       News articles will appear here soon.
                       <br />
-                      <span className="text-sm">News is managed from the admin panel.</span>
+                      <span className="text-sm">Add content via Sanity Studio at /studio</span>
                     </p>
                   </div>
                 </CardContent>
@@ -183,23 +172,10 @@ export default function NewsPage() {
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold mb-8 text-center">Upcoming Events</h2>
-              {loadingEvents ? (
+              {events.length > 0 ? (
                 <div className="space-y-4">
-                  {[1, 2, 3].map((i) => (
-                    <Card key={i} className="animate-pulse">
-                      <CardContent className="p-6">
-                        <div className="space-y-3">
-                          <div className="h-4 bg-muted rounded w-3/4"></div>
-                          <div className="h-4 bg-muted rounded w-1/2"></div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              ) : events.length > 0 ? (
-                <div className="space-y-4">
-                  {events.map((event) => (
-                    <Card key={event.id} className="hover:shadow-lg transition-all hover:border-primary/50">
+                  {events.map((event: any) => (
+                    <Card key={event._id} className="hover:shadow-lg transition-all hover:border-primary/50">
                       <CardContent className="p-6">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1">
@@ -243,7 +219,7 @@ export default function NewsPage() {
                       <p className="text-muted-foreground">
                         Events will be posted here soon.
                         <br />
-                        <span className="text-sm">Check back for updates!</span>
+                        <span className="text-sm">Add content via Sanity Studio at /studio</span>
                       </p>
                     </div>
                   </CardContent>

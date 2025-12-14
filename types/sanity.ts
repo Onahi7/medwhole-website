@@ -1,4 +1,4 @@
-import { SanityImageSource } from '@sanity/image-url/lib/types/types'
+import type { SanityImageSource } from '@sanity/image-url/lib/types/types'
 
 export interface SanityEvent {
   _id: string
