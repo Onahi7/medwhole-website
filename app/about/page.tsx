@@ -18,7 +18,7 @@ export default function AboutPage() {
             <div className="max-w-3xl animate-fade-in">
               <h1 className="text-5xl lg:text-6xl font-bold mb-6 text-balance">We are MedWHOLE Alliance</h1>
               <p className="text-xl lg:text-2xl text-primary-foreground/95 leading-relaxed">
-                A registered non-profit organization dedicated faith-driven organization dedicated to helping individuals live boundless and fulfilling lives through interventions that promote whole health, whole persons, and whole communities.
+                A registered non-profit organization, a faith-driven organization dedicated to helping individuals live boundless and fulfilling lives through interventions that promote whole health, whole persons, and whole communities.
               </p>
             </div>
           </div>
@@ -35,7 +35,7 @@ export default function AboutPage() {
                   </div>
                   <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">Our Mission</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    To help individuals live a boundless, fulfilling life through interventions that promote whole health, whole persons, and whole communities.
+                    Helping individuals live a boundless, fulfilling life through interventions that promote whole health, whole persons, and whole communities.
                   </p>
                 </CardContent>
               </Card>

@@ -26,6 +26,19 @@ import {
 } from "lucide-react"
 import { useEffect, useState } from "react"
 
+interface Event {
+  id: number
+  title: string
+  description: string | null
+  category: string | null
+  date: Date
+  location: string | null
+  slug: string
+  isActive: boolean
+  createdAt: Date
+  updatedAt: Date
+}
+
 function AnimatedCounter({ end, duration = 2000, suffix = "" }: { end: number; duration?: number; suffix?: string }) {
   const [count, setCount] = useState(0)
 
@@ -58,9 +71,29 @@ function AnimatedCounter({ end, duration = 2000, suffix = "" }: { end: number; d
 
 export default function HomePage() {
   const [isVisible, setIsVisible] = useState(false)
+  const [events, setEvents] = useState<Event[]>([])
+  const [loadingEvents, setLoadingEvents] = useState(true)
 
   useEffect(() => {
     setIsVisible(true)
+    
+    // Fetch events
+    async function fetchEvents() {
+      try {
+        setLoadingEvents(true)
+        const response = await fetch("/api/events?limit=3")
+        if (response.ok) {
+          const data = await response.json()
+          setEvents(data)
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error)
+      } finally {
+        setLoadingEvents(false)
+      }
+    }
+
+    fetchEvents()
   }, [])
 
   return (
@@ -341,7 +374,15 @@ export default function HomePage() {
                     </div>
                     <div className="flex items-center gap-3 text-sm">
                       <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
-                      <span>Community Health Outreach</span>
+                      <span>Computer Literacy Training</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
+                      <span>Exam coaching (WAEC and JAMB)</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
+                      <span>Community Feeding Initiative</span>
                     </div>
                   </div>
 
@@ -453,6 +494,10 @@ export default function HomePage() {
                     </div>
                     <div className="flex items-center gap-3 text-sm">
                       <CheckCircle2 className="h-5 w-5 text-chart-3 flex-shrink-0" />
+                      <span>Monitoring, Evaluation, and Learning (MEL)</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <CheckCircle2 className="h-5 w-5 text-chart-3 flex-shrink-0" />
                       <span>Training and advisory</span>
                     </div>
                   </div>
@@ -500,7 +545,7 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
               <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border-2 hover:border-primary/30">
                 <CardContent className="p-8">
                   <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:scale-110 transition-all duration-300">
@@ -556,7 +601,7 @@ export default function HomePage() {
                   </div>
                   <h3 className="text-2xl font-bold mb-4">Public Health Consulting Services</h3>
                   <p className="text-muted-foreground leading-relaxed">
-                    Offering evidence-based solutions to strengthen health systems and drive sustainable development.
+                    Offering evidence-based solutions to
                   </p>
                 </CardContent>
               </Card>
@@ -625,17 +670,66 @@ export default function HomePage() {
                 </div>
 
                 <div className="space-y-6">
-                  {/* Events should be fetched from database/API */}
-                  <Card className="border-2 border-dashed">
-                    <CardContent className="p-8 text-center">
-                      <Calendar className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
-                      <p className="text-muted-foreground">
-                        Upcoming events will be displayed here.
-                        <br />
-                        <span className="text-sm">Manage events from the admin panel.</span>
-                      </p>
-                    </CardContent>
-                  </Card>
+                  {loadingEvents ? (
+                    <Card className="border-2">
+                      <CardContent className="p-8 text-center">
+                        <div className="animate-pulse space-y-3">
+                          <div className="h-4 bg-muted rounded w-3/4 mx-auto"></div>
+                          <div className="h-4 bg-muted rounded w-1/2 mx-auto"></div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ) : events.length > 0 ? (
+                    events.map((event) => (
+                      <Card key={event.id} className="group hover:shadow-lg transition-all hover:border-accent/50">
+                        <CardContent className="p-6">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1">
+                              {event.category && (
+                                <div className="inline-flex items-center gap-2 mb-2">
+                                  <span className="text-xs font-semibold text-accent uppercase tracking-wide">
+                                    {event.category}
+                                  </span>
+                                </div>
+                              )}
+                              <h4 className="font-semibold text-lg mb-2 group-hover:text-accent transition-colors">
+                                {event.title}
+                              </h4>
+                              {event.description && (
+                                <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                                  {event.description}
+                                </p>
+                              )}
+                              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                                <span className="flex items-center gap-1">
+                                  <Calendar className="h-3.5 w-3.5" />
+                                  {new Date(event.date).toLocaleDateString('en-US', { 
+                                    month: 'short', 
+                                    day: 'numeric', 
+                                    year: 'numeric' 
+                                  })}
+                                </span>
+                                {event.location && (
+                                  <span className="text-xs">{event.location}</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))
+                  ) : (
+                    <Card className="border-2 border-dashed">
+                      <CardContent className="p-8 text-center">
+                        <Calendar className="h-12 w-12 mx-auto mb-4 text-muted-foreground/50" />
+                        <p className="text-muted-foreground">
+                          No upcoming events at the moment.
+                          <br />
+                          <span className="text-sm">Check back soon for updates!</span>
+                        </p>
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
 
                 <div className="mt-8 text-center">

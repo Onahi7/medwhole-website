@@ -97,7 +97,7 @@ export default function AcademyPage() {
               </div>
               <h1 className="text-5xl lg:text-6xl font-bold mb-6 text-balance">MedWHOLE Academy</h1>
               <p className="text-xl lg:text-2xl text-primary-foreground/95 leading-relaxed mb-8">
-                Empowering children aged 2-18 to lead boundless lives through quality education, character development, and wholistic support.
+                Building the next generation of godly, purpose-driven children to transform communities through quality education, character development, and wholistic support.
               </p>
               <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
                 <Link href="/contact">

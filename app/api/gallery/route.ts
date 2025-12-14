@@ -3,6 +3,8 @@ import { db } from "@/db"
 import { galleryImages } from "@/db/schema"
 import { eq, desc } from "drizzle-orm"
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams

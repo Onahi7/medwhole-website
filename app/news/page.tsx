@@ -1,3 +1,5 @@
+"use client"
+
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -5,12 +7,46 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { Calendar, Clock, ArrowRight, User } from "lucide-react"
+import { useState, useEffect } from "react"
+
+interface Event {
+  id: number
+  title: string
+  description: string | null
+  category: string | null
+  date: Date
+  location: string | null
+  slug: string
+  isActive: boolean
+  createdAt: Date
+  updatedAt: Date
+}
 
 export default function NewsPage() {
+  const [events, setEvents] = useState<Event[]>([])
+  const [loadingEvents, setLoadingEvents] = useState(true)
   // News articles should be fetched from the database via admin panel
   const featuredNews = null
   const newsArticles: any[] = []
-  const upcomingEvents: any[] = []
+
+  useEffect(() => {
+    async function fetchEvents() {
+      try {
+        setLoadingEvents(true)
+        const response = await fetch("/api/events?limit=10")
+        if (response.ok) {
+          const data = await response.json()
+          setEvents(data)
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error)
+      } finally {
+        setLoadingEvents(false)
+      }
+    }
+
+    fetchEvents()
+  }, [])
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -147,24 +183,50 @@ export default function NewsPage() {
           <div className="container mx-auto px-4 lg:px-8">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold mb-8 text-center">Upcoming Events</h2>
-              {upcomingEvents.length > 0 ? (
+              {loadingEvents ? (
                 <div className="space-y-4">
-                  {upcomingEvents.map((event, index) => (
-                    <Card key={index} className="hover:shadow-lg transition-all hover:border-primary/50">
+                  {[1, 2, 3].map((i) => (
+                    <Card key={i} className="animate-pulse">
+                      <CardContent className="p-6">
+                        <div className="space-y-3">
+                          <div className="h-4 bg-muted rounded w-3/4"></div>
+                          <div className="h-4 bg-muted rounded w-1/2"></div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : events.length > 0 ? (
+                <div className="space-y-4">
+                  {events.map((event) => (
+                    <Card key={event.id} className="hover:shadow-lg transition-all hover:border-primary/50">
                       <CardContent className="p-6">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1">
                             <div className="flex items-center gap-3 mb-2">
-                              <Badge variant="outline">{event.type}</Badge>
-                              <span className="text-sm text-muted-foreground">{event.location}</span>
+                              {event.category && (
+                                <Badge variant="outline">{event.category}</Badge>
+                              )}
+                              {event.location && (
+                                <span className="text-sm text-muted-foreground">{event.location}</span>
+                              )}
                             </div>
                             <h3 className="font-semibold text-lg mb-2">{event.title}</h3>
+                            {event.description && (
+                              <p className="text-muted-foreground mb-3">{event.description}</p>
+                            )}
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                               <Calendar className="h-4 w-4" />
-                              <span>{event.date}</span>
+                              <span>
+                                {new Date(event.date).toLocaleDateString('en-US', { 
+                                  weekday: 'long',
+                                  month: 'long', 
+                                  day: 'numeric', 
+                                  year: 'numeric' 
+                                })}
+                              </span>
                             </div>
                           </div>
-                          <Button variant="outline">Learn More</Button>
                         </div>
                       </CardContent>
                     </Card>
@@ -181,7 +243,7 @@ export default function NewsPage() {
                       <p className="text-muted-foreground">
                         Events will be posted here soon.
                         <br />
-                        <span className="text-sm">Events are managed from the admin panel.</span>
+                        <span className="text-sm">Check back for updates!</span>
                       </p>
                     </div>
                   </CardContent>
