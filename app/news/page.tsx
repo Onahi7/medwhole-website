@@ -1,10 +1,11 @@
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { PageHero } from "@/components/page-hero"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
-import { Calendar, Clock, ArrowRight, User } from "lucide-react"
+import { Calendar, Clock, ArrowRight, User, Newspaper } from "lucide-react"
 import { getNews, getEvents } from "@/lib/sanity-queries"
 import { urlFor } from "@/lib/sanity"
 
@@ -21,20 +22,15 @@ export default async function NewsPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-primary-foreground py-20 lg:py-32 overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-          <div className="container mx-auto px-4 lg:px-8 relative z-10">
-            <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4 bg-accent text-accent-foreground">Latest Updates</Badge>
-              <h1 className="text-4xl lg:text-6xl font-bold mb-6 text-balance">News & Events</h1>
-              <p className="text-lg lg:text-xl text-primary-foreground/90 leading-relaxed">
-                Stay updated with the latest news, announcements, and events from MedWHOLE Alliance
-              </p>
-            </div>
-          </div>
-        </section>
+      <main id="main-content" className="flex-1">
+        <PageHero
+          title="News & Events"
+          description="Stay updated with the latest news, announcements, and events from MedWHOLE Alliance"
+          badge={{
+            icon: <Newspaper className="h-5 w-5 text-accent" />,
+            text: "Latest Updates",
+          }}
+        />
 
         {/* Featured News */}
         {featuredNews ? (

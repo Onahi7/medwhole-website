@@ -4,6 +4,7 @@ import { Hind, Questrial } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Suspense } from "react"
+import { SkipToContent } from "@/components/skip-to-content"
 
 const hind = Hind({
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${hind.variable} ${questrial.variable} antialiased`}>
+        <SkipToContent />
         <Suspense fallback={null}>{children}</Suspense>
         <Analytics />
       </body>

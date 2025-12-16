@@ -1,11 +1,12 @@
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { PageHero } from "@/components/page-hero"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import Link from "next/link"
-import { FileText, Download, BookOpen, Video, Search, Filter, ExternalLink } from "lucide-react"
+import { FileText, Download, BookOpen, Video, Search, Filter, ExternalLink, Library } from "lucide-react"
 
 export default function ResourcesPage() {
   // Resources should be fetched from the database via admin panel
@@ -15,31 +16,26 @@ export default function ResourcesPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-primary-foreground py-20 lg:py-32 overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-          <div className="container mx-auto px-4 lg:px-8 relative z-10">
-            <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4 bg-accent text-accent-foreground">Knowledge Hub</Badge>
-              <h1 className="text-4xl lg:text-6xl font-bold mb-6 text-balance">Resources & Publications</h1>
-              <p className="text-lg lg:text-xl text-primary-foreground/90 leading-relaxed mb-8">
-                Access our library of toolkits, research publications, guidelines, and training materials
-              </p>
-
-              {/* Search Bar */}
-              <div className="max-w-2xl mx-auto">
-                <div className="relative">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Input
-                    placeholder="Search resources..."
-                    className="pl-12 h-14 bg-white/10 border-white/30 text-white placeholder:text-white/60"
-                  />
-                </div>
-              </div>
+      <main id="main-content" className="flex-1">
+        <PageHero
+          title="Resources & Publications"
+          description="Access our library of toolkits, research publications, guidelines, and training materials"
+          badge={{
+            icon: <Library className="h-5 w-5 text-accent" />,
+            text: "Knowledge Hub",
+          }}
+        >
+          {/* Search Bar */}
+          <div className="max-w-2xl">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary-foreground/60" />
+              <Input
+                placeholder="Search resources..."
+                className="pl-12 h-14 bg-white/10 border-white/30 text-white placeholder:text-white/60"
+              />
             </div>
           </div>
-        </section>
+        </PageHero>
 
         {/* Resources Grid */}
         <section className="py-16 lg:py-24">

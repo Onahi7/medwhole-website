@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { PageHero } from "@/components/page-hero"
 import { ContactForm } from "@/components/contact-form"
 import { PartnershipForm } from "@/components/partnership-form"
 import { DonationSection } from "@/components/donation-section"
@@ -10,19 +11,15 @@ export default function ContactPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="bg-muted/30 py-16 lg:py-24">
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl lg:text-5xl font-bold mb-6">Get in Touch</h1>
-              <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed">
-                Whether you're interested in our programs, seeking partnership opportunities, or want to support our
-                work, we'd love to hear from you.
-              </p>
-            </div>
-          </div>
-        </section>
+      <main id="main-content" className="flex-1">
+        <PageHero
+          title="Get in Touch"
+          description="Whether you're interested in our programs, seeking partnership opportunities, or want to support our work, we'd love to hear from you."
+          badge={{
+            icon: <Mail className="h-5 w-5 text-accent" />,
+            text: "Contact Us",
+          }}
+        />
 
         {/* Contact Information */}
         <section className="py-16 lg:py-24">

@@ -1,9 +1,10 @@
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { PageHero } from "@/components/page-hero"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Award, BookOpen, Stethoscope, Users } from "lucide-react"
+import { Award, BookOpen, Stethoscope, Users, Camera } from "lucide-react"
 import { getGalleryImages } from "@/lib/sanity-queries"
 import { GalleryGrid } from "@/components/gallery-grid"
 
@@ -21,20 +22,15 @@ export default async function GalleryPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-primary-foreground py-20 lg:py-32 overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-          <div className="container mx-auto px-4 lg:px-8 relative z-10">
-            <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4 bg-accent text-accent-foreground">Our Impact</Badge>
-              <h1 className="text-4xl lg:text-6xl font-bold mb-6 text-balance">Photo Gallery</h1>
-              <p className="text-lg lg:text-xl text-primary-foreground/90 leading-relaxed">
-                Explore moments from our programs, events, and community impact across Nigeria
-              </p>
-            </div>
-          </div>
-        </section>
+      <main id="main-content" className="flex-1">
+        <PageHero
+          title="Photo Gallery"
+          description="Explore moments from our programs, events, and community impact across Nigeria"
+          badge={{
+            icon: <Camera className="h-5 w-5 text-accent" />,
+            text: "Our Impact",
+          }}
+        />
 
         {/* Gallery Tabs */}
         <section className="py-16 lg:py-24">

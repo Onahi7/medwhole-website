@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { PageHero } from "@/components/page-hero"
 import { Card, CardContent } from "@/components/ui/card"
 import { Target, Eye, Heart, Users, Handshake, Lightbulb, Globe, TrendingUp } from "lucide-react"
 
@@ -7,22 +8,16 @@ export default function AboutPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground py-20 lg:py-32 overflow-hidden">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-accent rounded-full blur-3xl animate-float" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-foreground rounded-full blur-3xl" />
-          </div>
-          <div className="container relative mx-auto px-4 lg:px-8">
-            <div className="max-w-3xl animate-fade-in">
-              <h1 className="text-5xl lg:text-6xl font-bold mb-6 text-balance">We are MedWHOLE Alliance</h1>
-              <p className="text-xl lg:text-2xl text-primary-foreground/95 leading-relaxed">
-                A registered non-profit organization, a faith-driven organization dedicated to helping individuals live boundless and fulfilling lives through interventions that promote whole health, whole persons, and whole communities.
-              </p>
-            </div>
-          </div>
-        </section>
+      <main id="main-content" className="flex-1">
+        <PageHero
+          title="We are MedWHOLE Alliance"
+          description="A registered non-profit organization, a faith-driven organization dedicated to helping individuals live boundless and fulfilling lives through interventions that promote whole health, whole persons, and whole communities."
+          badge={{
+            icon: <Users className="h-5 w-5 text-accent" />,
+            text: "About Us",
+          }}
+          backgroundImage="/african-community-health-workers-team-collaboratio.jpg"
+        />
 
         {/* Mission, Vision, Values */}
         <section className="py-20 lg:py-32">

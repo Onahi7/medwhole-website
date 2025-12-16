@@ -2,17 +2,15 @@
 
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { PageHero } from "@/components/page-hero"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
-import { Heart, Stethoscope, Users, Home, Activity, Pill, CheckCircle, ArrowRight, Calendar, Baby, Shield } from "lucide-react"
-import { useState, useEffect } from "react"
+import { Heart, Stethoscope, Home, Activity, CheckCircle, ArrowRight, Shield } from "lucide-react"
+import { useState } from "react"
 import Image from "next/image"
 
 export default function HealthServicesPage() {
-  // Custom health services color
-  const healthColor = "#ff9aae"
   const [hoveredCard, setHoveredCard] = useState<number | null>(null)
 
   const services = [
@@ -48,46 +46,31 @@ export default function HealthServicesPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1">
-        <section className="relative bg-gradient-to-br from-primary via-primary to-primary/80 text-primary-foreground py-20 lg:py-32 overflow-hidden">
-          <div className="absolute inset-0 opacity-20">
-            <Image
-              src="/african-children-learning-classroom-education-comm.jpg"
-              alt="Healthcare in Africa"
-              fill
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-primary/80" />
+      <main id="main-content" className="flex-1">
+        <PageHero
+          title="MedWHOLE Health"
+          description="Delivering wholistic, accessible, and compassionate healthcare to individuals and communities."
+          badge={{
+            icon: <Heart className="h-5 w-5 text-health-accent" />,
+            text: "Delivering Quality Healthcare Across Africa",
+          }}
+          backgroundImage="/african-children-learning-classroom-education-comm.jpg"
+          variant="health"
+        >
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button asChild size="lg" className="bg-health-accent text-health-accent-foreground hover:bg-health-accent/90">
+              <Link href="/contact">Partner With Us</Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary bg-transparent"
+            >
+              <Link href="#services">Explore Services</Link>
+            </Button>
           </div>
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-20 left-10 w-72 h-72 rounded-full blur-3xl animate-pulse" style={{ backgroundColor: healthColor }} />
-            <div className="absolute bottom-20 right-10 w-96 h-96 rounded-full blur-3xl animate-pulse delay-1000" style={{ backgroundColor: healthColor, opacity: 0.5 }} />
-          </div>
-          <div className="container mx-auto px-4 lg:px-8 relative z-10">
-            <div className="max-w-3xl">
-              <div className="inline-block mb-4 px-4 py-2 rounded-full text-sm font-medium animate-fade-in" style={{ backgroundColor: `${healthColor}33` }}>
-                Delivering Quality Healthcare Across Africa
-              </div>
-              <h1 className="text-4xl lg:text-6xl font-bold mb-6 animate-fade-in-up">MedWHOLE Health</h1>
-              <p className="text-lg lg:text-xl text-primary-foreground/90 leading-relaxed mb-8 animate-fade-in-up delay-200">
-                Delivering wholistic, accessible, and compassionate healthcare to individuals and communities.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-300">
-                <Button asChild size="lg" style={{ backgroundColor: healthColor, color: '#1a1a1a' }} className="hover:opacity-90 transition-opacity">
-                  <Link href="/contact">Partner With Us</Link>
-                </Button>
-                <Button
-                  asChild
-                  size="lg"
-                  variant="outline"
-                  className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary bg-transparent"
-                >
-                  <Link href="#services">Explore Services</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+        </PageHero>
 
         <section className="py-16 bg-background">
           <div className="container mx-auto px-4 lg:px-8">
@@ -95,7 +78,7 @@ export default function HealthServicesPage() {
               <div>
                 <h2 className="text-3xl lg:text-4xl font-bold mb-6">Our Approach to Health</h2>
                 <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                  MedWHOLE’s health service arm provides accessible, affordable, and compassionate healthcare integrated with health systems innovation and faith-based values.
+                  MedWHOLE's health service arm provides accessible, affordable, and compassionate healthcare integrated with health systems innovation and faith-based values.
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
@@ -105,7 +88,7 @@ export default function HealthServicesPage() {
                     <div>
                       <h4 className="font-semibold mb-1">Accessibility</h4>
                       <p className="text-sm text-muted-foreground">
-                        we make health services available to rural communities
+                        We make health services available to rural communities
                       </p>
                     </div>
                   </div>
@@ -116,7 +99,7 @@ export default function HealthServicesPage() {
                     <div>
                       <h4 className="font-semibold mb-1">Affordability</h4>
                       <p className="text-sm text-muted-foreground">
-                        we offer optimum care at affordable rates
+                        We offer optimum care at affordable rates
                       </p>
                     </div>
                   </div>
@@ -138,7 +121,7 @@ export default function HealthServicesPage() {
                     <div>
                       <h4 className="font-semibold mb-1">Faith-based values</h4>
                       <p className="text-sm text-muted-foreground">
-                        we offer services as faithful stewards
+                        We offer services as faithful stewards
                       </p>
                     </div>
                   </div>
@@ -169,27 +152,39 @@ export default function HealthServicesPage() {
               {services.map((service, index) => (
                 <Card
                   key={index}
-                  className="transition-all duration-300 hover:shadow-xl hover:-translate-y-2 cursor-pointer border-2 hover:border-primary"
+                  className="transition-all duration-300 hover:shadow-xl hover:-translate-y-2 cursor-pointer border-2 hover:border-health-accent"
                   onMouseEnter={() => setHoveredCard(index)}
                   onMouseLeave={() => setHoveredCard(null)}
                 >
                   <CardContent className="p-6">
                     <div
-                      className={`mb-4 inline-flex p-4 rounded-xl transition-all duration-300 ${hoveredCard === index ? "bg-primary scale-110 shadow-lg" : "bg-primary/10"}`}
+                      className={`mb-4 inline-flex p-4 rounded-xl transition-all duration-300 ${
+                        hoveredCard === index 
+                          ? "bg-health-accent scale-110 shadow-lg" 
+                          : "bg-health-accent/10"
+                      }`}
                     >
                       <service.icon
-                        className={`h-7 w-7 transition-colors duration-300 ${hoveredCard === index ? "text-primary-foreground" : "text-primary"}`}
+                        className={`h-7 w-7 transition-colors duration-300 ${
+                          hoveredCard === index 
+                            ? "text-health-accent-foreground" 
+                            : "text-health-accent"
+                        }`}
                         strokeWidth={2.5}
                       />
                     </div>
                     <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
                     <p className="text-muted-foreground leading-relaxed mb-4">{service.description}</p>
                     <div
-                      className={`space-y-2 transition-all duration-300 ${hoveredCard === index ? "opacity-100 max-h-40" : "opacity-0 max-h-0 overflow-hidden"}`}
+                      className={`space-y-2 transition-all duration-300 ${
+                        hoveredCard === index 
+                          ? "opacity-100 max-h-40" 
+                          : "opacity-0 max-h-0 overflow-hidden"
+                      }`}
                     >
                       {service.features.map((feature, idx) => (
                         <div key={idx} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" strokeWidth={2.5} />
+                          <CheckCircle className="h-4 w-4 text-health-accent flex-shrink-0" strokeWidth={2.5} />
                           <span>{feature}</span>
                         </div>
                       ))}
@@ -250,31 +245,31 @@ export default function HealthServicesPage() {
                     </CardContent>
                   </Card>
 
-                  <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-[#fff3e0]">
+                  <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-health-accent">
                     <CardContent className="p-6">
-                      <div className="mb-4 inline-flex p-3 rounded-xl group-hover:scale-110 transition-all duration-300" style={{ backgroundColor: `${healthColor}1a` }}>
-                        <Activity className="h-6 w-6 transition-colors" style={{ color: healthColor }} />
+                      <div className="mb-4 inline-flex p-3 rounded-xl bg-health-accent/10 group-hover:bg-health-accent group-hover:scale-110 transition-all duration-300">
+                        <Activity className="h-6 w-6 text-health-accent group-hover:text-health-accent-foreground transition-colors" />
                       </div>
-                      <h3 className="text-lg font-bold mb-3 transition-colors" style={{ color: 'inherit' }}>Integrated Services</h3>
+                      <h3 className="text-lg font-bold mb-3 group-hover:text-health-accent transition-colors">Integrated Services</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed mb-4">
                         Our holistic approach addresses multiple health needs simultaneously, improving outcomes and
                         efficiency.
                       </p>
                       <ul className="space-y-2 text-sm text-muted-foreground">
                         <li className="flex items-center gap-2">
-                          <CheckCircle className="h-4 w-4 flex-shrink-0" strokeWidth={2.5} style={{ color: healthColor }} />
+                          <CheckCircle className="h-4 w-4 text-health-accent flex-shrink-0" strokeWidth={2.5} />
                           Preventive and curative care
                         </li>
                         <li className="flex items-center gap-2">
-                          <CheckCircle className="h-4 w-4 flex-shrink-0" strokeWidth={2.5} style={{ color: healthColor }} />
+                          <CheckCircle className="h-4 w-4 text-health-accent flex-shrink-0" strokeWidth={2.5} />
                           Health education and counseling
                         </li>
                         <li className="flex items-center gap-2">
-                          <CheckCircle className="h-4 w-4 flex-shrink-0" strokeWidth={2.5} style={{ color: healthColor }} />
+                          <CheckCircle className="h-4 w-4 text-health-accent flex-shrink-0" strokeWidth={2.5} />
                           Referral and follow-up systems
                         </li>
                         <li className="flex items-center gap-2">
-                          <CheckCircle className="h-4 w-4 flex-shrink-0" strokeWidth={2.5} style={{ color: healthColor }} />
+                          <CheckCircle className="h-4 w-4 text-health-accent flex-shrink-0" strokeWidth={2.5} />
                           Linkages to social services
                         </li>
                       </ul>
@@ -288,7 +283,7 @@ export default function HealthServicesPage() {
 
         <section className="py-16 lg:py-24 bg-gradient-to-br from-primary to-primary/80 text-primary-foreground relative overflow-hidden">
           <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-10 right-10 w-64 h-64 rounded-full blur-3xl" style={{ backgroundColor: healthColor }} />
+            <div className="absolute top-10 right-10 w-64 h-64 bg-health-accent rounded-full blur-3xl" />
           </div>
           <div className="container mx-auto px-4 lg:px-8 text-center relative z-10">
             <h2 className="text-3xl lg:text-4xl font-bold mb-4">Support Our Health Programs</h2>
@@ -296,7 +291,7 @@ export default function HealthServicesPage() {
               Save a life with your support
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="group" style={{ backgroundColor: healthColor, color: '#1a1a1a' }}>
+              <Button asChild size="lg" className="group bg-health-accent text-health-accent-foreground hover:bg-health-accent/90">
                 <Link href="/contact">
                   Donate Now
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />

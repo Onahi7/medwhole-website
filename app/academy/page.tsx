@@ -2,9 +2,11 @@
 
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
+import { PageHero } from "@/components/page-hero"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { ContentSkeleton } from "@/components/ui/content-skeleton"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import {
@@ -82,31 +84,22 @@ export default function AcademyPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-primary via-primary to-primary/90 text-primary-foreground py-20 lg:py-32 overflow-hidden">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 right-0 w-96 h-96 bg-accent rounded-full blur-3xl animate-float" />
-            <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary-foreground rounded-full blur-3xl" />
-          </div>
-          <div className="container relative mx-auto px-4 lg:px-8">
-            <div className="max-w-3xl animate-fade-in">
-              <div className="inline-flex items-center gap-2 mb-6 bg-accent/20 backdrop-blur-sm px-4 py-2 rounded-full border border-accent/30">
-                <GraduationCap className="h-5 w-5 text-accent" />
-                <span className="text-sm font-semibold text-primary-foreground">Education & Training</span>
-              </div>
-              <h1 className="text-5xl lg:text-6xl font-bold mb-6 text-balance">MedWHOLE Academy</h1>
-              <p className="text-xl lg:text-2xl text-primary-foreground/95 leading-relaxed mb-8">
-                Building the next generation of godly, purpose-driven children to transform communities through quality education, character development, and wholistic support.
-              </p>
-              <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
-                <Link href="/contact">
-                  Enroll Now <ArrowRight className="ml-2 h-5 w-5" />
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
+      <main id="main-content" className="flex-1">
+        <PageHero
+          title="MedWHOLE Academy"
+          description="Building the next generation of godly, purpose-driven children to transform communities through quality education, character development, and wholistic support."
+          badge={{
+            icon: <GraduationCap className="h-5 w-5 text-accent" />,
+            text: "Education & Training",
+          }}
+          backgroundImage="/african-students-in-medical-training-classroom.jpg"
+        >
+          <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground">
+            <Link href="/contact">
+              Enroll Now <ArrowRight className="ml-2 h-5 w-5" />
+            </Link>
+          </Button>
+        </PageHero>
 
         {/* What We Offer */}
         <section className="py-20 lg:py-32">
@@ -368,17 +361,7 @@ export default function AcademyPage() {
             </div>
 
             {isLoadingGallery ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <Card key={i} className="overflow-hidden">
-                    <div className="aspect-[4/3] bg-muted animate-pulse" />
-                    <CardContent className="p-6">
-                      <div className="h-5 bg-muted rounded mb-2 animate-pulse" />
-                      <div className="h-4 bg-muted rounded animate-pulse" />
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              <ContentSkeleton variant="gallery" count={6} className="mb-12" />
             ) : galleryImages.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 {galleryImages.map((image) => (
@@ -432,19 +415,7 @@ export default function AcademyPage() {
             </div>
             
             {isLoadingEvents ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {[1, 2, 3].map((i) => (
-                  <Card key={i} className="overflow-hidden">
-                    <div className="aspect-video bg-muted animate-pulse" />
-                    <CardContent className="p-6">
-                      <div className="h-4 bg-muted rounded mb-3 animate-pulse" />
-                      <div className="h-6 bg-muted rounded mb-3 animate-pulse" />
-                      <div className="h-20 bg-muted rounded mb-4 animate-pulse" />
-                      <div className="h-10 bg-muted rounded animate-pulse" />
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+              <ContentSkeleton variant="event" count={3} />
             ) : events.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {events.map((event, index) => {

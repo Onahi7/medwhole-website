@@ -1,13 +1,13 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
+import { Loader2, CheckCircle, AlertCircle } from "lucide-react"
 
 export function ContactForm() {
   const [formData, setFormData] = useState({
@@ -18,20 +18,40 @@ export function ContactForm() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setSubmitStatus("idle")
+    setErrorMessage("")
 
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false)
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to send message")
+      }
+
       setSubmitStatus("success")
       setFormData({ name: "", email: "", subject: "", message: "" })
 
       // Reset success message after 5 seconds
       setTimeout(() => setSubmitStatus("idle"), 5000)
-    }, 1000)
+    } catch (error) {
+      setSubmitStatus("error")
+      setErrorMessage(error instanceof Error ? error.message : "Something went wrong")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -46,6 +66,7 @@ export function ContactForm() {
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               placeholder="John Doe"
+              disabled={isSubmitting}
             />
           </div>
 
@@ -58,6 +79,7 @@ export function ContactForm() {
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               placeholder="john@example.com"
+              disabled={isSubmitting}
             />
           </div>
 
@@ -69,6 +91,7 @@ export function ContactForm() {
               value={formData.subject}
               onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
               placeholder="How can we help you?"
+              disabled={isSubmitting}
             />
           </div>
 
@@ -81,23 +104,33 @@ export function ContactForm() {
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               placeholder="Tell us more about your inquiry..."
               rows={6}
+              disabled={isSubmitting}
             />
           </div>
 
           {submitStatus === "success" && (
-            <div className="p-4 bg-primary/10 text-primary rounded-lg text-sm">
-              Thank you for your message! We'll get back to you soon.
+            <div className="flex items-center gap-2 p-4 bg-primary/10 text-primary rounded-lg text-sm">
+              <CheckCircle className="h-5 w-5 flex-shrink-0" />
+              <span>Thank you for your message! We'll get back to you soon.</span>
             </div>
           )}
 
           {submitStatus === "error" && (
-            <div className="p-4 bg-destructive/10 text-destructive rounded-lg text-sm">
-              Something went wrong. Please try again.
+            <div className="flex items-center gap-2 p-4 bg-destructive/10 text-destructive rounded-lg text-sm">
+              <AlertCircle className="h-5 w-5 flex-shrink-0" />
+              <span>{errorMessage || "Something went wrong. Please try again."}</span>
             </div>
           )}
 
           <Button type="submit" className="w-full" disabled={isSubmitting}>
-            {isSubmitting ? "Sending..." : "Send Message"}
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Sending...
+              </>
+            ) : (
+              "Send Message"
+            )}
           </Button>
         </form>
       </CardContent>
