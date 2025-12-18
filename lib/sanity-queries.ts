@@ -6,22 +6,65 @@ function clampLimit(limit: number, defaultLimit: number) {
   return Math.max(1, Math.min(Math.trunc(limit), 50))
 }
 
-export async function getEvents(category?: string, limit: number = 10) {
+export async function getUpcomingEvents(category?: string, limit: number = 10) {
   const safeLimit = clampLimit(limit, 10)
   const categoryFilter = category ? `&& category == $category` : ''
+  const now = new Date().toISOString()
 
-  const query = groq`*[_type == "event" && isActive == true ${categoryFilter}] | order(date desc) [0...$safeLimit] {
+  const query = groq`*[_type == "event" && isActive == true && date >= $now ${categoryFilter}] | order(date asc) [0...$safeLimit] {
     _id,
     title,
     slug,
     description,
+    excerpt,
+    featuredImage,
     category,
     date,
+    endDate,
     location,
+    venue,
+    isFree,
+    price,
+    currency,
+    capacity,
+    requiresRegistration,
+    registrationUrl,
+    registrationDeadline,
+    organizer,
+    contactEmail,
+    contactPhone,
     featured
   }`
 
-  return client.fetch(query, { safeLimit, ...(category ? { category } : {}) })
+  return client.fetch(query, { now, safeLimit, ...(category ? { category } : {}) })
+}
+
+export async function getPastEvents(category?: string, limit: number = 10) {
+  const safeLimit = clampLimit(limit, 10)
+  const categoryFilter = category ? `&& category == $category` : ''
+  const now = new Date().toISOString()
+
+  const query = groq`*[_type == "event" && isActive == true && date < $now ${categoryFilter}] | order(date desc) [0...$safeLimit] {
+    _id,
+    title,
+    slug,
+    description,
+    excerpt,
+    featuredImage,
+    category,
+    date,
+    endDate,
+    location,
+    venue,
+    featured
+  }`
+
+  return client.fetch(query, { now, safeLimit, ...(category ? { category } : {}) })
+}
+
+// Keep for backward compatibility
+export async function getEvents(category?: string, limit: number = 10) {
+  return getUpcomingEvents(category, limit)
 }
 
 export async function getEventBySlug(slug: string) {
@@ -30,10 +73,40 @@ export async function getEventBySlug(slug: string) {
     title,
     slug,
     description,
+    excerpt,
     content,
+    featuredImage,
     category,
     date,
+    endDate,
     location,
+    venue,
+    isFree,
+    price,
+    currency,
+    capacity,
+    requiresRegistration,
+    registrationType,
+    registrationUrl,
+    registrationForm {
+      fields[] {
+        fieldId,
+        label,
+        fieldType,
+        placeholder,
+        options,
+        required,
+        helpText,
+        validation
+      },
+      submitButtonText,
+      successMessage,
+      notificationEmails
+    },
+    registrationDeadline,
+    organizer,
+    contactEmail,
+    contactPhone,
     featured
   }`
 

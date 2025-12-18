@@ -4,20 +4,34 @@ import { PageHero } from "@/components/page-hero"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Link from "next/link"
-import { Calendar, Clock, ArrowRight, User, Newspaper } from "lucide-react"
-import { getNews, getEvents } from "@/lib/sanity-queries"
+import { Calendar, Clock, ArrowRight, User, Newspaper, MapPin } from "lucide-react"
+import { getNews, getUpcomingEvents, getPastEvents } from "@/lib/sanity-queries"
 import { urlFor } from "@/lib/sanity"
 
 export const revalidate = 60 // Revalidate every 60 seconds
 
 export default async function NewsPage() {
   // Fetch news and events from Sanity
-  const newsArticles = await getNews(undefined, 12)
-  const events = await getEvents(undefined, 10)
+  const [newsArticles, upcomingEvents, pastEvents] = await Promise.all([
+    getNews(undefined, 12),
+    getUpcomingEvents(undefined, 10),
+    getPastEvents(undefined, 10)
+  ])
   
   // Get featured news (first one marked as featured)
   const featuredNews = newsArticles.find((article: any) => article.featured) || newsArticles[0]
+
+  const formatCurrency = (amount: number, currency: string) => {
+    const symbols: { [key: string]: string } = {
+      'NGN': '₦',
+      'USD': '$',
+      'GBP': '£',
+      'EUR': '€'
+    }
+    return `${symbols[currency] || currency} ${amount.toLocaleString()}`
+  }
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -164,64 +178,165 @@ export default async function NewsPage() {
           </div>
         </section>
 
-        {/* Upcoming Events */}
+        {/* Events Section with Tabs */}
         <section className="py-12 sm:py-16 lg:py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Upcoming Events</h2>
-              {events.length > 0 ? (
-                <div className="space-y-4">
-                  {events.map((event: any) => (
-                    <Card key={event._id} className="hover:shadow-lg transition-all hover:border-primary/50">
-                      <CardContent className="p-4 sm:p-6">
-                        <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
-                          <div className="flex-1 w-full">
-                            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
-                              {event.category && (
-                                <Badge variant="outline" className="text-xs sm:text-sm">{event.category}</Badge>
-                              )}
-                              {event.location && (
-                                <span className="text-xs sm:text-sm text-muted-foreground truncate">{event.location}</span>
-                              )}
+              <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center">Events</h2>
+              
+              <Tabs defaultValue="upcoming" className="w-full">
+                <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 mb-8">
+                  <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
+                  <TabsTrigger value="past">Past Events</TabsTrigger>
+                </TabsList>
+
+                {/* Upcoming Events */}
+                <TabsContent value="upcoming" className="mt-0">
+                  {upcomingEvents.length > 0 ? (
+                    <div className="space-y-4">
+                      {upcomingEvents.map((event: any) => (
+                        <Card key={event._id} className="hover:shadow-lg transition-all hover:border-primary/50">
+                          <CardContent className="p-4 sm:p-6">
+                            <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+                              <div className="flex-1 w-full">
+                                <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                                  {event.category && (
+                                    <Badge variant="outline" className="text-xs sm:text-sm">{event.category}</Badge>
+                                  )}
+                                  {!event.isFree && event.price && (
+                                    <Badge className="text-xs sm:text-sm bg-primary/10 text-primary">
+                                      {formatCurrency(event.price, event.currency || 'NGN')}
+                                    </Badge>
+                                  )}
+                                  {event.isFree && (
+                                    <Badge variant="outline" className="text-xs sm:text-sm text-green-600 border-green-600">
+                                      Free
+                                    </Badge>
+                                  )}
+                                </div>
+                                <h3 className="font-semibold text-base sm:text-lg mb-2">{event.title}</h3>
+                                {event.excerpt && (
+                                  <p className="text-sm sm:text-base text-muted-foreground mb-3 line-clamp-2">{event.excerpt}</p>
+                                )}
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                                    <Calendar className="h-4 w-4 flex-shrink-0" />
+                                    <span>
+                                      {new Date(event.date).toLocaleDateString('en-US', { 
+                                        weekday: 'long',
+                                        month: 'long', 
+                                        day: 'numeric', 
+                                        year: 'numeric' 
+                                      })}
+                                    </span>
+                                  </div>
+                                  {event.location && (
+                                    <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                                      <MapPin className="h-4 w-4 flex-shrink-0" />
+                                      <span className="line-clamp-1">{event.location}</span>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                              <Button asChild size="sm">
+                                <Link href={`/events/${event.slug.current}`}>
+                                  View Details
+                                  <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
+                              </Button>
                             </div>
-                            <h3 className="font-semibold text-base sm:text-lg mb-2">{event.title}</h3>
-                            {event.description && (
-                              <p className="text-sm sm:text-base text-muted-foreground mb-3 line-clamp-2 sm:line-clamp-none">{event.description}</p>
-                            )}
-                            <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
-                              <Calendar className="h-4 w-4 flex-shrink-0" />
-                              <span className="break-words">
-                                {new Date(event.date).toLocaleDateString('en-US', { 
-                                  weekday: 'long',
-                                  month: 'long', 
-                                  day: 'numeric', 
-                                  year: 'numeric' 
-                                })}
-                              </span>
-                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  ) : (
+                    <Card className="border-2 border-dashed">
+                      <CardContent className="p-12 text-center">
+                        <div className="max-w-md mx-auto">
+                          <div className="mb-4 inline-flex p-4 rounded-full bg-muted">
+                            <Clock className="h-8 w-8 text-muted-foreground" />
                           </div>
+                          <h3 className="text-xl font-bold mb-2">No Upcoming Events</h3>
+                          <p className="text-muted-foreground">
+                            Check back soon for new events!
+                            <br />
+                            <span className="text-sm">Add events via Sanity Studio at /studio</span>
+                          </p>
                         </div>
                       </CardContent>
                     </Card>
-                  ))}
-                </div>
-              ) : (
-                <Card className="border-2 border-dashed">
-                  <CardContent className="p-12 text-center">
-                    <div className="max-w-md mx-auto">
-                      <div className="mb-4 inline-flex p-4 rounded-full bg-muted">
-                        <Calendar className="h-8 w-8 text-muted-foreground" />
-                      </div>
-                      <h3 className="text-xl font-bold mb-2">No Upcoming Events</h3>
-                      <p className="text-muted-foreground">
-                        Events will be posted here soon.
-                        <br />
-                        <span className="text-sm">Add content via Sanity Studio at /studio</span>
-                      </p>
+                  )}
+                </TabsContent>
+
+                {/* Past Events */}
+                <TabsContent value="past" className="mt-0">
+                  {pastEvents.length > 0 ? (
+                    <div className="space-y-4">
+                      {pastEvents.map((event: any) => (
+                        <Card key={event._id} className="hover:shadow-lg transition-all hover:border-muted-foreground/20 opacity-80">
+                          <CardContent className="p-4 sm:p-6">
+                            <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+                              <div className="flex-1 w-full">
+                                <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
+                                  {event.category && (
+                                    <Badge variant="outline" className="text-xs sm:text-sm">{event.category}</Badge>
+                                  )}
+                                  <Badge variant="secondary" className="text-xs sm:text-sm">
+                                    Past Event
+                                  </Badge>
+                                </div>
+                                <h3 className="font-semibold text-base sm:text-lg mb-2">{event.title}</h3>
+                                {event.excerpt && (
+                                  <p className="text-sm sm:text-base text-muted-foreground mb-3 line-clamp-2">{event.excerpt}</p>
+                                )}
+                                <div className="space-y-1">
+                                  <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                                    <Calendar className="h-4 w-4 flex-shrink-0" />
+                                    <span>
+                                      {new Date(event.date).toLocaleDateString('en-US', { 
+                                        weekday: 'long',
+                                        month: 'long', 
+                                        day: 'numeric', 
+                                        year: 'numeric' 
+                                      })}
+                                    </span>
+                                  </div>
+                                  {event.location && (
+                                    <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground">
+                                      <MapPin className="h-4 w-4 flex-shrink-0" />
+                                      <span className="line-clamp-1">{event.location}</span>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                              <Button asChild size="sm" variant="outline">
+                                <Link href={`/events/${event.slug.current}`}>
+                                  View Event
+                                  <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
                     </div>
-                  </CardContent>
-                </Card>
-              )}
+                  ) : (
+                    <Card className="border-2 border-dashed">
+                      <CardContent className="p-12 text-center">
+                        <div className="max-w-md mx-auto">
+                          <div className="mb-4 inline-flex p-4 rounded-full bg-muted">
+                            <Calendar className="h-8 w-8 text-muted-foreground" />
+                          </div>
+                          <h3 className="text-xl font-bold mb-2">No Past Events</h3>
+                          <p className="text-muted-foreground">
+                            Past events will appear here.
+                          </p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+                </TabsContent>
+              </Tabs>
             </div>
           </div>
         </section>
