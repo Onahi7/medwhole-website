@@ -6,6 +6,10 @@ import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { Calendar, Clock, ArrowRight, User, Share2, Facebook, Twitter, Linkedin } from "lucide-react"
+import { getNewsBySlug, getNews } from "@/lib/sanity-queries"
+import { urlFor } from "@/lib/sanity"
+import { PortableText } from "@portabletext/react"
+import Image from "next/image"
 
 const articles = [
   {
@@ -186,19 +190,20 @@ const articles = [
   },
 ]
 
-export default function NewsArticlePage({ params }: { params: { slug: string } }) {
-  const article = articles.find((a) => a.slug === params.slug)
+export default async function NewsArticlePage({ params }: { params: { slug: string } }) {
+  const article = await getNewsBySlug(params.slug)
 
   if (!article) {
     notFound()
   }
 
-  const relatedArticles = articles.filter((a) => a.slug !== article.slug && a.category === article.category).slice(0, 3)
+  const relatedArticles = await getNews(article.category, 3)
+  const filteredRelated = relatedArticles.filter((a) => a.slug.current !== article.slug.current).slice(0, 3)
 
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         {/* Hero Section */}
         <section className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-primary-foreground py-20 lg:py-32 overflow-hidden">
           <div className="absolute inset-0 opacity-10">
@@ -214,21 +219,23 @@ export default function NewsArticlePage({ params }: { params: { slug: string } }
                 <ArrowRight className="h-4 w-4 rotate-180" />
                 Back to News
               </Link>
-              <Badge className="mb-4 bg-accent text-accent-foreground">{article.category}</Badge>
+              {article.category && <Badge className="mb-4 bg-accent text-accent-foreground">{article.category}</Badge>}
               <h1 className="text-4xl lg:text-5xl font-bold mb-6 text-balance">{article.title}</h1>
               <div className="flex flex-wrap gap-4 text-primary-foreground/90">
                 <span className="flex items-center gap-2">
                   <Calendar className="h-4 w-4" />
-                  {article.date}
+                  {new Date(article.publishedAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
                 </span>
-                <span className="flex items-center gap-2">
-                  <Clock className="h-4 w-4" />
-                  {article.readTime}
-                </span>
-                <span className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
-                  {article.author}
-                </span>
+                {article.author && (
+                  <span className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    {article.author}
+                  </span>
+                )}
               </div>
             </div>
           </div>
@@ -241,31 +248,41 @@ export default function NewsArticlePage({ params }: { params: { slug: string } }
               {/* Main Content */}
               <div className="lg:col-span-2">
                 {/* Featured Image */}
-                <div className="relative aspect-video rounded-2xl overflow-hidden mb-12 shadow-xl">
-                  <img
-                    src={article.image || "/placeholder.svg"}
-                    alt={article.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                {article.featuredImage && (
+                  <div className="relative aspect-video rounded-2xl overflow-hidden mb-12 shadow-xl">
+                    <Image
+                      src={urlFor(article.featuredImage).width(1200).height(675).url()}
+                      alt={article.featuredImage.alt || article.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 66vw"
+                    />
+                  </div>
+                )}
+
+                {/* Article Excerpt */}
+                {article.excerpt && (
+                  <div className="text-xl text-muted-foreground mb-8 leading-relaxed font-medium">
+                    {article.excerpt}
+                  </div>
+                )}
 
                 {/* Article Body */}
-                <div
-                  className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4"
-                  dangerouslySetInnerHTML={{ __html: article.content }}
-                />
+                {article.content && (
+                  <div className="prose prose-lg max-w-none prose-headings:font-bold prose-headings:text-foreground prose-p:text-muted-foreground prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4">
+                    <PortableText value={article.content} />
+                  </div>
+                )}
 
                 {/* Tags */}
-                <div className="mt-12 pt-8 border-t">
-                  <h3 className="text-sm font-semibold text-muted-foreground mb-4">TAGS</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {article.tags.map((tag, index) => (
-                      <Badge key={index} variant="secondary" className="bg-muted hover:bg-muted/80">
-                        {tag}
-                      </Badge>
-                    ))}
+                {article.category && (
+                  <div className="mt-12 pt-8 border-t">
+                    <h3 className="text-sm font-semibold text-muted-foreground mb-4">CATEGORY</h3>
+                    <Badge variant="secondary" className="bg-muted hover:bg-muted/80">
+                      {article.category}
+                    </Badge>
                   </div>
-                </div>
+                )}
 
                 {/* Share */}
                 <div className="mt-8 pt-8 border-t">
@@ -303,7 +320,7 @@ export default function NewsArticlePage({ params }: { params: { slug: string } }
                           <User className="h-8 w-8 text-primary" />
                         </div>
                         <div>
-                          <p className="font-semibold mb-1">{article.author}</p>
+                          <p className="font-semibold mb-1">{article.author || "MedWHOLE Team"}</p>
                           <p className="text-sm text-muted-foreground">
                             Contributing writer for MedWHOLE Alliance communications
                           </p>
@@ -326,24 +343,32 @@ export default function NewsArticlePage({ params }: { params: { slug: string } }
                   </Card>
 
                   {/* Related Articles */}
-                  {relatedArticles.length > 0 && (
+                  {filteredRelated.length > 0 && (
                     <Card>
                       <CardContent className="p-6">
                         <h3 className="font-bold mb-4">Related Articles</h3>
                         <div className="space-y-4">
-                          {relatedArticles.map((related) => (
+                          {filteredRelated.map((related) => (
                             <Link
-                              key={related.slug}
-                              href={`/news/${related.slug}`}
+                              key={related._id}
+                              href={`/news/${related.slug.current}`}
                               className="block group hover:bg-muted/50 p-3 rounded-lg transition-colors -mx-3"
                             >
-                              <Badge variant="secondary" className="mb-2 text-xs">
-                                {related.category}
-                              </Badge>
+                              {related.category && (
+                                <Badge variant="secondary" className="mb-2 text-xs">
+                                  {related.category}
+                                </Badge>
+                              )}
                               <h4 className="font-semibold text-sm mb-2 group-hover:text-primary transition-colors line-clamp-2">
                                 {related.title}
                               </h4>
-                              <p className="text-xs text-muted-foreground">{related.date}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {new Date(related.publishedAt).toLocaleDateString("en-US", {
+                                  year: "numeric",
+                                  month: "short",
+                                  day: "numeric",
+                                })}
+                              </p>
                             </Link>
                           ))}
                         </div>

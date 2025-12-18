@@ -140,7 +140,7 @@ export default function HomePage() {
         <section className="relative bg-gradient-to-br from-primary via-primary/95 to-accent/20 text-primary-foreground overflow-hidden min-h-[90vh] flex items-center">
           <div className="absolute inset-0">
             <Image
-              src="/hero-community.jpg"
+              src="/african-community-health-workers-team-collaboratio.jpg"
               alt=""
               fill
               priority

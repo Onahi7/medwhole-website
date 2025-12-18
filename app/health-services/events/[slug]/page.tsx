@@ -121,7 +121,7 @@ export default function HealthEventPage({ params }: EventPageProps) {
     return (
       <div className="flex min-h-screen flex-col">
         <SiteHeader />
-        <main className="flex-1 flex items-center justify-center">
+        <main id="main-content" className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-4xl font-bold mb-4">Event Not Found</h1>
             <p className="text-muted-foreground mb-8">The health event you're looking for doesn't exist.</p>
@@ -147,7 +147,7 @@ export default function HealthEventPage({ params }: EventPageProps) {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         {/* Hero Section */}
         <section className="relative py-16 lg:py-24 bg-gradient-to-br from-accent via-accent/90 to-accent/80 text-accent-foreground overflow-hidden">
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>

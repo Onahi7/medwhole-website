@@ -169,6 +169,11 @@
   .font-content { font-family: var(--font-content); }
 }
 
+/* Skip to content link for accessibility */
+.skip-to-content {
+  @apply sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-4 focus:left-4 focus:px-6 focus:py-3 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:shadow-lg focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-ring;
+}
+
 /* Added custom animations for interactive elements */
 @keyframes float {
   0%,

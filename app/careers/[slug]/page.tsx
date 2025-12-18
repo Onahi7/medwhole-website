@@ -339,7 +339,7 @@ export default function JobDetailPage({ params }: { params: { slug: string } }) 
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         {/* Hero Section */}
         <section className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-primary-foreground py-20 lg:py-32 overflow-hidden">
           <div className="absolute inset-0 opacity-10">
