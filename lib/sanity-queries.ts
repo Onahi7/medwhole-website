@@ -1,9 +1,16 @@
 import { client } from './sanity'
+import { groq } from 'next-sanity'
+
+function clampLimit(limit: number, defaultLimit: number) {
+  if (!Number.isFinite(limit)) return defaultLimit
+  return Math.max(1, Math.min(Math.trunc(limit), 50))
+}
 
 export async function getEvents(category?: string, limit: number = 10) {
-  const categoryFilter = category ? `&& category == "${category}"` : ''
-  
-  const query = `*[_type == "event" && isActive == true ${categoryFilter}] | order(date desc) [0...${limit}] {
+  const safeLimit = clampLimit(limit, 10)
+  const categoryFilter = category ? `&& category == $category` : ''
+
+  const query = groq`*[_type == "event" && isActive == true ${categoryFilter}] | order(date desc) [0...$safeLimit] {
     _id,
     title,
     slug,
@@ -14,11 +21,11 @@ export async function getEvents(category?: string, limit: number = 10) {
     featured
   }`
 
-  return client.fetch(query)
+  return client.fetch(query, { safeLimit, ...(category ? { category } : {}) })
 }
 
 export async function getEventBySlug(slug: string) {
-  const query = `*[_type == "event" && slug.current == $slug][0] {
+  const query = groq`*[_type == "event" && slug.current == $slug][0] {
     _id,
     title,
     slug,
@@ -34,9 +41,10 @@ export async function getEventBySlug(slug: string) {
 }
 
 export async function getNews(category?: string, limit: number = 10) {
-  const categoryFilter = category ? `&& category == "${category}"` : ''
-  
-  const query = `*[_type == "news" && isActive == true ${categoryFilter}] | order(publishedAt desc) [0...${limit}] {
+  const safeLimit = clampLimit(limit, 10)
+  const categoryFilter = category ? `&& category == $category` : ''
+
+  const query = groq`*[_type == "news" && isActive == true ${categoryFilter}] | order(publishedAt desc) [0...$safeLimit] {
     _id,
     title,
     slug,
@@ -48,11 +56,11 @@ export async function getNews(category?: string, limit: number = 10) {
     featured
   }`
 
-  return client.fetch(query)
+  return client.fetch(query, { safeLimit, ...(category ? { category } : {}) })
 }
 
 export async function getNewsBySlug(slug: string) {
-  const query = `*[_type == "news" && slug.current == $slug][0] {
+  const query = groq`*[_type == "news" && slug.current == $slug][0] {
     _id,
     title,
     slug,
@@ -69,9 +77,10 @@ export async function getNewsBySlug(slug: string) {
 }
 
 export async function getGalleryImages(category?: string, limit: number = 20) {
-  const categoryFilter = category ? `&& category == "${category}"` : ''
-  
-  const query = `*[_type == "gallery" && isActive == true ${categoryFilter}] | order(order asc, _createdAt desc) [0...${limit}] {
+  const safeLimit = clampLimit(limit, 20)
+  const categoryFilter = category ? `&& category == $category` : ''
+
+  const query = groq`*[_type == "gallery" && isActive == true ${categoryFilter}] | order(order asc, _createdAt desc) [0...$safeLimit] {
     _id,
     title,
     image,
@@ -80,13 +89,13 @@ export async function getGalleryImages(category?: string, limit: number = 20) {
     order
   }`
 
-  return client.fetch(query)
+  return client.fetch(query, { safeLimit, ...(category ? { category } : {}) })
 }
 
 export async function getTeamMembers(category?: string) {
-  const categoryFilter = category ? `&& category == "${category}"` : ''
-  
-  const query = `*[_type == "team" && isActive == true ${categoryFilter}] | order(order asc, name asc) {
+  const categoryFilter = category ? `&& category == $category` : ''
+
+  const query = groq`*[_type == "team" && isActive == true ${categoryFilter}] | order(order asc, name asc) {
     _id,
     name,
     role,
@@ -98,13 +107,13 @@ export async function getTeamMembers(category?: string) {
     order
   }`
 
-  return client.fetch(query)
+  return client.fetch(query, category ? { category } : {})
 }
 
 export async function getPrograms(category?: string) {
-  const categoryFilter = category ? `&& category == "${category}"` : ''
-  
-  const query = `*[_type == "program" && isActive == true ${categoryFilter}] | order(featured desc, _createdAt desc) {
+  const categoryFilter = category ? `&& category == $category` : ''
+
+  const query = groq`*[_type == "program" && isActive == true ${categoryFilter}] | order(featured desc, _createdAt desc) {
     _id,
     title,
     slug,
@@ -116,11 +125,11 @@ export async function getPrograms(category?: string) {
     featured
   }`
 
-  return client.fetch(query)
+  return client.fetch(query, category ? { category } : {})
 }
 
 export async function getProgramBySlug(slug: string) {
-  const query = `*[_type == "program" && slug.current == $slug][0] {
+  const query = groq`*[_type == "program" && slug.current == $slug][0] {
     _id,
     title,
     slug,

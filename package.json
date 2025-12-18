@@ -14,7 +14,8 @@
     "db:studio": "drizzle-kit studio",
     "admin:create": "tsx scripts/create-admin.ts",
     "generate:secrets": "tsx scripts/generate-secrets.ts",
-    "sanity:seed": "tsx scripts/seed-sanity.ts"
+    "sanity:clean": "tsx scripts/clean-sanity.ts",
+    "sanity:seed": "tsx scripts/seed-sanity-complete.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -75,6 +76,7 @@
     "react-hook-form": "^7.60.0",
     "react-resizable-panels": "^2.1.7",
     "recharts": "2.15.4",
+    "server-only": "^0.0.1",
     "sonner": "^1.7.4",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",

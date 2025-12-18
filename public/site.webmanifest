@@ -1,0 +1,23 @@
+{
+  "name": "MedWHOLE Alliance for Health and Development",
+  "short_name": "MedWHOLE",
+  "description": "A network of competent, character-driven leaders empowering individuals and families to achieve wholeness and become agents of community transformation across Nigeria and Africa.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f766e",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["health", "education", "nonprofit"],
+  "orientation": "portrait-primary"
+}

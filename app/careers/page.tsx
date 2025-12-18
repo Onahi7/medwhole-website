@@ -50,6 +50,10 @@ export default function CareersPage() {
 
   const values = [
     {
+      title: "Faith-based",
+      description: "Our purpose and actions are founded in biblical principles",
+    },
+    {
       title: "Excellence",
       description: "We strive for the highest standards in everything we do",
     },
@@ -60,10 +64,6 @@ export default function CareersPage() {
     {
       title: "Collaboration",
       description: "We work together across disciplines and borders",
-    },
-    {
-      title: "Equity",
-      description: "We are committed to health equity and social justice",
     },
   ]
 

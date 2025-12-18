@@ -1,10 +1,12 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Hind, Questrial } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Suspense } from "react"
 import { SkipToContent } from "@/components/skip-to-content"
+import { OrganizationSchema } from "@/components/structured-data"
+import { generateSEO } from "@/lib/seo"
 
 const hind = Hind({
   subsets: ["latin"],
@@ -20,11 +22,13 @@ const questrial = Questrial({
   display: "swap",
 })
 
-export const metadata: Metadata = {
-  title: "MedWHOLE Alliance for Health and Development",
-  description:
-    "Advancing health, leadership, and development across Africa through education, health, and consult.",
-  generator: "v0.app",
+export const metadata: Metadata = generateSEO()
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#0f766e",
 }
 
 export default function RootLayout({
@@ -34,6 +38,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <OrganizationSchema />
+      </head>
       <body className={`font-sans ${hind.variable} ${questrial.variable} antialiased`}>
         <SkipToContent />
         <Suspense fallback={null}>{children}</Suspense>

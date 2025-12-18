@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Facebook, Twitter, Linkedin, Mail } from "lucide-react"
+import { Facebook, Twitter, Linkedin, Mail, Instagram, Youtube } from "lucide-react"
 
 export function SiteFooter() {
   return (
@@ -87,6 +87,12 @@ export function SiteFooter() {
           <div className="space-y-4">
             <h4 className="text-sm font-semibold">Connect</h4>
             <div className="flex space-x-4">
+              <a href="https://www.instagram.com/p/DPTPS3_jeae/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Instagram">
+                <Instagram className="h-5 w-5" />
+              </a>
+              <a href="https://www.youtube.com/channel/UCE4pi2L2ztpUVv9D4cCSIYg" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="YouTube">
+                <Youtube className="h-5 w-5" />
+              </a>
               <a href="#" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Facebook">
                 <Facebook className="h-5 w-5" />
               </a>

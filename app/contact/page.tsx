@@ -31,7 +31,7 @@ export default function ContactPage() {
                     <Mail className="h-6 w-6 text-primary" />
                   </div>
                   <h3 className="font-semibold mb-2">Email</h3>
-                  <p className="text-sm text-muted-foreground">info@medwhole.org</p>
+                  <p className="text-sm text-muted-foreground">medwholealliance@gmail.com</p>
                 </CardContent>
               </Card>
 
@@ -41,7 +41,10 @@ export default function ContactPage() {
                     <Phone className="h-6 w-6 text-primary" />
                   </div>
                   <h3 className="font-semibold mb-2">Phone</h3>
-                  <p className="text-sm text-muted-foreground">+XXX XXX XXX XXX</p>
+                  <p className="text-sm text-muted-foreground">
+                    +234 818 980 0001<br />
+                    +234 818 980 0002
+                  </p>
                 </CardContent>
               </Card>
 
@@ -51,7 +54,7 @@ export default function ContactPage() {
                     <MapPin className="h-6 w-6 text-primary" />
                   </div>
                   <h3 className="font-semibold mb-2">Location</h3>
-                  <p className="text-sm text-muted-foreground">Africa</p>
+                  <p className="text-sm text-muted-foreground">Abuja, Nigeria</p>
                 </CardContent>
               </Card>
             </div>

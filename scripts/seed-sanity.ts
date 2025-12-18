@@ -1,627 +1,845 @@
-import { createClient } from '@sanity/client';
-import dotenv from 'dotenv';
-import path from 'path';
+import { createClient } from '@sanity/client'
+          import dotenv from 'dotenv'
+          import fs from 'node:fs'
+          import path from 'node:path'
 
-// Load environment variables
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+          dotenv.config({ path: path.resolve(__dirname, '../.env') })
 
-const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET!,
-  token: process.env.SANITY_API_TOKEN!,
-  apiVersion: '2024-01-01',
-  useCdn: false,
-});
+          const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
+          const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET
+          const token = process.env.SANITY_API_TOKEN
+          const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01-01'
 
-// Helper function to create document
-async function createDocument(doc: any) {
-  try {
-    const result = await client.create(doc);
-    console.log(`✅ Created ${doc._type}: ${doc.title || doc.name}`);
-    return result;
-  } catch (error) {
-    console.error(`❌ Error creating ${doc._type}:`, error);
-    throw error;
-  }
-}
+          if (!projectId) throw new Error('Missing NEXT_PUBLIC_SANITY_PROJECT_ID')
+          if (!dataset) throw new Error('Missing NEXT_PUBLIC_SANITY_DATASET')
+          if (!token) throw new Error('Missing SANITY_API_TOKEN')
 
-// News Articles
-const newsArticles = [
-  {
-    _type: 'news',
-    title: 'MedWHOLE Launches New Maternal Health Initiative Across 5 African Countries',
-    slug: { current: 'maternal-health-initiative-2024' },
-    excerpt: "In partnership with regional health ministries, we're implementing comprehensive maternal health programs aimed at reducing maternal mortality by 40% over the next three years.",
-    publishedAt: '2024-03-15',
-    category: 'Program Launch',
-    author: 'MedWHOLE Communications',
-    readTime: 5,
-    featured: true,
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: "MedWHOLE Alliance is proud to announce the launch of our most ambitious maternal health initiative to date, spanning five African countries: Kenya, Ghana, Nigeria, Tanzania, and Senegal. This comprehensive program represents a $15 million investment in maternal health infrastructure, training, and service delivery over the next three years.",
-          },
-        ],
-        style: 'normal',
-      },
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'Program Overview',
-            marks: ['strong'],
-          },
-        ],
-        style: 'h2',
-      },
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'The initiative focuses on three key pillars: strengthening health facility capacity, training healthcare workers in emergency obstetric care, and establishing community-based maternal health support systems. Our goal is to reduce maternal mortality by 40% in target regions through evidence-based interventions and sustainable health system improvements.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-    tags: ['Maternal Health', 'Program Launch', 'Partnership', 'Health Systems'],
-  },
-  {
-    _type: 'news',
-    title: '500+ Health Workers Complete Leadership Training Program',
-    slug: { current: 'leadership-training-graduation-2024' },
-    excerpt: 'Our flagship leadership program graduates its largest cohort, with participants from 12 African nations ready to lead health initiatives in their communities.',
-    publishedAt: '2024-03-10',
-    category: 'Academy',
-    author: 'Dr. Sarah Mensah',
-    readTime: 4,
-    featured: true,
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'In a momentous celebration of achievement and potential, MedWHOLE Academy graduated over 500 health professionals from our flagship Public Health Leadership Certificate program. This represents our largest cohort to date, with participants from 12 African countries bringing diverse perspectives and experiences to the program.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-    tags: ['Leadership', 'Training', 'Graduation', 'Capacity Building'],
-  },
-  {
-    _type: 'news',
-    title: 'New Research Published on Community Health Worker Impact',
-    slug: { current: 'chw-research-study-2024' },
-    excerpt: 'MedWHOLE research team publishes groundbreaking study showing 35% improvement in health outcomes through community health worker programs.',
-    publishedAt: '2024-03-05',
-    category: 'Research',
-    author: 'Research Team',
-    readTime: 6,
-    featured: false,
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: "MedWHOLE's research team has published a comprehensive study in the Journal of Global Health demonstrating the significant impact of well-trained and supported community health workers (CHWs) on health outcomes in rural African communities.",
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-    tags: ['Research', 'Community Health', 'Evidence', 'Publication'],
-  },
-  {
-    _type: 'news',
-    title: 'Partnership Announcement: Collaboration with WHO Africa',
-    slug: { current: 'who-africa-partnership-2024' },
-    excerpt: 'MedWHOLE Alliance signs MoU with WHO Africa Regional Office to strengthen health systems across the continent.',
-    publishedAt: '2024-02-28',
-    category: 'Partnership',
-    author: 'MedWHOLE Communications',
-    readTime: 3,
-    featured: true,
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'MedWHOLE Alliance is honored to announce a strategic partnership with the World Health Organization Regional Office for Africa (WHO AFRO). This collaboration will leverage our combined expertise and resources to strengthen health systems across the African continent.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-    tags: ['Partnership', 'WHO', 'Collaboration', 'Health Systems'],
-  },
-  {
-    _type: 'news',
-    title: 'Mobile Health Clinics Reach 50,000 Patients Milestone',
-    slug: { current: 'mobile-clinics-milestone-2024' },
-    excerpt: 'Our mobile health service has now provided care to over 50,000 patients in remote and underserved communities.',
-    publishedAt: '2024-02-20',
-    category: 'Health',
-    author: 'Dr. James Okonkwo',
-    readTime: 5,
-    featured: false,
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'MedWHOLE Health is proud to announce that our mobile health clinic program has reached a significant milestone: providing care to over 50,000 patients in remote and underserved communities across Africa.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-    tags: ['Health', 'Mobile Clinics', 'Access to Care', 'Rural Health'],
-  },
-];
+          const client = createClient({
+            projectId,
+            dataset,
+            token,
+            apiVersion,
+            useCdn: false,
+          })
 
-// Events
-const events = [
-  {
-    _type: 'event',
-    title: 'Public Health Leadership Summit 2025',
-    slug: { current: 'leadership-summit-2025' },
-    description: 'A premier gathering of public health leaders, policymakers, and practitioners from across Africa to discuss the future of public health leadership and innovation.',
-    eventType: 'academy',
-    category: 'Summit',
-    startDate: '2025-10-15',
-    endDate: '2025-10-17',
-    location: 'Abuja, Nigeria',
-    featured: true,
-    registrationOpen: true,
-    capacity: 500,
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'The summit will feature keynote speakers, panel discussions, and networking opportunities focused on leadership, innovation, and collaboration in public health.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-  },
-  {
-    _type: 'event',
-    title: 'Epidemiology Masterclass Series',
-    slug: { current: 'epidemiology-masterclass-2025' },
-    description: 'An advanced masterclass for epidemiologists and public health researchers looking to deepen their skills in study design, data analysis, and outbreak investigation.',
-    eventType: 'academy',
-    category: 'Masterclass',
-    startDate: '2025-09-22',
-    endDate: '2025-09-25',
-    location: 'Kampala, Uganda',
-    featured: true,
-    registrationOpen: true,
-    capacity: 100,
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'This intensive program will cover advanced topics in epidemiological methods, biostatistics, and outbreak investigation.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-  },
-  {
-    _type: 'event',
-    title: 'Research Methods & Grant Writing Workshop',
-    slug: { current: 'grant-writing-workshop-2025' },
-    description: 'A practical, hands-on workshop designed to equip researchers and public health professionals with the skills to design robust research studies and write successful grant proposals.',
-    eventType: 'academy',
-    category: 'Workshop',
-    startDate: '2025-08-10',
-    endDate: '2025-08-12',
-    location: 'Accra, Ghana',
-    featured: false,
-    registrationOpen: true,
-    capacity: 75,
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'This workshop is ideal for early-career researchers looking to develop research protocols and write compelling grant proposals.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-  },
-  {
-    _type: 'event',
-    title: 'World Heart Day Campaign',
-    slug: { current: 'world-heart-day-2025' },
-    description: 'A city-wide campaign to raise awareness about cardiovascular diseases, offering free heart health screenings, educational workshops, and promoting healthy lifestyles.',
-    eventType: 'health',
-    category: 'Community Outreach',
-    startDate: '2025-09-29',
-    endDate: '2025-09-29',
-    location: 'Community Centers, Lagos',
-    featured: true,
-    registrationOpen: true,
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'Join us for free health screenings, healthy cooking demonstrations, and educational workshops on heart health.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-  },
-  {
-    _type: 'event',
-    title: 'Maternal Health Outreach Program',
-    slug: { current: 'maternal-health-outreach-2025' },
-    description: 'A month-long mobile health outreach program providing essential maternal and child health services to underserved rural communities.',
-    eventType: 'health',
-    category: 'Mobile Clinic',
-    startDate: '2025-10-01',
-    endDate: '2025-10-31',
-    location: 'Rural Communities, Gulu District',
-    featured: false,
-    registrationOpen: true,
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'Providing prenatal care, vaccinations, and health education to underserved communities.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-  },
-];
+          type PortableTextBlock = {
+            _type: 'block'
+            style: 'normal'
+            markDefs: any[]
+            children: Array<{ _type: 'span'; text: string; marks: string[] }>
+          }
 
-// Programs
-const programs = [
-  {
-    _type: 'program',
-    title: 'Back-to-School Scholarship Program',
-    slug: { current: 'scholarship-program' },
-    programType: 'academy',
-    description: 'Supports vulnerable children with tuition, uniforms, books, and exam fees.',
-    featured: true,
-    objectives: [
-      'Reduce dropout rates and restore hope in formal education',
-      'Provide comprehensive educational support',
-      'Increase school enrollment and retention',
-    ],
-    components: [
-      'Student selection and assessment',
-      'Tuition fees coverage',
-      'Study materials provision',
-      'Mentorship and guidance',
-    ],
-    outcomes: [
-      'Increased school enrollment',
-      'Improved retention rates',
-      'Academic stability for vulnerable children',
-    ],
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'The Back-to-School Scholarship Program provides comprehensive support for vulnerable children to access quality education.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-  },
-  {
-    _type: 'program',
-    title: 'Discipleship & Character Development',
-    slug: { current: 'discipleship-program' },
-    programType: 'academy',
-    description: 'Weekly GOODNEWS CLUB sessions rooted in biblical teachings, focused on building identity, godly values, and purpose-driven living.',
-    featured: true,
-    objectives: [
-      'Build godly character and values',
-      'Develop purpose-driven mindset',
-      'Foster spiritual growth',
-    ],
-    components: [
-      'Weekly lessons',
-      'Small-group mentoring',
-      'Faith-based activities',
-    ],
-    outcomes: [
-      'Morally and spiritually sound students',
-      'Strong value foundation',
-      'Purpose-driven youth',
-    ],
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'Building the next generation of morally upright and purpose-driven individuals through biblical teachings.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-  },
-  {
-    _type: 'program',
-    title: 'Gosa Primary Health Centre Optimization',
-    slug: { current: 'gosa-phc-optimization' },
-    programType: 'health',
-    description: 'Collaboration with the FCT Primary Health Care Board to improve governance, infrastructure, and community engagement.',
-    featured: true,
-    objectives: [
-      'Strengthen service delivery',
-      'Improve facility management',
-      'Enhance community participation',
-    ],
-    components: [
-      'Infrastructure improvement',
-      'Community mobilization',
-      'Governance strengthening',
-    ],
-    outcomes: [
-      'Enhanced PHC functionality',
-      'Community ownership and participation',
-      'Improved health service quality',
-    ],
-    impactMetrics: [
-      { metric: 'Service utilization increase', value: '40%' },
-      { metric: 'Community satisfaction', value: '85%' },
-    ],
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'Working with FCT Primary Health Care Board to transform primary healthcare delivery.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-  },
-  {
-    _type: 'program',
-    title: 'Facility and Systems Assessment',
-    slug: { current: 'facility-assessment' },
-    programType: 'consulting',
-    description: 'Comprehensive audits of hospitals and health facilities to improve quality and efficiency.',
-    featured: true,
-    objectives: [
-      'Conduct thorough facility audits',
-      'Identify service delivery gaps',
-      'Develop actionable improvement plans',
-    ],
-    components: [
-      'Infrastructure evaluation',
-      'Workflow assessment',
-      'Quality assurance review',
-      'Governance evaluation',
-    ],
-    outcomes: [
-      'Clear improvement recommendations',
-      'Strengthened workflow efficiency',
-      'Enhanced quality of care',
-    ],
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'Comprehensive assessments that strengthen healthcare facilities and systems across Africa.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-  },
-  {
-    _type: 'program',
-    title: 'Monitoring, Evaluation, and Learning (MEL)',
-    slug: { current: 'mel-program' },
-    programType: 'consulting',
-    description: 'Establishing data systems for performance tracking and evidence generation.',
-    featured: true,
-    objectives: [
-      'Develop comprehensive MEL frameworks',
-      'Establish data collection systems',
-      'Create performance dashboards',
-    ],
-    components: [
-      'MEL framework design',
-      'Data collection tools',
-      'Reporting templates',
-      'Performance tracking systems',
-    ],
-    outcomes: [
-      'Effective performance tracking',
-      'Evidence-based decision making',
-      'Improved program outcomes',
-    ],
-    content: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'Building robust monitoring and evaluation systems that drive program excellence.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-  },
-];
+          function slugify(input: string) {
+            return input
+              .toLowerCase()
+              .replace(/[^a-z0-9\s-]/g, '')
+              .trim()
+              .replace(/\s+/g, '-')
+              .replace(/-+/g, '-')
+          }
 
-// Team Members
-const teamMembers = [
-  {
-    _type: 'team',
-    name: 'Prof. Chima Onoka',
-    slug: { current: 'prof-chima-onoka' },
-    role: 'Trustee',
-    department: 'Executive',
-    bio: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'Prof. Chima Onoka serves as a Trustee of MedWHOLE Alliance. With extensive experience in public health and community development, he guides the organization with a vision of transformed communities through wholeness.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-    featured: true,
-    order: 1,
-  },
-  {
-    _type: 'team',
-    name: 'Dr. Ferdinand Ogbaji',
-    slug: { current: 'dr-ferdinand-ogbaji' },
-    role: 'Director of Programmes',
-    department: 'Programs',
-    bio: [
-      {
-        _type: 'block',
-        children: [
-          {
-            _type: 'span',
-            text: 'Dr. Ferdinand Ogbaji serves as the Director of Programmes at MedWHOLE Alliance, overseeing the strategic implementation of all program areas including health, education, and consulting services.',
-          },
-        ],
-        style: 'normal',
-      },
-    ],
-    featured: true,
-    order: 2,
-  },
-];
+          function truncate(input: string, max: number) {
+            const s = input.trim()
+            if (s.length <= max) return s
+            return s.slice(0, max - 1).trimEnd() + '…'
+          }
 
-// Gallery Images
-const galleryImages = [
-  {
-    _type: 'gallery',
-    title: 'Summer School Program',
-    category: 'academy',
-    description: 'Over 290 children engaged in free summer classes across academics, arts, and foundational skills.',
-    order: 1,
-  },
-  {
-    _type: 'gallery',
-    title: 'Scholarship Awards Ceremony',
-    category: 'academy',
-    description: 'Celebrating indigent but deserving students receiving academic scholarships and educational support.',
-    order: 2,
-  },
-  {
-    _type: 'gallery',
-    title: 'Gosa PHC Optimization Project',
-    category: 'health',
-    description: 'Improving governance, infrastructure, and community engagement at Gosa PHC.',
-    order: 3,
-  },
-  {
-    _type: 'gallery',
-    title: 'Emergency Preparedness Training',
-    category: 'health',
-    description: 'CPR and BLS training for public servants, health workers, and NYSC members.',
-    order: 4,
-  },
-  {
-    _type: 'gallery',
-    title: 'WHO Partnership Signing',
-    category: 'events',
-    description: 'Signing ceremony for our partnership with WHO Africa.',
-    order: 5,
-  },
-];
+          function stripBullet(line: string) {
+            return line
+              .replace(/^[\uFFFD�•\-*]+\s*/g, '')
+              .replace(/^(?:D|S|Further|Example|Two|No)\s*-\s*/i, '')
+              .trim()
+          }
 
-// Main seeding function
-async function seedSanity() {
-  console.log('🌱 Starting Sanity CMS seeding...\n');
+          function toPortableText(paragraphs: string[]): PortableTextBlock[] {
+            return paragraphs
+              .map((p) => p.trim())
+              .filter(Boolean)
+              .map((text) => ({
+                _type: 'block',
+                style: 'normal',
+                markDefs: [],
+                children: [{ _type: 'span', text, marks: [] }],
+              }))
+          }
 
-  try {
-    // Seed News Articles
-    console.log('📰 Seeding News Articles...');
-    for (const article of newsArticles) {
-      await createDocument(article);
-    }
+          function monthIndex(month: string) {
+            const months = [
+              'january',
+              'february',
+              'march',
+              'april',
+              'may',
+              'june',
+              'july',
+              'august',
+              'september',
+              'october',
+              'november',
+              'december',
+            ]
+            return months.indexOf(month.toLowerCase())
+          }
 
-    // Seed Events
-    console.log('\n📅 Seeding Events...');
-    for (const event of events) {
-      await createDocument(event);
-    }
+          function parseDateToISO(input: string): string | null {
+            const text = input.trim()
 
-    // Seed Programs
-    console.log('\n🎓 Seeding Programs...');
-    for (const program of programs) {
-      await createDocument(program);
-    }
+            // e.g. "March 15, 2024"
+            const m1 = text.match(/^([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})$/)
+            if (m1) {
+              const mi = monthIndex(m1[1])
+              if (mi >= 0) return new Date(Date.UTC(Number(m1[3]), mi, Number(m1[2]), 0, 0, 0)).toISOString()
+            }
 
-    // Seed Team Members
-    console.log('\n👥 Seeding Team Members...');
-    for (const member of teamMembers) {
-      await createDocument(member);
-    }
+            // e.g. "October 15-17, 2025" (take first day)
+            const m2 = text.match(/^([A-Za-z]+)\s+(\d{1,2})\s*-\s*\d{1,2},\s*(\d{4})$/)
+            if (m2) {
+              const mi = monthIndex(m2[1])
+              if (mi >= 0) return new Date(Date.UTC(Number(m2[3]), mi, Number(m2[2]), 0, 0, 0)).toISOString()
+            }
 
-    // Seed Gallery Images
-    console.log('\n🖼️  Seeding Gallery Images...');
-    for (const image of galleryImages) {
-      await createDocument(image);
-    }
+            // e.g. "September 2025" (use first day)
+            const m3 = text.match(/^([A-Za-z]+)\s+(\d{4})$/)
+            if (m3) {
+              const mi = monthIndex(m3[1])
+              if (mi >= 0) return new Date(Date.UTC(Number(m3[2]), mi, 1, 0, 0, 0)).toISOString()
+            }
 
-    console.log('\n✅ Seeding completed successfully!');
-    console.log('\n📊 Summary:');
-    console.log(`   - ${newsArticles.length} news articles`);
-    console.log(`   - ${events.length} events`);
-    console.log(`   - ${programs.length} programs`);
-    console.log(`   - ${teamMembers.length} team members`);
-    console.log(`   - ${galleryImages.length} gallery images`);
-    console.log('\n🎉 Your Sanity CMS is now populated with content!');
-    console.log('   Visit https://medwhole.sanity.studio to manage your content.');
-  } catch (error) {
-    console.error('\n❌ Seeding failed:', error);
-    process.exit(1);
-  }
-}
+            const parsed = new Date(text)
+            if (!Number.isNaN(parsed.getTime())) return parsed.toISOString()
 
-// Run the seeding script
-seedSanity();
+            return null
+          }
+
+          function getSection(lines: string[], startMarker: string, endMarkers: string[]) {
+            const startIdx = lines.findIndex((l) => l.includes(startMarker))
+            if (startIdx === -1) return []
+            const afterStart = lines.slice(startIdx + 1)
+            const endIdx = afterStart.findIndex((l) => endMarkers.some((m) => l.includes(m)))
+            return endIdx === -1 ? afterStart : afterStart.slice(0, endIdx)
+          }
+
+          function parseNewsFromContent(lines: string[]) {
+            const section = getSection(lines, 'News Articles (/news/[slug])', ['Program Details (/programs/[slug])'])
+            const articles: Array<{
+              title: string
+              excerpt: string
+              publishedAt: string
+              categoryRaw?: string
+              author?: string
+              paragraphs: string[]
+            }> = []
+
+            const peekNextNonEmpty = (idx: number) => {
+              for (let i = idx; i < section.length; i++) {
+                const t = section[i].trim()
+                if (t) return t
+              }
+              return ''
+            }
+
+            let current: (typeof articles)[number] | null = null
+            let inContent = false
+
+            for (let i = 0; i < section.length; i++) {
+              const raw = section[i]
+              const line = raw.trim()
+              if (!line) continue
+
+              if (!line.startsWith('?') && !line.startsWith('�') && !line.startsWith('-')) {
+                const next = peekNextNonEmpty(i + 1)
+                if (next.startsWith('?Excerpt:')) {
+                  if (current) articles.push(current)
+                  current = {
+                    title: line,
+                    excerpt: '',
+                    publishedAt: new Date().toISOString(),
+                    paragraphs: [],
+                  }
+                  inContent = false
+                  continue
+                }
+              }
+
+              if (!current) continue
+
+              if (line.startsWith('?Excerpt:')) {
+                current.excerpt = line.replace(/^\?Excerpt:\s*/i, '').trim()
+                continue
+              }
+              if (line.startsWith('?Date:')) {
+                const dateText = line.replace(/^\?Date:\s*/i, '').trim()
+                const iso = parseDateToISO(dateText)
+                if (iso) current.publishedAt = iso
+                continue
+              }
+              if (line.startsWith('?Category:')) {
+                current.categoryRaw = line.replace(/^\?Category:\s*/i, '').trim()
+                continue
+              }
+              if (line.startsWith('?Author:')) {
+                current.author = line.replace(/^\?Author:\s*/i, '').trim()
+                continue
+              }
+              if (line.startsWith('?Content:')) {
+                inContent = true
+                continue
+              }
+              if (line.startsWith('?Tags:')) {
+                inContent = false
+                continue
+              }
+
+              if (inContent) {
+                const cleaned = stripBullet(line)
+                if (cleaned) current.paragraphs.push(cleaned)
+              }
+            }
+
+            if (current) articles.push(current)
+            return articles
+          }
+
+          function parseEventsFromContent(lines: string[]) {
+            const sections = [
+              { start: 'Academy Events (/academy/events/[slug])', end: ['Consulting Events (/consulting/events/[slug])'], arm: 'Academy' },
+              { start: 'Consulting Events (/consulting/events/[slug])', end: ['Health Services Events (/health-services/events/[slug])'], arm: 'Consulting' },
+              { start: 'Health Services Events (/health-services/events/[slug])', end: ['News Articles (/news/[slug])'], arm: 'Health' },
+            ] as const
+
+            const events: Array<{
+              title: string
+              armCategory: string
+              dateISO: string
+              location?: string
+              description?: string
+              paragraphs: string[]
+            }> = []
+
+            for (const sec of sections) {
+              const section = getSection(lines, sec.start, sec.end)
+              const peekNextNonEmpty = (idx: number) => {
+                for (let i = idx; i < section.length; i++) {
+                  const t = section[i].trim()
+                  if (t) return t
+                }
+                return ''
+              }
+
+              let current: (typeof events)[number] | null = null
+              let inRich = false
+
+              for (let i = 0; i < section.length; i++) {
+                const line = section[i].trim()
+                if (!line) continue
+
+                if (!line.startsWith('?') && !line.startsWith('�') && !line.startsWith('-')) {
+                  const next = peekNextNonEmpty(i + 1)
+                  if (next.startsWith('?Category:') || next.startsWith('?Date:')) {
+                    if (current) events.push(current)
+                    current = {
+                      title: line,
+                      armCategory: sec.arm,
+                      dateISO: new Date().toISOString(),
+                      paragraphs: [],
+                    }
+                    inRich = false
+                    continue
+                  }
+                }
+
+                if (!current) continue
+
+                if (line.startsWith('?Date:')) {
+                  const dateText = line.replace(/^\?Date:\s*/i, '').trim()
+                  const iso = parseDateToISO(dateText)
+                  if (iso) current.dateISO = iso
+                  continue
+                }
+                if (line.startsWith('?Location:')) {
+                  current.location = line.replace(/^\?Location:\s*/i, '').trim()
+                  continue
+                }
+                if (line.startsWith('?Description:')) {
+                  current.description = line.replace(/^\?Description:\s*/i, '').trim()
+                  continue
+                }
+
+                // Treat Objectives/Agenda/Speakers etc as content paragraphs
+                if (/^(Objectives:|Agenda:|Speakers:|Partners:|Phases:|Deliverables:|Team:)/i.test(line)) {
+                  current.paragraphs.push(line.replace(/:$/, '').trim())
+                  inRich = true
+                  continue
+                }
+
+                if (inRich && (line.startsWith('�') || line.startsWith('-'))) {
+                  const cleaned = stripBullet(line)
+                  if (cleaned) current.paragraphs.push(cleaned)
+                }
+              }
+
+              if (current) events.push(current)
+            }
+
+            return events
+          }
+
+          function parseTeamFromContent(lines: string[]) {
+            const section = getSection(lines, 'Our Team Section', ['Our Partners Section'])
+            const members: Array<{ name: string; role: string }> = []
+            for (const raw of section) {
+              const line = raw.trim()
+              const m = line.match(/^�\s*-\s*(.+?)\s*-\s*(.+)$/)
+              if (m) {
+                members.push({ name: m[1].trim(), role: m[2].trim() })
+              }
+            }
+            return members
+          }
+
+          function parseGalleryFromContent(lines: string[]) {
+            const section = getSection(lines, 'Gallery Images', ['Privacy Policy (/privacy)'])
+            const items: Array<{ title: string; description: string; category: string }> = []
+            let currentCategory: string | null = null
+
+            for (let i = 0; i < section.length; i++) {
+              const line = section[i].trim()
+              if (!line) continue
+
+              if (/^(Academy|Health|Consult|Events & Team|Consulting)$/i.test(line)) {
+                const normalized = line.toLowerCase()
+                if (normalized.startsWith('consult')) currentCategory = 'Consulting'
+                else if (normalized.startsWith('events')) currentCategory = 'Events'
+                else currentCategory = line[0].toUpperCase() + line.slice(1).toLowerCase()
+                continue
+              }
+
+              const titleMatch = line.match(/^Title:\s*(.+)$/i)
+              if (titleMatch) {
+                const title = titleMatch[1].trim()
+                let description = ''
+                const next = (section[i + 1] || '').trim()
+                const descMatch = next.match(/^\?Description:\s*(.+)$/i)
+                if (descMatch) {
+                  description = descMatch[1].trim()
+                  i += 1
+                }
+
+                const category = currentCategory || 'Community'
+                items.push({ title, description, category })
+              }
+            }
+
+            return items
+          }
+
+          function parseProgramsFromContent(lines: string[]) {
+            const section = getSection(lines, 'Program Listings', ['Resources & Publications (/resources)'])
+            const programs: Array<{
+              title: string
+              category: 'education' | 'health' | 'consulting'
+              description: string
+              paragraphs: string[]
+              objectives: string[]
+            }> = []
+
+            type Mode = 'none' | 'academy' | 'health' | 'consult'
+            let mode: Mode = 'none'
+            let current: (typeof programs)[number] | null = null
+
+            const pushCurrent = () => {
+              if (!current) return
+              programs.push(current)
+              current = null
+            }
+
+            for (let i = 0; i < section.length; i++) {
+              const raw = section[i].trim()
+              if (!raw) continue
+
+              if (raw.toLowerCase() === 'medwhole academy programs') {
+                pushCurrent()
+                mode = 'academy'
+                continue
+              }
+              if (raw.toLowerCase() === 'health programs') {
+                pushCurrent()
+                mode = 'health'
+                continue
+              }
+              if (raw.toLowerCase().startsWith('consult programs')) {
+                pushCurrent()
+                mode = 'consult'
+                continue
+              }
+
+              if (mode === 'academy') {
+                const nameMatch = raw.match(/^\?\s+(.+)$/)
+                if (nameMatch) {
+                  pushCurrent()
+                  const title = nameMatch[1].trim()
+                  current = {
+                    title,
+                    category: 'education',
+                    description: '',
+                    paragraphs: [],
+                    objectives: [],
+                  }
+                  continue
+                }
+
+                if (!current) continue
+
+                const descMatch = raw.match(/^o?Description:\s*(.+)$/i)
+                if (descMatch) {
+                  current.description = descMatch[1].trim()
+                  continue
+                }
+                const detailsMatch = raw.match(/^o?Details:\s*(.+)$/i)
+                if (detailsMatch) {
+                  current.paragraphs.push(detailsMatch[1].trim())
+                  continue
+                }
+                const componentsMatch = raw.match(/^o?Components:\s*(.+)$/i)
+                if (componentsMatch) {
+                  current.paragraphs.push(`Components: ${componentsMatch[1].trim()}`)
+                  continue
+                }
+                const outcomeMatch = raw.match(/^o?Outcome:?\s*(.+)$/i)
+                if (outcomeMatch) {
+                  current.objectives.push(outcomeMatch[1].trim())
+                  continue
+                }
+
+                if (raw.startsWith('-') || raw.startsWith('�')) {
+                  const cleaned = stripBullet(raw)
+                  if (cleaned) current.paragraphs.push(cleaned)
+                }
+              }
+
+              if (mode === 'health') {
+                const nameMatch = raw.match(/^\?\s*(.+)$/)
+                if (nameMatch) {
+                  pushCurrent()
+                  const title = nameMatch[1].trim()
+                  current = {
+                    title,
+                    category: 'health',
+                    description: '',
+                    paragraphs: [],
+                    objectives: [],
+                  }
+                  continue
+                }
+
+                if (!current) continue
+
+                const descMatch = raw.match(/^Description:\s*(.+)$/i)
+                if (descMatch) {
+                  current.description = descMatch[1].trim()
+                  continue
+                }
+                const detailsMatch = raw.match(/^Details:\s*(.+)$/i)
+                if (detailsMatch) {
+                  current.paragraphs.push(detailsMatch[1].trim())
+                  continue
+                }
+                const componentsMatch = raw.match(/^Components?:\s*(.+)$/i)
+                if (componentsMatch) {
+                  current.paragraphs.push(`Components: ${componentsMatch[1].trim()}`)
+                  continue
+                }
+                const outcomeMatch = raw.match(/^Outcomes?:\s*(.+)$/i)
+                if (outcomeMatch) {
+                  current.objectives.push(outcomeMatch[1].trim())
+                  continue
+                }
+              }
+
+              if (mode === 'consult') {
+                const nameMatch = raw.match(/^\d+\.\s*([^:]+):?$/)
+                if (nameMatch) {
+                  pushCurrent()
+                  const title = nameMatch[1].trim()
+                  current = {
+                    title,
+                    category: 'consulting',
+                    description: '',
+                    paragraphs: [],
+                    objectives: [],
+                  }
+                  continue
+                }
+
+                if (!current) continue
+
+                const descMatch = raw.match(/^Description:\s*(.+)$/i)
+                if (descMatch) {
+                  current.description = descMatch[1].trim()
+                  continue
+                }
+                const detailsMatch = raw.match(/^Details:\s*(.+)$/i)
+                if (detailsMatch) {
+                  current.paragraphs.push(detailsMatch[1].trim())
+                  continue
+                }
+                const componentsMatch = raw.match(/^Components?:\s*(.+)$/i)
+                if (componentsMatch) {
+                  current.paragraphs.push(`Components: ${componentsMatch[1].trim()}`)
+                  continue
+                }
+                const outcomeMatch = raw.match(/^Outcomes?:\s*(.+)$/i)
+                if (outcomeMatch) {
+                  current.objectives.push(outcomeMatch[1].trim())
+                  continue
+                }
+              }
+            }
+
+            pushCurrent()
+            return programs.filter((p) => p.title && p.description)
+          }
+
+          function parseProgramDetailsFromContent(lines: string[]) {
+            const section = getSection(lines, 'Program Details (/programs/[slug])', ['Academy Events (/academy/events/[slug])'])
+            const detailsByTitle = new Map<string, { paragraphs: string[]; objectives: string[] }>()
+
+            let currentTitle: string | null = null
+            let paragraphs: string[] = []
+            let objectives: string[] = []
+            let inOutcomes = false
+
+            const flush = () => {
+              if (!currentTitle) return
+              detailsByTitle.set(currentTitle, { paragraphs: [...paragraphs], objectives: [...objectives] })
+              currentTitle = null
+              paragraphs = []
+              objectives = []
+              inOutcomes = false
+            }
+
+            for (const rawLine of section) {
+              const line = rawLine.trim()
+              if (!line) continue
+
+              if (!line.startsWith('?') && !line.startsWith('�') && !line.startsWith('-') && !line.endsWith(':')) {
+                // Likely a program title line
+                if (line === 'Full Description') continue
+                if (line === 'Modules' || line === 'Outcomes' || line === 'Instructors' || line === 'Testimonials') continue
+                if (line.toLowerCase().includes('program details')) continue
+                if (line.toLowerCase().includes('full description')) continue
+                if (line.toLowerCase().includes('modules')) continue
+                if (line.toLowerCase().includes('outcomes')) continue
+
+                // If it looks like a standalone title, start a new block
+                if (line.length > 3 && !line.includes('http')) {
+                  flush()
+                  currentTitle = line
+                  continue
+                }
+              }
+
+              if (!currentTitle) continue
+
+              if (/^Full Description:/i.test(line)) {
+                const t = line.replace(/^Full Description:\s*/i, '').trim()
+                if (t) paragraphs.push(t)
+                continue
+              }
+              if (/^Modules:/i.test(line)) {
+                inOutcomes = false
+                continue
+              }
+              if (/^Outcomes:/i.test(line)) {
+                inOutcomes = true
+                continue
+              }
+              if (/^Instructors:/i.test(line) || /^Testimonials:/i.test(line)) {
+                inOutcomes = false
+                continue
+              }
+
+              if (line.startsWith('?')) {
+                const cleaned = line.replace(/^\?\s*/i, '').trim()
+                if (cleaned) {
+                  if (inOutcomes) objectives.push(cleaned)
+                  else paragraphs.push(cleaned)
+                }
+                continue
+              }
+            }
+
+            flush()
+            return detailsByTitle
+          }
+
+          function mapNewsCategory(raw?: string) {
+            const value = (raw || '').toLowerCase().trim()
+            if (value.includes('research')) return 'research'
+            if (value.includes('partnership') || value.includes('who')) return 'partnership'
+            if (value.includes('impact')) return 'impact-story'
+            if (value.includes('program') || value.includes('academy') || value.includes('events') || value.includes('launch')) return 'program-update'
+            if (value.includes('health')) return 'impact-story'
+            return 'announcement'
+          }
+
+          function pickProgramImagePath(category: 'education' | 'health' | 'consulting', hint?: string) {
+            const root = path.resolve(__dirname, '../public')
+            const lower = (hint || '').toLowerCase()
+            if (category === 'health') {
+              if (lower.includes('mobile') || lower.includes('outreach')) return path.join(root, 'mobile-health-clinic-africa-rural-community.jpg')
+              return path.join(root, 'african-healthcare-workers-providing-medical-care-.jpg')
+            }
+            if (category === 'consulting') {
+              return path.join(root, 'african-health-professionals-in-strategic-meeting-.jpg')
+            }
+            return path.join(root, 'african-children-learning-education-classroom.jpg')
+          }
+
+          function pickLocalImagePath(kind: 'news' | 'event' | 'team' | 'gallery', hint?: string) {
+            const root = path.resolve(__dirname, '../public')
+            const lower = (hint || '').toLowerCase()
+
+            if (kind === 'team') return path.join(root, 'placeholder-user.jpg')
+            if (kind === 'gallery') {
+              if (lower.includes('scholar') || lower.includes('school') || lower.includes('class')) return path.join(root, 'placeholder-training-classroom.jpg')
+              if (lower.includes('team') || lower.includes('collaboration')) return path.join(root, 'placeholder-team-collaboration.jpg')
+              if (lower.includes('consult') || lower.includes('meeting')) return path.join(root, 'placeholder-consulting-meeting.jpg')
+              if (lower.includes('who') || lower.includes('partnership')) return path.join(root, 'partnership-signing-ceremony-african-health-offici.jpg')
+              if (lower.includes('mobile') || lower.includes('clinic')) return path.join(root, 'mobile-health-clinic-africa-rural-community.jpg')
+              return path.join(root, 'placeholder.jpg')
+            }
+            if (kind === 'news') {
+              if (lower.includes('research')) return path.join(root, 'placeholder-data-analysis.jpg')
+              if (lower.includes('leadership') || lower.includes('training') || lower.includes('workshop')) return path.join(root, 'workshop-training-session-african-professionals.jpg')
+              if (lower.includes('partnership') || lower.includes('who')) return path.join(root, 'partnership-signing-ceremony-african-health-offici.jpg')
+              if (lower.includes('mobile') || lower.includes('clinic')) return path.join(root, 'mobile-health-clinic-africa-rural-community.jpg')
+              return path.join(root, 'placeholder.jpg')
+            }
+            if (kind === 'event') {
+              if (lower.includes('summit') || lower.includes('conference')) return path.join(root, 'african-health-conference-presentation.jpg')
+              if (lower.includes('masterclass') || lower.includes('training')) return path.join(root, 'african-students-in-epidemiology-training-classroo.jpg')
+              if (lower.includes('campaign') || lower.includes('outreach')) return path.join(root, 'african-health-workers-vaccination-campaign.jpg')
+              return path.join(root, 'placeholder.jpg')
+            }
+            return path.join(root, 'placeholder.jpg')
+          }
+
+          const uploadedAssetRefByPath = new Map<string, string>()
+
+          async function uploadImageFromPublic(localPath: string) {
+            const normalizedPath = path.resolve(localPath)
+            const cached = uploadedAssetRefByPath.get(normalizedPath)
+            if (cached) return cached
+
+            if (!fs.existsSync(normalizedPath)) {
+              throw new Error(`Missing local image file: ${normalizedPath}`)
+            }
+
+            const stream = fs.createReadStream(normalizedPath)
+            const filename = path.basename(normalizedPath)
+            const asset = await client.assets.upload('image', stream as any, { filename })
+            uploadedAssetRefByPath.set(normalizedPath, asset._id)
+            return asset._id
+          }
+
+          async function createOrReplaceDocument(doc: any) {
+            const result = await client.createOrReplace(doc)
+            console.log(`✅ Upserted ${doc._type}: ${doc.title || doc.name}`)
+            return result
+          }
+
+          async function deleteAllByTypes(types: string[]) {
+            for (const type of types) {
+              console.log(`🧹 Deleting documents of type: ${type}`)
+              await client.delete({ query: `*[_type == "${type}"]` })
+            }
+          }
+
+          async function seedSanity() {
+            const contentPath = path.resolve(__dirname, '../1-MedWHOLE Alliance Website Content.txt')
+            const rawContent = fs.readFileSync(contentPath, 'utf8')
+            const normalized = rawContent.replace(/\r\n/g, '\n')
+            const lines = normalized.split('\n')
+
+            const shouldReset = process.argv.includes('--reset') || process.env.SANITY_SEED_RESET === 'true' || process.env.SANITY_SEED_RESET === '1'
+            const forceYes = process.argv.includes('--yes') || process.env.SANITY_SEED_YES === 'true' || process.env.SANITY_SEED_YES === '1'
+
+            console.log('🌱 Starting Sanity CMS seeding...')
+            console.log(`   Dataset: ${dataset}`)
+            console.log(`   Project: ${projectId}`)
+            console.log(`   Reset mode: ${shouldReset ? 'ON' : 'OFF'}`)
+
+            if (shouldReset && !forceYes) {
+              console.error('\n❌ Refusing to wipe Sanity without explicit confirmation.')
+              console.error('   Re-run with: `pnpm sanity:seed -- --reset --yes`')
+              console.error('   Or set env: `SANITY_SEED_RESET=1 SANITY_SEED_YES=1`')
+              process.exit(1)
+            }
+
+            if (shouldReset) {
+              await deleteAllByTypes(['news', 'event', 'program', 'team', 'gallery'])
+            }
+
+            const newsItems = parseNewsFromContent(lines)
+            const eventItems = parseEventsFromContent(lines)
+            const teamItems = parseTeamFromContent(lines)
+            const galleryItems = parseGalleryFromContent(lines)
+            const programItems = parseProgramsFromContent(lines)
+            const programDetails = parseProgramDetailsFromContent(lines)
+
+            console.log(`\n📰 Parsed news: ${newsItems.length}`)
+            console.log(`📅 Parsed events: ${eventItems.length}`)
+            console.log(`👥 Parsed team: ${teamItems.length}`)
+            console.log(`🖼️  Parsed gallery: ${galleryItems.length}`)
+            console.log(`🎓 Parsed programs: ${programItems.length}`)
+
+            // Seed News
+            console.log('\n📰 Seeding News...')
+            for (let i = 0; i < newsItems.length; i++) {
+              const item = newsItems[i]
+              const slug = slugify(item.title)
+              const category = mapNewsCategory(item.categoryRaw)
+              const imagePath = pickLocalImagePath('news', `${category} ${item.title}`)
+              const assetId = await uploadImageFromPublic(imagePath)
+
+              await createOrReplaceDocument({
+                _id: `news.${slug}`,
+                _type: 'news',
+                title: item.title,
+                slug: { _type: 'slug', current: slug },
+                excerpt: truncate(item.excerpt || item.title, 200),
+                content: toPortableText(item.paragraphs),
+                featuredImage: {
+                  _type: 'image',
+                  asset: { _type: 'reference', _ref: assetId },
+                  alt: item.title,
+                },
+                category,
+                author: item.author,
+                publishedAt: item.publishedAt,
+                featured: i === 0,
+                isActive: true,
+              })
+            }
+
+            // Seed Events
+            console.log('\n📅 Seeding Events...')
+            for (let i = 0; i < eventItems.length; i++) {
+              const item = eventItems[i]
+              const slug = slugify(item.title)
+              const imagePath = pickLocalImagePath('event', `${item.armCategory} ${item.title}`)
+              const assetId = await uploadImageFromPublic(imagePath)
+              const description = item.description || item.paragraphs[0] || ''
+
+              await createOrReplaceDocument({
+                _id: `event.${slug}`,
+                _type: 'event',
+                title: item.title,
+                slug: { _type: 'slug', current: slug },
+                description: description,
+                content: [
+                  ...toPortableText(item.paragraphs),
+                  {
+                    _type: 'image',
+                    asset: { _type: 'reference', _ref: assetId },
+                    alt: item.title,
+                  },
+                ],
+                category: item.armCategory,
+                date: item.dateISO,
+                location: item.location,
+                featured: i < 3,
+                isActive: true,
+              })
+            }
+
+            // Seed Team
+            console.log('\n👥 Seeding Team...')
+            for (let i = 0; i < teamItems.length; i++) {
+              const item = teamItems[i]
+              const slug = slugify(item.name)
+              const assetId = await uploadImageFromPublic(pickLocalImagePath('team', item.name))
+
+              await createOrReplaceDocument({
+                _id: `team.${slug}`,
+                _type: 'team',
+                name: item.name,
+                role: item.role,
+                bio: `${item.name} serves as ${item.role} at MedWHOLE Alliance.`,
+                photo: {
+                  _type: 'image',
+                  asset: { _type: 'reference', _ref: assetId },
+                  alt: item.name,
+                },
+                category: 'leadership',
+                order: i + 1,
+                isActive: true,
+              })
+            }
+
+            // Seed Programs
+            console.log('\n🎓 Seeding Programs...')
+            for (let i = 0; i < programItems.length; i++) {
+              const item = programItems[i]
+              const slug = slugify(item.title)
+              const extra = programDetails.get(item.title)
+              const mergedParagraphs = [...item.paragraphs]
+              const mergedObjectives = [...item.objectives]
+              if (extra) {
+                mergedParagraphs.push(...extra.paragraphs)
+                mergedObjectives.push(...extra.objectives)
+              }
+
+              const assetId = await uploadImageFromPublic(pickProgramImagePath(item.category, item.title))
+
+              await createOrReplaceDocument({
+                _id: `program.${slug}`,
+                _type: 'program',
+                title: item.title,
+                slug: { _type: 'slug', current: slug },
+                description: item.description,
+                content: toPortableText(mergedParagraphs),
+                featuredImage: {
+                  _type: 'image',
+                  asset: { _type: 'reference', _ref: assetId },
+                  alt: item.title,
+                },
+                category: item.category,
+                objectives: mergedObjectives.slice(0, 10),
+                featured: i < 6,
+                isActive: true,
+              })
+            }
+
+            // Seed Gallery
+            console.log('\n🖼️  Seeding Gallery...')
+            for (let i = 0; i < galleryItems.length; i++) {
+              const item = galleryItems[i]
+              const slug = slugify(item.title)
+              const assetId = await uploadImageFromPublic(pickLocalImagePath('gallery', `${item.category} ${item.title}`))
+
+              await createOrReplaceDocument({
+                _id: `gallery.${slug}`,
+                _type: 'gallery',
+                title: item.title,
+                description: item.description,
+                category: item.category,
+                order: i + 1,
+                image: {
+                  _type: 'image',
+                  asset: { _type: 'reference', _ref: assetId },
+                  alt: item.title,
+                },
+                isActive: true,
+              })
+            }
+
+            console.log('\n✅ Seeding completed successfully!')
+            console.log('   Studio: /studio')
+          }
+
+          seedSanity().catch((error) => {
+            console.error('\n❌ Seeding failed:', error)
+            process.exit(1)
+          })

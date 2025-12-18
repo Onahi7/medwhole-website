@@ -28,6 +28,13 @@ export const eventSchema = defineType({
       rows: 3,
     }),
     defineField({
+      name: 'excerpt',
+      title: 'Excerpt',
+      type: 'text',
+      rows: 3,
+      validation: (Rule) => Rule.max(200),
+    }),
+    defineField({
       name: 'content',
       title: 'Content',
       type: 'array',

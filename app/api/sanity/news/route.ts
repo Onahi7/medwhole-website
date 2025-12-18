@@ -3,11 +3,18 @@ import { getNews } from "@/lib/sanity-queries"
 
 export const dynamic = 'force-dynamic'
 
+function parseLimit(raw: string | null, defaultLimit: number) {
+  if (!raw) return defaultLimit
+  const value = Number(raw)
+  if (!Number.isFinite(value)) return defaultLimit
+  return Math.max(1, Math.min(Math.trunc(value), 50))
+}
+
 export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
     const category = searchParams.get("category") || undefined
-    const limit = searchParams.get("limit") ? parseInt(searchParams.get("limit")!) : 10
+    const limit = parseLimit(searchParams.get("limit"), 10)
 
     const news = await getNews(category, limit)
 

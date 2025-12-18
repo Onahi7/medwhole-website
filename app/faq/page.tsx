@@ -16,12 +16,12 @@ export default function FAQPage() {
         {
           question: "What is MedWHOLE Alliance?",
           answer:
-            "MedWHOLE Alliance is a comprehensive public health organization operating across Africa through three integrated arms: MedWHOLE Consult (technical assistance and advisory services), MedWHOLE Academy (capacity building and training), and MedWHOLE Health (direct health service delivery). We work to strengthen health systems, build capacity, and improve health outcomes across the continent.",
+            "MedWHOLE Alliance for Health and Development (MedWHOLE) is a registered non-profit, faith-driven organization dedicated to helping individuals live boundless and fulfilling lives through interventions that promote whole health, whole persons, and whole communities. Our comprehensive public health organization operates across Nigeria through three integrated arms: MedWHOLE Consult (technical assistance and advisory services), MedWHOLE Academy (capacity building and training), and MedWHOLE Health (direct health service delivery). We work to strengthen health systems, build capacity, and improve health outcomes across the continent.",
         },
         {
           question: "Where does MedWHOLE Alliance operate?",
           answer:
-            "We operate across multiple African countries with offices in Kenya, Ghana, Nigeria, Tanzania, Uganda, and Senegal. Our programs reach communities in over 20 African nations through partnerships with governments, NGOs, and local organizations.",
+            "We operate primarily in the FCT then across other states in Nigeria. Our programs reach communities through partnerships with governments, NGOs, and local organizations.",
         },
         {
           question: "How is MedWHOLE Alliance funded?",
@@ -42,12 +42,12 @@ export default function FAQPage() {
         {
           question: "Who can enroll in MedWHOLE Academy programs?",
           answer:
-            "Our programs are designed for public health professionals, healthcare workers, program managers, researchers, and anyone working in health-related fields. Specific prerequisites vary by program and are listed in each program description. We welcome participants from all African countries and beyond.",
+            "Our programs are designed for children aged 2-18 and their families. We provide free summer and term-time schools for over 290 children, scholarships for indigent but deserving students, and comprehensive support including academics, character development, health, and nutrition. We also offer capacity building programs for public health professionals, healthcare workers, program managers, and researchers.",
         },
         {
           question: "Are the training programs accredited?",
           answer:
-            "Yes, MedWHOLE Academy programs are accredited by relevant professional bodies and educational authorities. Participants receive certificates upon successful completion that are recognized across Africa and internationally. Some programs also offer continuing education credits for licensed professionals.",
+            "Yes, MedWHOLE Academy programs are accredited by relevant professional bodies and educational authorities. Participants receive certificates upon successful completion. Some programs also offer continuing education credits for licensed professionals.",
         },
         {
           question: "What is the format of the training programs?",
@@ -57,12 +57,12 @@ export default function FAQPage() {
         {
           question: "How much do training programs cost?",
           answer:
-            "Program fees vary depending on the duration, format, and content. Fees range from $750 to $1,500 for most programs. We offer scholarships and payment plans to make our programs accessible. Contact us to discuss financial assistance options.",
+            "Program fees vary depending on the duration, format, and content. Contact us for more details.",
         },
         {
           question: "Do you offer scholarships or financial assistance?",
           answer:
-            "Yes, we offer partial and full scholarships based on financial need and merit. We also provide payment plans and group discounts for organizations enrolling multiple participants. Scholarship applications are reviewed on a rolling basis.",
+            "Yes, we offer partial and full scholarships based on financial need and merit. We also provide payment plans and group discounts for organizations enrolling multiple participants.",
         },
       ],
     },
@@ -114,7 +114,7 @@ export default function FAQPage() {
         {
           question: "What benefits do MedWHOLE employees receive?",
           answer:
-            "We offer competitive compensation packages including health insurance for employees and dependents, professional development opportunities and training, performance bonuses, generous leave policies, flexible working arrangements where possible, and a supportive, mission-driven work environment.",
+            "At MedWHOLE Alliance, you can drive real change, advance your skills, work alongside a passionate, mission-focused team, engage in a variety of impactful projects, and receive recognition for your contributions.",
         },
       ],
     },

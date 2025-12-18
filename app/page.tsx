@@ -117,17 +117,19 @@ export default function HomePage() {
 
     // Fetch all data in parallel
     Promise.all([
-      fetch("/api/sanity/news?limit=3").then(r => r.ok ? r.json() : []),
-      fetch("/api/sanity/events?limit=3").then(r => r.ok ? r.json() : []),
-      fetch("/api/sanity/team?category=leadership").then(r => r.ok ? r.json() : []),
-      fetch("/api/sanity/gallery?limit=6").then(r => r.ok ? r.json() : []),
-    ]).then(([newsData, eventsData, teamData, galleryData]) => {
-      setNews(newsData)
-      setEvents(eventsData)
-      setTeam(teamData)
-      setGallery(galleryData)
-      setLoading({ news: false, events: false, team: false, gallery: false })
-    }).catch(console.error)
+      fetch("/api/sanity/news?limit=3").then((r) => (r.ok ? r.json() : [])),
+      fetch("/api/sanity/events?limit=3").then((r) => (r.ok ? r.json() : [])),
+      fetch("/api/sanity/team?category=leadership").then((r) => (r.ok ? r.json() : [])),
+      fetch("/api/sanity/gallery?limit=6").then((r) => (r.ok ? r.json() : [])),
+    ])
+      .then(([newsData, eventsData, teamData, galleryData]) => {
+        setNews(newsData)
+        setEvents(eventsData)
+        setTeam(teamData)
+        setGallery(galleryData)
+        setLoading({ news: false, events: false, team: false, gallery: false })
+      })
+      .catch(console.error)
   }, [])
 
   return (
@@ -157,24 +159,18 @@ export default function HomePage() {
           <div className="container relative mx-auto px-4 lg:px-8 py-20">
             <div className="max-w-5xl mx-auto text-center">
               <div className={`transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
-                <div className="inline-flex items-center gap-3 mb-8 bg-accent/20 backdrop-blur-sm px-6 py-3 border border-accent/30 shadow-lg">
-                  <Sparkles className="h-5 w-5 text-accent" aria-hidden="true" />
-                  <span className="text-sm font-bold text-primary-foreground tracking-wide">
-                    Whole health, Whole person and Whole community,
-                  </span>
-                </div>
+              <div className="inline-flex items-center gap-3 mb-6 bg-accent/20 backdrop-blur-sm px-6 py-3 border border-accent/30 shadow-lg">
+                <Sparkles className="h-5 w-5 text-accent" aria-hidden="true" />
+                <span className="text-sm font-bold text-primary-foreground tracking-widest uppercase">
+                  Catalyzing Community Transformation
+                </span>
+              </div>
 
-                <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-8 text-balance leading-[1.1] tracking-tight">
-                  Making <span className="text-accent">Wholeness</span>
-                  <br />
-                  A Reality
-                </h1>
-
-                <p className="text-xl md:text-2xl lg:text-3xl mb-12 text-primary-foreground/90 leading-relaxed max-w-4xl mx-auto font-light">
-                  A network of competent, character-driven leaders empowering individuals and families to achieve wholeness and become{" "}
-                  <span className="font-semibold text-accent">agents of community transformation</span>.
-                </p>
-
+              <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-8 text-balance leading-[1.1] tracking-tight">
+                Making <span className="text-accent">Wholeness</span>
+                <br />
+                A Reality
+              </h1>
                 <div className="flex flex-col sm:flex-row gap-5 justify-center items-center">
                   <Button asChild size="lg" className="bg-accent hover:bg-accent/90 text-accent-foreground text-lg px-10 py-7 h-auto shadow-2xl hover:shadow-accent/50 transition-all duration-300 hover:scale-105">
                     <Link href="/about">
