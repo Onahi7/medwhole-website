@@ -33,27 +33,36 @@ export default async function GalleryPage() {
         />
 
         {/* Gallery Tabs */}
-        <section className="py-16 lg:py-24">
-          <div className="container mx-auto px-4 lg:px-8">
+        <section className="py-12 sm:py-16 lg:py-24">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <Tabs defaultValue="all" className="w-full">
-              <TabsList className="w-full justify-start mb-12 bg-muted/50 p-1 rounded-lg overflow-x-auto flex-nowrap">
-                <TabsTrigger value="all" className="gap-2">
-                  <Award className="h-4 w-4" />
-                  All Photos ({allImages.length})
-                </TabsTrigger>
-                <TabsTrigger value="health" className="gap-2">
-                  <Stethoscope className="h-4 w-4" />
-                  Health Services ({healthImages.length})
-                </TabsTrigger>
-                <TabsTrigger value="academy" className="gap-2">
-                  <BookOpen className="h-4 w-4" />
-                  Academy ({academyImages.length})
-                </TabsTrigger>
-                <TabsTrigger value="consulting" className="gap-2">
-                  <Users className="h-4 w-4" />
-                  Consulting ({consultingImages.length})
-                </TabsTrigger>
-              </TabsList>
+              <div className="overflow-x-auto pb-2 -mx-4 sm:mx-0">
+                <TabsList className="w-full sm:w-auto justify-start mb-8 sm:mb-12 bg-muted/50 p-1 rounded-lg inline-flex min-w-full sm:min-w-0 px-4 sm:px-0">
+                  <TabsTrigger value="all" className="gap-1.5 sm:gap-2 text-xs sm:text-sm px-2 sm:px-3">
+                    <Award className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">All Photos</span>
+                    <span className="sm:hidden">All</span>
+                    <span>({allImages.length})</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="health" className="gap-1.5 sm:gap-2 text-xs sm:text-sm px-2 sm:px-3">
+                    <Stethoscope className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Health Services</span>
+                    <span className="sm:hidden">Health</span>
+                    <span>({healthImages.length})</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="academy" className="gap-1.5 sm:gap-2 text-xs sm:text-sm px-2 sm:px-3">
+                    <BookOpen className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Academy</span>
+                    <span>({academyImages.length})</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="consulting" className="gap-1.5 sm:gap-2 text-xs sm:text-sm px-2 sm:px-3">
+                    <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                    <span className="hidden sm:inline">Consulting</span>
+                    <span className="sm:hidden">Consult</span>
+                    <span>({consultingImages.length})</span>
+                  </TabsTrigger>
+                </TabsList>
+              </div>
 
               {/* All Photos */}
               <TabsContent value="all">

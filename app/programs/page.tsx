@@ -428,24 +428,24 @@ export default function ProgramsPage() {
       <SiteHeader />
       <main id="main-content" className="flex-1">
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-primary-foreground py-20 lg:py-32 overflow-hidden">
+        <section className="relative bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-primary-foreground py-12 sm:py-16 lg:py-32 overflow-hidden">
           <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-          <div className="container mx-auto px-4 lg:px-8 relative z-10">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="max-w-4xl mx-auto text-center">
-              <Badge className="mb-4 bg-accent text-accent-foreground">All Three Arms</Badge>
-              <h1 className="text-4xl lg:text-6xl font-bold mb-6 text-balance">MedWHOLE Programs</h1>
-              <p className="text-lg lg:text-xl text-primary-foreground/90 leading-relaxed mb-8">
+              <Badge className="mb-3 sm:mb-4 bg-accent text-accent-foreground text-xs sm:text-sm">All Three Arms</Badge>
+              <h1 className="text-3xl sm:text-4xl lg:text-6xl font-bold mb-4 sm:mb-6 text-balance px-4">MedWHOLE Programs</h1>
+              <p className="text-base sm:text-lg lg:text-xl text-primary-foreground/90 leading-relaxed mb-6 sm:mb-8 px-4">
                 Comprehensive programs across Education, Nutrition, Health, and Consult arms designed to achieve wholeness in communities across Nigeria
               </p>
-              <div className="flex flex-wrap gap-4 justify-center">
-                <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center px-4">
+                <Button size="lg" asChild className="bg-accent hover:bg-accent/90 text-accent-foreground w-full sm:w-auto">
                   <Link href="/contact">Enroll Now</Link>
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
                   asChild
-                  className="bg-white/10 hover:bg-white/20 text-white border-white/30"
+                  className="bg-white/10 hover:bg-white/20 text-white border-white/30 w-full sm:w-auto"
                 >
                   <Link href="/contact">Request Information</Link>
                 </Button>
@@ -455,21 +455,22 @@ export default function ProgramsPage() {
         </section>
 
         {/* Category Filter */}
-        <section className="py-8 bg-muted/30 sticky top-16 z-10 border-b">
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className="flex flex-wrap gap-3 justify-center">
+        <section className="py-4 sm:py-6 lg:py-8 bg-muted/30 sticky top-16 z-10 border-b">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
               {categories.map((category) => (
                 <Button
                   key={category}
+                  size="sm"
                   variant={selectedCategory === category ? "default" : "outline"}
                   onClick={() => setSelectedCategory(category)}
                   className={
                     selectedCategory === category
-                      ? category === "Academy" ? "bg-primary text-primary-foreground" :
-                        category === "Health" ? "bg-accent text-accent-foreground" :
-                        category === "Consult" ? "bg-chart-3 text-white" :
-                        "bg-primary text-primary-foreground"
-                      : "bg-transparent hover:bg-primary/10"
+                      ? category === "Academy" ? "bg-primary text-primary-foreground text-xs sm:text-sm" :
+                        category === "Health" ? "bg-accent text-accent-foreground text-xs sm:text-sm" :
+                        category === "Consult" ? "bg-chart-3 text-white text-xs sm:text-sm" :
+                        "bg-primary text-primary-foreground text-xs sm:text-sm"
+                      : "bg-transparent hover:bg-primary/10 text-xs sm:text-sm"
                   }
                 >
                   {category}
@@ -480,34 +481,34 @@ export default function ProgramsPage() {
         </section>
 
         {/* Programs Grid */}
-        <section className="py-16 lg:py-24">
-          <div className="container mx-auto px-4 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <section className="py-12 sm:py-16 lg:py-24">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
               {filteredPrograms.map((program, index) => (
                 <Card
                   key={index}
                   className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-primary/50"
                 >
-                  <CardHeader>
-                    <div className="flex items-start justify-between mb-2">
-                      <Badge variant="secondary" className={`${
+                  <CardHeader className="p-4 sm:p-6">
+                    <div className="flex flex-col sm:flex-row items-start justify-between gap-2 mb-2">
+                      <Badge variant="secondary" className={`text-xs sm:text-sm ${
                         program.category === 'Academy' ? 'bg-primary/10 text-primary' :
                         program.category === 'Health' ? 'bg-accent/10 text-accent' :
                         'bg-chart-3/10 text-chart-3'
                       }`}>
                         {program.category}
                       </Badge>
-                      <div className="flex gap-2">
-                        <Badge variant="outline">{program.level}</Badge>
-                        <Badge variant="outline">{program.format}</Badge>
+                      <div className="flex flex-wrap gap-2">
+                        <Badge variant="outline" className="text-xs sm:text-sm">{program.level}</Badge>
+                        <Badge variant="outline" className="text-xs sm:text-sm">{program.format}</Badge>
                       </div>
                     </div>
-                    <CardTitle className="text-2xl group-hover:text-primary transition-colors">
+                    <CardTitle className="text-xl sm:text-2xl group-hover:text-primary transition-colors">
                       {program.title}
                     </CardTitle>
-                    <CardDescription className="text-base leading-relaxed">{program.description}</CardDescription>
+                    <CardDescription className="text-sm sm:text-base leading-relaxed">{program.description}</CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-6">
+                  <CardContent className="space-y-4 sm:space-y-6 p-4 sm:p-6 pt-0">
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <Clock className="h-4 w-4" />
@@ -572,18 +573,18 @@ export default function ProgramsPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 lg:py-24 bg-muted/30">
-          <div className="container mx-auto px-4 lg:px-8">
+        <section className="py-12 sm:py-16 lg:py-24 bg-muted/30">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl lg:text-4xl font-bold mb-6">Ready to Make an Impact?</h2>
-              <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 px-4">Ready to Make an Impact?</h2>
+              <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed px-4">
                 Join us in building whole persons, whole health, and whole communities. Whether you're a student, organization, or donor, there's a way to get involved.
               </p>
-              <div className="flex flex-wrap gap-4 justify-center">
-                <Button size="lg" asChild className="bg-primary hover:bg-primary/90">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center px-4">
+                <Button size="lg" asChild className="bg-primary hover:bg-primary/90 w-full sm:w-auto">
                   <Link href="/contact">Enroll Today</Link>
                 </Button>
-                <Button size="lg" variant="outline" asChild>
+                <Button size="lg" variant="outline" asChild className="w-full sm:w-auto">
                   <Link href="/contact">Schedule a Consultation</Link>
                 </Button>
               </div>
